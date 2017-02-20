@@ -9,14 +9,37 @@
 import SpriteKit
 import GameplayKit
 
+enum MoveDirection {
+    case left
+    case right
+    case up
+    case down
+}
+
 class GameScene: SKScene {
     
     var entities = [GKEntity]()
-    var graphs = [GKGraph]()
+    var graphs = [String: GKGraph]()
+
+    var backgroundTileSet: SKTileMapNode!
+    var interactiveTileSet: SKTileMapNode!
+
+    // Contains all tile sets (background & interactive)
+    var tileSets: [SKTileMapNode]!
+    var chippy: SKSpriteNode!
     
     private var lastUpdateTime : TimeInterval = 0
 
     override func sceneDidLoad() {
+        super.sceneDidLoad()
+
+        backgroundTileSet = childNode(withName: "Background")! as! SKTileMapNode
+        interactiveTileSet = childNode(withName: "Interactive")! as! SKTileMapNode
+        chippy = childNode(withName: "Chippy")! as! SKSpriteNode
+        tileSets = [backgroundTileSet, interactiveTileSet]
+
+        let group = backgroundTileSet.tileGroup(atColumn: 5, row: 5)!
+        backgroundTileSet.fill(with: group)
 
         self.lastUpdateTime = 0
     }
@@ -80,9 +103,36 @@ class GameScene: SKScene {
         
         // Update entities
         for entity in self.entities {
-            entity.update(withDeltaTime: dt)
+            entity.update(deltaTime: dt)
         }
         
         self.lastUpdateTime = currentTime
     }
 }
+
+//MARK: Movement extension
+extension GameScene {
+
+    func move(direction: MoveDirection) {
+        let tileSize = backgroundTileSet.tileSize
+        let dx: CGFloat
+        let dy: CGFloat
+        switch direction {
+            case .left: dx = tileSize.width; dy = 0
+            case .right: dx = -tileSize.width; dy = 0
+            case .up: dx = 0; dy = -tileSize.height
+            case .down: dx = 0; dy = tileSize.height
+        }
+
+        //TODO!
+        // This is where we'd check that the tile is moveable to, and apply affects from it.
+
+        // Apply position change to all tilesets
+        tileSets.forEach { (node) in
+            node.position = CGPoint(x: node.position.x + dx, y: node.position.y + dy)
+            print(node.position)
+        }
+    }
+}
+
+

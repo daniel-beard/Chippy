@@ -12,29 +12,36 @@ import GameplayKit
 
 class GameViewController: UIViewController {
 
+    var gameScene: GKScene!
+    var sceneNode: GameScene!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Load 'GameScene.sks' as a GKScene. This provides gameplay related content
         // including entities and graphs.
         if let scene = GKScene(fileNamed: "GameScene") {
-            
+
+            gameScene = scene
+
             // Get the SKScene from the loaded GKScene
             if let sceneNode = scene.rootNode as! GameScene? {
-                
+
+                self.sceneNode = sceneNode
+
                 // Copy gameplay related content over to the scene
                 sceneNode.entities = scene.entities
                 sceneNode.graphs = scene.graphs
-                
+
                 // Set the scale mode to scale to fit the window
-                sceneNode.scaleMode = .aspectFit
-                
+                sceneNode.scaleMode = .aspectFill
+
                 // Present the scene
                 if let view = self.view as! SKView? {
                     view.presentScene(sceneNode)
-                    
+
                     view.ignoresSiblingOrder = true
-                    
+
                     view.showsFPS = true
                     view.showsNodeCount = true
                 }
@@ -42,24 +49,33 @@ class GameViewController: UIViewController {
         }
     }
 
-    override func shouldAutorotate() -> Bool {
-        return true
+    override var shouldAutorotate: Bool {
+        return false
     }
 
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        if UIDevice.current().userInterfaceIdiom == .phone {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .phone {
             return .allButUpsideDown
         } else {
             return .all
         }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
+    override var prefersStatusBarHidden: Bool {
+        return true
     }
 
-    override func prefersStatusBarHidden() -> Bool {
-        return true
+    func swipeUp() { sceneNode.move(direction: .up) }
+    func swipeDown() { sceneNode.move(direction: .down) }
+    func swipeLeft() { sceneNode.move(direction: .left) }
+    func swipeRight() { sceneNode.move(direction: .right) }
+
+    override var keyCommands: [UIKeyCommand]? {
+        return [
+            UIKeyCommand(input: UIKeyInputUpArrow,      modifierFlags: [], action: #selector(swipeUp)),
+            UIKeyCommand(input: UIKeyInputDownArrow,    modifierFlags: [], action: #selector(swipeDown)),
+            UIKeyCommand(input: UIKeyInputLeftArrow,    modifierFlags: [], action: #selector(swipeLeft)),
+            UIKeyCommand(input: UIKeyInputRightArrow,   modifierFlags: [], action: #selector(swipeRight)),
+        ]
     }
 }
