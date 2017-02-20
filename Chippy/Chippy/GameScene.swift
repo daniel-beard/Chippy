@@ -21,11 +21,11 @@ class GameScene: SKScene {
     var entities = [GKEntity]()
     var graphs = [String: GKGraph]()
 
+    var gameManager: GameManager!
+
     var backgroundTileSet: SKTileMapNode!
     var interactiveTileSet: SKTileMapNode!
 
-    // Contains all tile sets (background & interactive)
-    var tileSets: [SKTileMapNode]!
     var chippy: SKSpriteNode!
     
     private var lastUpdateTime : TimeInterval = 0
@@ -35,11 +35,8 @@ class GameScene: SKScene {
 
         backgroundTileSet = childNode(withName: "Background")! as! SKTileMapNode
         interactiveTileSet = childNode(withName: "Interactive")! as! SKTileMapNode
-        chippy = childNode(withName: "Chippy")! as! SKSpriteNode
-        tileSets = [backgroundTileSet, interactiveTileSet]
-
-        let group = backgroundTileSet.tileGroup(atColumn: 5, row: 5)!
-        backgroundTileSet.fill(with: group)
+        chippy = backgroundTileSet.childNode(withName: "Chippy")! as! SKSpriteNode
+        gameManager = GameManager(backgroundTiles: backgroundTileSet, foregroundTiles: interactiveTileSet, playerSprite: chippy)
 
         self.lastUpdateTime = 0
     }
@@ -114,23 +111,16 @@ class GameScene: SKScene {
 extension GameScene {
 
     func move(direction: MoveDirection) {
-        let tileSize = backgroundTileSet.tileSize
-        let dx: CGFloat
-        let dy: CGFloat
+        let offset: (dx: Int, dy: Int)
         switch direction {
-            case .left: dx = tileSize.width; dy = 0
-            case .right: dx = -tileSize.width; dy = 0
-            case .up: dx = 0; dy = -tileSize.height
-            case .down: dx = 0; dy = tileSize.height
+            case .left: offset = (-1, 0)
+            case .right: offset = (1, 0)
+            case .up: offset = (0, 1)
+            case .down: offset = (0, -1)
         }
 
-        //TODO!
-        // This is where we'd check that the tile is moveable to, and apply affects from it.
-
-        // Apply position change to all tilesets
-        tileSets.forEach { (node) in
-            node.position = CGPoint(x: node.position.x + dx, y: node.position.y + dy)
-            print(node.position)
+        if gameManager.canPlayerMoveByRelativeOffset(dx: offset.dx, dy: offset.dy) {
+            gameManager.movePlayerByRelativeOffset(dx: offset.dx, dy: offset.dy)
         }
     }
 }
