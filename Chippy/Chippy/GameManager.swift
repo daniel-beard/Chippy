@@ -32,6 +32,8 @@ class GameManager {
     // Checks whether a tile is passable
     func canPlayerMoveByRelativeOffset(dx: Int, dy: Int) -> Bool {
 
+        var result = false
+
         let nextAbsolutePositionX = player.sprite.position.x + (tileManager.backgroundTileSet.tileSize.width * CGFloat(dx))
         let nextAbsolutePositionY = player.sprite.position.y + (tileManager.backgroundTileSet.tileSize.height * CGFloat(dy))
         let nextAbsolutePoint = CGPoint(x: nextAbsolutePositionX, y: nextAbsolutePositionY)
@@ -43,9 +45,18 @@ class GameManager {
             return false
         }
 
+        // Debugging
         print("Next row: \(nextRow) column: \(nextColumn)")
 
-        return nextTile is Passable
+        // Handle passable background tiles.
+        result = result || (nextTile is Passable)
+
+        // If the foreground tile type is conditionally passable, we can only pass if we satisfy the pre-conditions
+        if let conditionalTile = tileManager.foregroundTileAtPosition(x: nextColumn, y: nextRow) as? ConditionallyPassable {
+            result = result && conditionalTile.canPlayerConditionallyPassTile(gameManager: self, player: player)
+        }
+
+        return result
     }
 
     // Runs the side effects of moving a player to a tile position
@@ -88,20 +99,32 @@ class GameManager {
             return
         }
 
-        if foregroundTile is Collectable {
-            handleCollectibleCollision(column: column, row: row, tile: foregroundTile)
+        // Collectables
+        if let collectableTile = foregroundTile as? Collectable {
+            handleCollectibleCollision(column: column, row: row, tile: collectableTile)
+        }
+
+        // Conditionally passable tiles
+        if let conditionalTile = foregroundTile as? ConditionallyPassable {
+            handleConditionallyPassableCollisions(column: column, row: row, tile: conditionalTile)
         }
     }
 
-    func handleCollectibleCollision(column: Int, row: Int, tile: Tile) {
-        guard let collectableTile = tile as? Collectable else {
-            return
-        }
-
+    func handleCollectibleCollision(column: Int, row: Int, tile: Collectable) {
         // Perform tile action
-        collectableTile.performCollectableAction(gameManager: self, player: &player)
+        tile.performCollectableAction(gameManager: self, player: &player)
 
         // Remove sprite from tile map
         tileManager.removeForegroundTileAtPosition(x: column, y: row)
+    }
+
+    func handleConditionallyPassableCollisions(column: Int, row: Int, tile: ConditionallyPassable) {
+        // Perform action
+        tile.playerDidPassConditionalTile(gameManager: self, player: &player)
+
+        // Remove tile if allowed
+        if tile.shouldRemoveConditionallyPassableTileAfterCollision() {
+            tileManager.removeForegroundTileAtPosition(x: column, y: row)
+        }
     }
 }

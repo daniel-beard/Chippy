@@ -18,6 +18,7 @@
 		24118CAF1E5A9C80004A8AED /* HelpTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CAE1E5A9C80004A8AED /* HelpTile.swift */; };
 		24118CB11E5BC9ED004A8AED /* KeyTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CB01E5BC9ED004A8AED /* KeyTile.swift */; };
 		24118CB91E5BD080004A8AED /* BaseTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CB81E5BD080004A8AED /* BaseTile.swift */; };
+		24118CBB1E5BD829004A8AED /* LockTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CBA1E5BD829004A8AED /* LockTile.swift */; };
 		244337441D31D552000E485B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244337431D31D552000E485B /* AppDelegate.swift */; };
 		244337481D31D552000E485B /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 244337471D31D552000E485B /* Actions.sks */; };
 		2443374A1D31D552000E485B /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244337491D31D552000E485B /* GameScene.swift */; };
@@ -41,6 +42,7 @@
 		24118CAE1E5A9C80004A8AED /* HelpTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpTile.swift; sourceTree = "<group>"; };
 		24118CB01E5BC9ED004A8AED /* KeyTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyTile.swift; sourceTree = "<group>"; };
 		24118CB81E5BD080004A8AED /* BaseTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTile.swift; sourceTree = "<group>"; };
+		24118CBA1E5BD829004A8AED /* LockTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockTile.swift; sourceTree = "<group>"; };
 		244337401D31D552000E485B /* Chippy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chippy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		244337431D31D552000E485B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		244337471D31D552000E485B /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				24118CAC1E5A9B85004A8AED /* BlockTile.swift */,
 				24118CAE1E5A9C80004A8AED /* HelpTile.swift */,
 				24118CB01E5BC9ED004A8AED /* KeyTile.swift */,
+				24118CBA1E5BD829004A8AED /* LockTile.swift */,
 			);
 			name = TileTypes;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				24118CAF1E5A9C80004A8AED /* HelpTile.swift in Sources */,
+				24118CBB1E5BD829004A8AED /* LockTile.swift in Sources */,
 				24118CAD1E5A9B85004A8AED /* BlockTile.swift in Sources */,
 				2443374A1D31D552000E485B /* GameScene.swift in Sources */,
 				24118CA91E5A8EB3004A8AED /* FloorTile.swift in Sources */,

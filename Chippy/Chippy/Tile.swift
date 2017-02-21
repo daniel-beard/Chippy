@@ -36,9 +36,15 @@ protocol ConditionallyPassable {
     // Called after a player moves to a conditionally passable tile
     // This method is encouraged to change state. E.g. updating key counts after passing through a lock.
     func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo)
+
+    // Indicates whether the Game Manager should remove this tile after the player moves through it
+    func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool
 }
 
 // All keys conform to this protocol
 protocol Key {}
+
+// All locks conform to this protocol
+protocol Lock {}
 
 
