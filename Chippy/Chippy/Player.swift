@@ -9,9 +9,15 @@
 import Foundation
 import GameplayKit
 
-struct Player {
+struct PlayerInfo {
 
     var sprite: SKNode
+    var chipCount: Int = 0
+
+    var redKeyCount: Int = 0
+    var greenKeyCount: Int = 0
+    var blueKeyCount: Int = 0
+    var yellowKeyCount: Int = 0
     
     init(sprite: SKNode) {
         self.sprite = sprite

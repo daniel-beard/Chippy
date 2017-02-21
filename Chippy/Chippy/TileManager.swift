@@ -26,9 +26,11 @@ class TileManager {
     //TODO: Make this non-optional after implementing all the tiles.
     func tileFactory(type: String) -> Tile? {
         switch type {
-            case "Floor": return FloorTile()
-            case "Block": return BlockTile()
-            case "Help": return HelpTile()
+            case "Floor": return FloorTile(type)
+            case "Block": return BlockTile(type)
+            case "Help": return HelpTile(type)
+            case "keyred", "keyblue", "keygreen", "keyyellow": return KeyTile(type)
+            case "Chip": return ChipTile(type)
             default: print("Could not find tile implementation for tile type: \(type)")
         }
         return nil
@@ -48,5 +50,9 @@ class TileManager {
             return nil
         }
         return tileFactory(type: tileName)
+    }
+
+    func removeForegroundTileAtPosition(x: Int, y: Int) {
+        foregroundTileSet.setTileGroup(nil, forColumn: x, row: y)
     }
 }

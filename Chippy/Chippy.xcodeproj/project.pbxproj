@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		24118C9D1E5A8C22004A8AED /* TileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118C9C1E5A8C22004A8AED /* TileManager.swift */; };
-		24118CA01E5A8CBC004A8AED /* CollectableChipTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118C9F1E5A8CBC004A8AED /* CollectableChipTile.swift */; };
+		24118CA01E5A8CBC004A8AED /* ChipTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118C9F1E5A8CBC004A8AED /* ChipTile.swift */; };
 		24118CA21E5A8CC8004A8AED /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CA11E5A8CC8004A8AED /* Tile.swift */; };
 		24118CA51E5A8CF0004A8AED /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CA41E5A8CF0004A8AED /* GameManager.swift */; };
 		24118CA71E5A8D12004A8AED /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CA61E5A8D12004A8AED /* Player.swift */; };
@@ -16,6 +16,8 @@
 		24118CAB1E5A93CC004A8AED /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CAA1E5A93CC004A8AED /* Utils.swift */; };
 		24118CAD1E5A9B85004A8AED /* BlockTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CAC1E5A9B85004A8AED /* BlockTile.swift */; };
 		24118CAF1E5A9C80004A8AED /* HelpTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CAE1E5A9C80004A8AED /* HelpTile.swift */; };
+		24118CB11E5BC9ED004A8AED /* KeyTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CB01E5BC9ED004A8AED /* KeyTile.swift */; };
+		24118CB91E5BD080004A8AED /* BaseTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CB81E5BD080004A8AED /* BaseTile.swift */; };
 		244337441D31D552000E485B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244337431D31D552000E485B /* AppDelegate.swift */; };
 		244337481D31D552000E485B /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 244337471D31D552000E485B /* Actions.sks */; };
 		2443374A1D31D552000E485B /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244337491D31D552000E485B /* GameScene.swift */; };
@@ -29,7 +31,7 @@
 
 /* Begin PBXFileReference section */
 		24118C9C1E5A8C22004A8AED /* TileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileManager.swift; sourceTree = "<group>"; };
-		24118C9F1E5A8CBC004A8AED /* CollectableChipTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectableChipTile.swift; sourceTree = "<group>"; };
+		24118C9F1E5A8CBC004A8AED /* ChipTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChipTile.swift; sourceTree = "<group>"; };
 		24118CA11E5A8CC8004A8AED /* Tile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
 		24118CA41E5A8CF0004A8AED /* GameManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		24118CA61E5A8D12004A8AED /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
@@ -37,6 +39,8 @@
 		24118CAA1E5A93CC004A8AED /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		24118CAC1E5A9B85004A8AED /* BlockTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockTile.swift; sourceTree = "<group>"; };
 		24118CAE1E5A9C80004A8AED /* HelpTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpTile.swift; sourceTree = "<group>"; };
+		24118CB01E5BC9ED004A8AED /* KeyTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyTile.swift; sourceTree = "<group>"; };
+		24118CB81E5BD080004A8AED /* BaseTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTile.swift; sourceTree = "<group>"; };
 		244337401D31D552000E485B /* Chippy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chippy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		244337431D31D552000E485B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		244337471D31D552000E485B /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
@@ -74,10 +78,12 @@
 		24118C9E1E5A8CA5004A8AED /* TileTypes */ = {
 			isa = PBXGroup;
 			children = (
-				24118C9F1E5A8CBC004A8AED /* CollectableChipTile.swift */,
+				24118CB81E5BD080004A8AED /* BaseTile.swift */,
+				24118C9F1E5A8CBC004A8AED /* ChipTile.swift */,
 				24118CA81E5A8EB3004A8AED /* FloorTile.swift */,
 				24118CAC1E5A9B85004A8AED /* BlockTile.swift */,
 				24118CAE1E5A9C80004A8AED /* HelpTile.swift */,
+				24118CB01E5BC9ED004A8AED /* KeyTile.swift */,
 			);
 			name = TileTypes;
 			sourceTree = "<group>";
@@ -209,13 +215,15 @@
 				2443374A1D31D552000E485B /* GameScene.swift in Sources */,
 				24118CA91E5A8EB3004A8AED /* FloorTile.swift in Sources */,
 				24118C9D1E5A8C22004A8AED /* TileManager.swift in Sources */,
+				24118CB11E5BC9ED004A8AED /* KeyTile.swift in Sources */,
+				24118CB91E5BD080004A8AED /* BaseTile.swift in Sources */,
 				2443374C1D31D552000E485B /* GameViewController.swift in Sources */,
 				24118CA51E5A8CF0004A8AED /* GameManager.swift in Sources */,
 				24118CAB1E5A93CC004A8AED /* Utils.swift in Sources */,
 				24118CA71E5A8D12004A8AED /* Player.swift in Sources */,
 				24118CA21E5A8CC8004A8AED /* Tile.swift in Sources */,
 				244337441D31D552000E485B /* AppDelegate.swift in Sources */,
-				24118CA01E5A8CBC004A8AED /* CollectableChipTile.swift in Sources */,
+				24118CA01E5A8CBC004A8AED /* ChipTile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

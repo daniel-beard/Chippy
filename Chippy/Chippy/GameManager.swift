@@ -10,7 +10,7 @@ import Foundation
 import GameplayKit
 
 class GameManager {
-    var player: Player
+    var player: PlayerInfo
     var tileManager: TileManager
 
     init(backgroundTiles: SKTileMapNode,
@@ -25,7 +25,7 @@ class GameManager {
             fatalError("Player sprite must be a child node of the background tiles")
         }
 
-        player = Player(sprite: playerSprite)
+        player = PlayerInfo(sprite: playerSprite)
         tileManager = TileManager(backgroundTileSet: backgroundTiles, foregroundTileSet: foregroundTiles)
     }
 
@@ -72,5 +72,36 @@ class GameManager {
 
         // Move player sprite to offset the tilemap movement
         player.sprite.position = newTileCenter
+
+        // Handle collisions & side effects
+        handleCollisions(column: nextColumn, row: nextRow)
+    }
+
+    // Handles side effects of collisions with tiles
+    // row/column must correspond to the tilemap offsets the character is currently on
+    func handleCollisions(column: Int, row: Int) {
+
+        // TODO: Handle background tile collisions here...
+
+        // Handle foreground tile collisions
+        guard let foregroundTile = tileManager.foregroundTileAtPosition(x: column, y: row) else {
+            return
+        }
+
+        if foregroundTile is Collectable {
+            handleCollectibleCollision(column: column, row: row, tile: foregroundTile)
+        }
+    }
+
+    func handleCollectibleCollision(column: Int, row: Int, tile: Tile) {
+        guard let collectableTile = tile as? Collectable else {
+            return
+        }
+
+        // Perform tile action
+        collectableTile.performCollectableAction(gameManager: self, player: &player)
+
+        // Remove sprite from tile map
+        tileManager.removeForegroundTileAtPosition(x: column, y: row)
     }
 }

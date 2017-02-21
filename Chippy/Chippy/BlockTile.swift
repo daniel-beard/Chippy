@@ -8,6 +8,6 @@
 
 import Foundation
 
-class BlockTile: Tile {
-    
+class BlockTile: BaseTile {
+
 }

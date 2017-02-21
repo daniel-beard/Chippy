@@ -8,6 +8,6 @@
 
 import Foundation
 
-class HelpTile: Tile, Passable {
-    
+class HelpTile: BaseTile, Passable {
+
 }
