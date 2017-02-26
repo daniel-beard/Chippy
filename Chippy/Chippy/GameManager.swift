@@ -12,9 +12,11 @@ import GameplayKit
 class GameManager {
     var player: PlayerInfo
     var tileManager: TileManager
+    var levelMetadata: LevelMetadata
 
     init(scene: SKScene, levelMetadata: LevelMetadata) {
 
+        self.levelMetadata = levelMetadata
         _ = LevelLoader.verifyLevel(levelNumber: levelMetadata.levelNumber)
         player = PlayerInfo(sprite: LevelLoader.loadPlayerSprite(scene: scene))
         tileManager = TileManager(

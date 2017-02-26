@@ -30,6 +30,7 @@ class TileManager {
             case "keyred", "keyblue", "keygreen", "keyyellow": return KeyTile(type)
             case "lockred", "lockblue", "lockgreen", "lockyellow": return LockTile(type)
             case "Chip": return ChipTile(type)
+            case "Board": return BoardTile(type)
             default: print("Could not find tile implementation for tile type: \(type)")
         }
         return nil
