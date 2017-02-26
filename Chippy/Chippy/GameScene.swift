@@ -17,26 +17,30 @@ enum MoveDirection {
 }
 
 class GameScene: SKScene {
-    
+
     var entities = [GKEntity]()
     var graphs = [String: GKGraph]()
-
-    var gameManager: GameManager!
-
-    var backgroundTileSet: SKTileMapNode!
-    var interactiveTileSet: SKTileMapNode!
-
-    var chippy: SKSpriteNode!
     
     private var lastUpdateTime : TimeInterval = 0
+
+    convenience init?(fileNamed filename: String) {
+        self.init(fileNamed: filename)
+    }
 
     override func sceneDidLoad() {
         super.sceneDidLoad()
 
-        backgroundTileSet = childNode(withName: "Background")! as! SKTileMapNode
-        interactiveTileSet = childNode(withName: "Interactive")! as! SKTileMapNode
-        chippy = backgroundTileSet.childNode(withName: "Chippy")! as! SKSpriteNode
-        gameManager = GameManager(backgroundTiles: backgroundTileSet, foregroundTiles: interactiveTileSet, playerSprite: chippy)
+        let chippy = LevelLoader.loadPlayerSprite(scene: scene!)
+
+        if let scene = scene {
+            let cameraNode = SKCameraNode()
+            cameraNode.position = chippy.position
+            scene.addChild(cameraNode)
+            scene.camera = cameraNode
+
+            let zoomInAction = SKAction.scale(to: 2.0, duration: 5)
+            cameraNode.run(zoomInAction)
+        }
 
         self.lastUpdateTime = 0
     }
@@ -111,6 +115,11 @@ class GameScene: SKScene {
 extension GameScene {
 
     func move(direction: MoveDirection) {
+
+        guard let gameManager = LevelRepository.sharedInstance.gameManager else {
+            return
+        }
+
         let offset: (dx: Int, dy: Int)
         switch direction {
             case .left: offset = (-1, 0)

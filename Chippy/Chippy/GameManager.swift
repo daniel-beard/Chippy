@@ -13,20 +13,14 @@ class GameManager {
     var player: PlayerInfo
     var tileManager: TileManager
 
-    init(backgroundTiles: SKTileMapNode,
-         foregroundTiles: SKTileMapNode,
-         playerSprite: SKNode) {
+    init(scene: SKScene, levelMetadata: LevelMetadata) {
 
-        if backgroundTiles.tileSize != foregroundTiles.tileSize {
-            fatalError("Tile sizes MUST be equal.")
-        }
-
-        if playerSprite.parent != backgroundTiles {
-            fatalError("Player sprite must be a child node of the background tiles")
-        }
-
-        player = PlayerInfo(sprite: playerSprite)
-        tileManager = TileManager(backgroundTileSet: backgroundTiles, foregroundTileSet: foregroundTiles)
+        _ = LevelLoader.verifyLevel(levelNumber: levelMetadata.levelNumber)
+        player = PlayerInfo(sprite: LevelLoader.loadPlayerSprite(scene: scene))
+        tileManager = TileManager(
+            backgroundTileSet: LevelLoader.loadBackgroundTiles(scene: scene),
+            foregroundTileSet: LevelLoader.loadForegroundTiles(scene: scene)
+        )
     }
 
     // Checks whether a tile is passable

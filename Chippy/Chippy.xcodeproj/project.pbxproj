@@ -19,6 +19,8 @@
 		24118CB11E5BC9ED004A8AED /* KeyTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CB01E5BC9ED004A8AED /* KeyTile.swift */; };
 		24118CB91E5BD080004A8AED /* BaseTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CB81E5BD080004A8AED /* BaseTile.swift */; };
 		24118CBB1E5BD829004A8AED /* LockTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CBA1E5BD829004A8AED /* LockTile.swift */; };
+		24118CBD1E6253B4004A8AED /* LevelRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CBC1E6253B4004A8AED /* LevelRepository.swift */; };
+		24118CC01E625CB7004A8AED /* LevelLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CBF1E625CB7004A8AED /* LevelLoader.swift */; };
 		244337441D31D552000E485B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244337431D31D552000E485B /* AppDelegate.swift */; };
 		244337481D31D552000E485B /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 244337471D31D552000E485B /* Actions.sks */; };
 		2443374A1D31D552000E485B /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244337491D31D552000E485B /* GameScene.swift */; };
@@ -43,6 +45,8 @@
 		24118CB01E5BC9ED004A8AED /* KeyTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyTile.swift; sourceTree = "<group>"; };
 		24118CB81E5BD080004A8AED /* BaseTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTile.swift; sourceTree = "<group>"; };
 		24118CBA1E5BD829004A8AED /* LockTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockTile.swift; sourceTree = "<group>"; };
+		24118CBC1E6253B4004A8AED /* LevelRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelRepository.swift; sourceTree = "<group>"; };
+		24118CBF1E625CB7004A8AED /* LevelLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelLoader.swift; sourceTree = "<group>"; };
 		244337401D31D552000E485B /* Chippy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chippy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		244337431D31D552000E485B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		244337471D31D552000E485B /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
@@ -100,6 +104,15 @@
 			name = GameManager;
 			sourceTree = "<group>";
 		};
+		24118CBE1E625CAC004A8AED /* Levels */ = {
+			isa = PBXGroup;
+			children = (
+				24118CBC1E6253B4004A8AED /* LevelRepository.swift */,
+				24118CBF1E625CB7004A8AED /* LevelLoader.swift */,
+			);
+			name = Levels;
+			sourceTree = "<group>";
+		};
 		244337371D31D552000E485B = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +132,7 @@
 		244337421D31D552000E485B /* Chippy */ = {
 			isa = PBXGroup;
 			children = (
+				24118CBE1E625CAC004A8AED /* Levels */,
 				24118CAA1E5A93CC004A8AED /* Utils.swift */,
 				24118CA31E5A8CE6004A8AED /* GameManager */,
 				24118C9B1E5A8BF3004A8AED /* Tiles */,
@@ -163,7 +177,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = DanielBeard;
 				TargetAttributes = {
 					2443373F1D31D552000E485B = {
@@ -219,11 +233,13 @@
 				2443374A1D31D552000E485B /* GameScene.swift in Sources */,
 				24118CA91E5A8EB3004A8AED /* FloorTile.swift in Sources */,
 				24118C9D1E5A8C22004A8AED /* TileManager.swift in Sources */,
+				24118CC01E625CB7004A8AED /* LevelLoader.swift in Sources */,
 				24118CB11E5BC9ED004A8AED /* KeyTile.swift in Sources */,
 				24118CB91E5BD080004A8AED /* BaseTile.swift in Sources */,
 				2443374C1D31D552000E485B /* GameViewController.swift in Sources */,
 				24118CA51E5A8CF0004A8AED /* GameManager.swift in Sources */,
 				24118CAB1E5A93CC004A8AED /* Utils.swift in Sources */,
+				24118CBD1E6253B4004A8AED /* LevelRepository.swift in Sources */,
 				24118CA71E5A8D12004A8AED /* Player.swift in Sources */,
 				24118CA21E5A8CC8004A8AED /* Tile.swift in Sources */,
 				244337441D31D552000E485B /* AppDelegate.swift in Sources */,
@@ -268,8 +284,10 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -316,8 +334,10 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
