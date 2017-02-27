@@ -30,7 +30,7 @@
 		244337511D31D552000E485B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 244337501D31D552000E485B /* Assets.xcassets */; };
 		244337541D31D552000E485B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 244337521D31D552000E485B /* LaunchScreen.storyboard */; };
 		2443375C1D31D84F000E485B /* TileSet.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2443375B1D31D84F000E485B /* TileSet.sks */; };
-		24D487481D3322CD00AC1095 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 24D487471D3322CD00AC1095 /* GameScene.sks */; };
+		24D487481D3322CD00AC1095 /* Level1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 24D487471D3322CD00AC1095 /* Level1.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,7 +59,7 @@
 		244337531D31D552000E485B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		244337551D31D552000E485B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2443375B1D31D84F000E485B /* TileSet.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = TileSet.sks; sourceTree = "<group>"; };
-		24D487471D3322CD00AC1095 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		24D487471D3322CD00AC1095 /* Level1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level1.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +116,14 @@
 			name = Levels;
 			sourceTree = "<group>";
 		};
+		24118CC31E638B2C004A8AED /* Levels */ = {
+			isa = PBXGroup;
+			children = (
+				24D487471D3322CD00AC1095 /* Level1.sks */,
+			);
+			name = Levels;
+			sourceTree = "<group>";
+		};
 		244337371D31D552000E485B = {
 			isa = PBXGroup;
 			children = (
@@ -140,7 +148,7 @@
 				24118CA31E5A8CE6004A8AED /* GameManager */,
 				24118C9B1E5A8BF3004A8AED /* Tiles */,
 				244337431D31D552000E485B /* AppDelegate.swift */,
-				24D487471D3322CD00AC1095 /* GameScene.sks */,
+				24118CC31E638B2C004A8AED /* Levels */,
 				2443375B1D31D84F000E485B /* TileSet.sks */,
 				244337471D31D552000E485B /* Actions.sks */,
 				244337491D31D552000E485B /* GameScene.swift */,
@@ -218,7 +226,7 @@
 				2443374F1D31D552000E485B /* Main.storyboard in Resources */,
 				244337511D31D552000E485B /* Assets.xcassets in Resources */,
 				244337541D31D552000E485B /* LaunchScreen.storyboard in Resources */,
-				24D487481D3322CD00AC1095 /* GameScene.sks in Resources */,
+				24D487481D3322CD00AC1095 /* Level1.sks in Resources */,
 				244337481D31D552000E485B /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

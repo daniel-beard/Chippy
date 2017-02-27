@@ -8,6 +8,21 @@
 
 import Foundation
 
-class HelpTile: BaseTile, Passable {
+class HelpTile: BaseTile, ConditionallyPassable {
 
+    func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool {
+        return true
+    }
+
+    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo) {
+        NotificationCenter.default.post(
+            name: Notification.Name("DisplayHelp"),
+            object: nil,
+            userInfo: nil
+        )
+    }
+
+    func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool {
+        return false
+    }
 }

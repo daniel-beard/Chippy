@@ -26,7 +26,7 @@ class LevelLoader {
             helpMessage: "This is a test help message",
             chipsRequired: 11,
             timerSeconds: 100,
-            sceneName: "GameScene"
+            sceneName: "Level1"
         ),
     ]
 

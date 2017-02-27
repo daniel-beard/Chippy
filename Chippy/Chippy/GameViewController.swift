@@ -23,6 +23,10 @@ class GameViewController: UIViewController {
 //        self.perform(#selector(test), with: nil, afterDelay: 5.0)
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
 //    func test() {
 //        let notificationName = Notification.Name("LoadLevel")
 //        NotificationCenter.default.post(name: notificationName, object: nil, userInfo: ["level": 1])

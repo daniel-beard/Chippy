@@ -20,15 +20,22 @@ class GameScene: SKScene {
 
     var entities = [GKEntity]()
     var graphs = [String: GKGraph]()
+
+    // Indicates that we are running an animation just before pausing.
+    // Means that we should discard keypresses.
+    var isPausing = false
     
     private var lastUpdateTime : TimeInterval = 0
 
-    convenience init?(fileNamed filename: String) {
-        self.init(fileNamed: filename)
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func sceneDidLoad() {
         super.sceneDidLoad()
+
+        tearDownNotifications()
+        setupNotifications()
 
         let chippy = LevelLoader.loadPlayerSprite(scene: scene!)
 
@@ -40,56 +47,13 @@ class GameScene: SKScene {
 
             let zoomInAction = SKAction.scale(to: 2.0, duration: 5)
             cameraNode.run(zoomInAction)
+
+            // debugging
+            view?.showsNodeCount = true
         }
 
         self.lastUpdateTime = 0
     }
-    
-    
-//    func touchDown(atPoint pos : CGPoint) {
-//        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-//            n.position = pos
-//            n.strokeColor = SKColor.green()
-//            self.addChild(n)
-//        }
-//    }
-//    
-//    func touchMoved(toPoint pos : CGPoint) {
-//        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-//            n.position = pos
-//            n.strokeColor = SKColor.blue()
-//            self.addChild(n)
-//        }
-//    }
-//    
-//    func touchUp(atPoint pos : CGPoint) {
-//        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-//            n.position = pos
-//            n.strokeColor = SKColor.red()
-//            self.addChild(n)
-//        }
-//    }
-//    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        if let label = self.label {
-//            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-//        }
-//        
-//        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
-//    }
-//    
-//    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-//    }
-//    
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
-//    }
-//    
-//    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-//    }
-
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
@@ -120,6 +84,17 @@ extension GameScene {
             return
         }
 
+        // Drop all events if we are in the process of pausing the game with an animation
+        if self.isPausing {
+            return
+        }
+
+        // unpause the scene (for stuff like the help message)
+        if let paused = scene?.view?.isPaused, paused == true {
+            removeOverlays()
+            scene?.view?.isPaused = false
+        }
+
         let offset: (dx: Int, dy: Int)
         switch direction {
             case .left: offset = (-1, 0)
@@ -131,6 +106,60 @@ extension GameScene {
         if gameManager.canPlayerMoveByRelativeOffset(dx: offset.dx, dy: offset.dy) {
             gameManager.movePlayerByRelativeOffset(dx: offset.dx, dy: offset.dy)
         }
+    }
+}
+
+//MARK: Notifications
+extension GameScene {
+
+    func tearDownNotifications() {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    func setupNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(GameScene.displayHelp),
+            name: Notification.Name("DisplayHelp"),
+            object: nil
+        )
+    }
+
+    func removeOverlays() {
+        guard let scene = scene else { return }
+
+        if let helpOverlay = scene.childNode(withName: "help_overlay") {
+            helpOverlay.removeFromParent()
+        }
+    }
+
+    @objc func displayHelp(notification: Notification) {
+
+        guard let scene = scene else {
+            return
+        }
+
+        self.isPausing = true
+
+        let chippy = LevelLoader.loadPlayerSprite(scene: scene)
+        let background = LevelLoader.loadBackgroundTiles(scene: scene)
+
+        let width:CGFloat = 500
+        let helpOverlay = SKShapeNode(rect: CGRect(x: 0, y: 0, width: width, height: 100))
+        helpOverlay.position = CGPoint(x: chippy.position.x - (width / 2.0), y: chippy.position.y)
+        helpOverlay.fillColor = .red
+
+        let worldPosition = self.convert(helpOverlay.position, from: background)
+        helpOverlay.position = worldPosition
+        helpOverlay.zPosition = 10
+        helpOverlay.name = "help_overlay"
+        scene.addChild(helpOverlay)
+
+        afterDelay(0.2) { 
+            self.view?.isPaused = true
+            self.isPausing = false
+        }
+
     }
 }
 

@@ -115,12 +115,12 @@ class GameManager {
     }
 
     func handleConditionallyPassableCollisions(column: Int, row: Int, tile: ConditionallyPassable) {
-        // Perform action
-        tile.playerDidPassConditionalTile(gameManager: self, player: &player)
-
         // Remove tile if allowed
         if tile.shouldRemoveConditionallyPassableTileAfterCollision() {
             tileManager.removeForegroundTileAtPosition(x: column, y: row)
         }
+
+        // Perform action
+        tile.playerDidPassConditionalTile(gameManager: self, player: &self.player)
     }
 }
