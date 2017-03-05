@@ -28,6 +28,13 @@ class LevelLoader {
             timerSeconds: 100,
             sceneName: "Level1"
         ),
+        LevelMetadata(
+            levelNumber: 2,
+            helpMessage: "Another test help message",
+            chipsRequired: 4,
+            timerSeconds: 100,
+            sceneName: "Level2"
+        )
     ]
 
     static func levelMetadata(forLevelNumber levelNumber: Int) -> LevelMetadata {

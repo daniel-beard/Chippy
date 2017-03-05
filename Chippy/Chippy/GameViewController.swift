@@ -19,18 +19,11 @@ class GameViewController: UIViewController {
         super.init(coder: aDecoder)
 
         setupNotifications()
-
-//        self.perform(#selector(test), with: nil, afterDelay: 5.0)
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-
-//    func test() {
-//        let notificationName = Notification.Name("LoadLevel")
-//        NotificationCenter.default.post(name: notificationName, object: nil, userInfo: ["level": 1])
-//    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,7 +114,10 @@ fileprivate extension GameViewController {
 
     func setupNotifications() {
         let notificationName = Notification.Name("LoadLevel")
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.loadLevelFromNotification), name: notificationName, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(GameViewController.loadLevelFromNotification),
+                                               name: notificationName,
+                                               object: nil)
 
     }
 }

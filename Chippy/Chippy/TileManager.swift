@@ -24,13 +24,14 @@ class TileManager {
     // Factory method to create concrete tiles from their tileset names.
     func tileFactory(type: String) -> Tile? {
         switch type {
-            case "Floor": return FloorTile(type)
-            case "Block": return BlockTile(type)
-            case "Help": return HelpTile(type)
+            case "Floor":   return FloorTile(type)
+            case "Block":   return BlockTile(type)
+            case "Help":    return HelpTile(type)
+            case "Chip":    return ChipTile(type)
+            case "Board":   return BoardTile(type)
+            case "Home":    return HomeTile(type)
             case "keyred", "keyblue", "keygreen", "keyyellow": return KeyTile(type)
             case "lockred", "lockblue", "lockgreen", "lockyellow": return LockTile(type)
-            case "Chip": return ChipTile(type)
-            case "Board": return BoardTile(type)
             default: print("Could not find tile implementation for tile type: \(type)")
         }
         return nil

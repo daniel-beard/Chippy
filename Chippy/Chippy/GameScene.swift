@@ -16,6 +16,12 @@ enum MoveDirection {
     case down
 }
 
+enum GameState {
+    case inProgress
+    case failed
+    case completed
+}
+
 class GameScene: SKScene {
 
     var entities = [GKEntity]()
@@ -24,6 +30,9 @@ class GameScene: SKScene {
     // Indicates that we are running an animation just before pausing.
     // Means that we should discard keypresses.
     var isPausing = false
+
+    // Game State: Used to determine actions after pausing or showing messages
+    var gameState: GameState = .inProgress
     
     private var lastUpdateTime : TimeInterval = 0
 
@@ -53,6 +62,7 @@ class GameScene: SKScene {
         }
 
         self.lastUpdateTime = 0
+        self.gameState = .inProgress
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -93,6 +103,16 @@ extension GameScene {
         if let paused = scene?.view?.isPaused, paused == true {
             removeOverlays()
             scene?.view?.isPaused = false
+
+            // Check game state
+            // Load new level.
+            if case .completed = gameState {
+                NotificationCenter.default.post(
+                    name: Notification.Name("LoadLevel"),
+                    object: nil,
+                    userInfo: ["level": gameManager.nextLevelNumber()]
+                )
+            }
         }
 
         let offset: (dx: Int, dy: Int)
@@ -123,6 +143,13 @@ extension GameScene {
             name: Notification.Name("DisplayHelp"),
             object: nil
         )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(GameScene.displayEndGameLabel),
+            name: Notification.Name("DisplayEndGameLabel"),
+            object: nil
+        )
     }
 
     func removeOverlays() {
@@ -130,6 +157,31 @@ extension GameScene {
 
         if let helpOverlay = scene.childNode(withName: "help_overlay") {
             helpOverlay.removeFromParent()
+        }
+    }
+
+    @objc func displayEndGameLabel(notification: Notification) {
+        guard let scene = scene else {
+            return
+        }
+
+        self.gameState = .completed
+        self.isPausing = true
+        let chippy = LevelLoader.loadPlayerSprite(scene: scene)
+        let background = LevelLoader.loadBackgroundTiles(scene: scene)
+        let message = "Congradulations, a new record!\nPress any key to continue."
+        let endGameOverlay = informativeTextLabel(origin: chippy.position,
+                                                  message: message)
+
+        // Convert to world coords.
+        let worldPosition = scene.convert(endGameOverlay.position, from: background)
+        endGameOverlay.position = worldPosition
+        endGameOverlay.name = "help_overlay"
+        scene.addChild(endGameOverlay)
+
+        afterDelay(0.2) {
+            self.view?.isPaused = true
+            self.isPausing = false
         }
     }
 

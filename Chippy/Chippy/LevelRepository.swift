@@ -21,5 +21,4 @@ class LevelRepository {
     func setGameManager(_ gameManager: GameManager) {
         self.gameManager = gameManager
     }
-
 }

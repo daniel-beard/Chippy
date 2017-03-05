@@ -124,3 +124,10 @@ class GameManager {
         tile.playerDidPassConditionalTile(gameManager: self, player: &self.player)
     }
 }
+
+// Level Information
+extension GameManager {
+    func nextLevelNumber() -> Int {
+        return self.levelMetadata.levelNumber + 1
+    }
+}
