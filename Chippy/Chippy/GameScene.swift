@@ -172,7 +172,7 @@ extension GameScene {
         self.isPausing = true
         let chippy = LevelLoader.loadPlayerSprite(scene: scene)
         let background = LevelLoader.loadBackgroundTiles(scene: scene)
-        let message = "Congradulations, a new record!\nPress any key to continue."
+        let message = "Congratulations, a new record!\nPress any key to continue."
         let endGameOverlay = informativeTextLabel(origin: chippy.position,
                                                   message: message)
 
