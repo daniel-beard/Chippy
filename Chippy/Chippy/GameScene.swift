@@ -67,6 +67,14 @@ class GameScene: SKScene {
         self.lastUpdateTime = 0
         self.gameState = .inProgress
     }
+
+    override func didMove(to view: SKView) {
+        // Setup gesture recognizers for swiping on a device.
+        addSwipeGesture(to: self, direction: .up, selector: #selector(GameScene.moveUp))
+        addSwipeGesture(to: self, direction: .down, selector: #selector(GameScene.moveDown))
+        addSwipeGesture(to: self, direction: .left, selector: #selector(GameScene.moveLeft))
+        addSwipeGesture(to: self, direction: .right, selector: #selector(GameScene.moveRight))
+    }
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
@@ -90,6 +98,11 @@ class GameScene: SKScene {
 
 //MARK: Movement extension
 extension GameScene {
+
+    func moveUp()       { move(direction: .up) }
+    func moveDown()     { move(direction: .down) }
+    func moveLeft()     { move(direction: .left) }
+    func moveRight()    { move(direction: .right) }
 
     func move(direction: MoveDirection) {
 

@@ -51,3 +51,9 @@ func informativeTextLabel(origin: CGPoint, message: String) -> SKNode {
 
     return helpOverlay
 }
+
+func addSwipeGesture(to scene: SKScene, direction: UISwipeGestureRecognizerDirection, selector: Selector) {
+    let swipeGesture = UISwipeGestureRecognizer(target: scene, action: selector)
+    swipeGesture.direction = direction
+    scene.view?.addGestureRecognizer(swipeGesture)
+}
