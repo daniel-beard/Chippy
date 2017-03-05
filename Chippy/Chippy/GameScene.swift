@@ -135,27 +135,22 @@ extension GameScene {
 
     @objc func displayHelp(notification: Notification) {
 
-        guard let scene = scene else {
+        guard let scene = scene, let message = notification.userInfo?["message"] as? String else {
             return
         }
 
         self.isPausing = true
-
         let chippy = LevelLoader.loadPlayerSprite(scene: scene)
         let background = LevelLoader.loadBackgroundTiles(scene: scene)
+        let helpOverlay = informativeTextLabel(origin: chippy.position, message: message)
 
-        let width:CGFloat = 500
-        let helpOverlay = SKShapeNode(rect: CGRect(x: 0, y: 0, width: width, height: 100))
-        helpOverlay.position = CGPoint(x: chippy.position.x - (width / 2.0), y: chippy.position.y)
-        helpOverlay.fillColor = .red
-
-        let worldPosition = self.convert(helpOverlay.position, from: background)
+        // Convert to world coords.
+        let worldPosition = scene.convert(helpOverlay.position, from: background)
         helpOverlay.position = worldPosition
-        helpOverlay.zPosition = 10
         helpOverlay.name = "help_overlay"
         scene.addChild(helpOverlay)
 
-        afterDelay(0.2) { 
+        afterDelay(0.2) {
             self.view?.isPaused = true
             self.isPausing = false
         }

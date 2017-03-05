@@ -18,7 +18,9 @@ class HelpTile: BaseTile, ConditionallyPassable {
         NotificationCenter.default.post(
             name: Notification.Name("DisplayHelp"),
             object: nil,
-            userInfo: nil
+            userInfo: [
+                "message": gameManager.levelMetadata.helpMessage
+            ]
         )
     }
 
