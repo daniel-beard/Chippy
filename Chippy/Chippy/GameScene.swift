@@ -26,6 +26,7 @@ class GameScene: SKScene {
 
     var entities = [GKEntity]()
     var graphs = [String: GKGraph]()
+    var cameraScale: CGFloat = 2.0
 
     // Indicates that we are running an animation just before pausing.
     // Means that we should discard keypresses.
@@ -54,12 +55,14 @@ class GameScene: SKScene {
             scene.addChild(cameraNode)
             scene.camera = cameraNode
 
-            let zoomInAction = SKAction.scale(to: 2.0, duration: 5)
+            let zoomInAction = SKAction.scale(to: cameraScale, duration: 0.0)
             cameraNode.run(zoomInAction)
 
             // debugging
             view?.showsNodeCount = true
         }
+
+        drawGameUI()
 
         self.lastUpdateTime = 0
         self.gameState = .inProgress
@@ -206,7 +209,57 @@ extension GameScene {
             self.view?.isPaused = true
             self.isPausing = false
         }
+    }
 
+    // Responsible for drawing the overlay for the viewport
+    // Other dynamic UI elements are drawn elsewhere.
+    func drawGameUI() {
+
+        guard let scene = scene, let camera = self.camera else {
+            return
+        }
+
+        let background = LevelLoader.loadBackgroundTiles(scene: scene)
+        let tileSize = background.tileSize.width // doesn't matter which value, the tiles are square.
+        let borderRectSize = tileSize * 21
+        var borderShapes = [SKShapeNode]()
+
+        // 0,0 is where chippy is positioned relative to the camera.
+        // So to draw the border of the viewport we need to calculate relative to that
+        // We should be able to see chippy's tile + 4 tiles on each side.
+        // Math!
+
+        let distanceToBorder = (background.tileSize.width * 4.5) / cameraScale
+
+        // Top of the level rect
+        let topRect = CGRect(x: 0 - (tileSize*10), y: distanceToBorder,
+                             width: borderRectSize, height: borderRectSize)
+        let topSquare = SKShapeNode(rect: topRect)
+        borderShapes.append(topSquare)
+
+        // Bottom of the level rect
+        let bottomRect = CGRect(x:0 - (tileSize*10), y: 0 - (distanceToBorder + borderRectSize),
+                                width: borderRectSize, height: borderRectSize)
+        let bottomSquare = SKShapeNode(rect: bottomRect)
+        borderShapes.append(bottomSquare)
+
+        // Left of the level rect
+        let leftRect = CGRect(x: 0 - (distanceToBorder + borderRectSize), y: 0 - (tileSize * 10),
+                              width: borderRectSize, height: borderRectSize)
+        let leftSquare = SKShapeNode(rect: leftRect)
+        borderShapes.append(leftSquare)
+
+        // Right of the level rect
+        let rightRect = CGRect(x: distanceToBorder, y: 0 - (tileSize * 10),
+                               width: borderRectSize, height: borderRectSize)
+        let rightSquare = SKShapeNode(rect: rightRect)
+        borderShapes.append(rightSquare)
+
+        borderShapes.forEach { (shape) in
+            shape.fillColor = .darkGray
+            shape.strokeColor = .clear
+            camera.addChild(shape)
+        }
     }
 }
 
