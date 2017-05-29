@@ -60,18 +60,19 @@ class GameManager {
     // E.g. moving the tilemaps, updating collectibles, changing the game state etc.
     func movePlayerByRelativeOffset(dx: Int, dy: Int, moveDirection: MoveDirection) {
 
+        // Positions
         let currentPos = tileManager.absolutePointToPosition(player.absolutePoint())
         let nextPos = currentPos + Position(x: dx, y: dy)
 
-        let xOffset = CGFloat(-dx) * tileManager.tileSize().width
-        let yOffset = CGFloat(-dy) * tileManager.tileSize().height
+        // Absolute offset
+        let absoluteOffset = CGPoint(x: CGFloat(-dx) * tileManager.tileSize().width, y: CGFloat(-dy) * tileManager.tileSize().height)
 
         // Center of new tile position
-        let newTileCenter = tileManager.backgroundTileSet.centerOfTile(atColumn: nextPos.x, row: nextPos.y)
+        let newTileCenter = tileManager.centerOfTile(at: nextPos)
 
         // Move tilesets
         tileManager.tileSets.forEach { (tileSet) in
-            tileSet.position = CGPoint(x: tileSet.position.x + xOffset, y: tileSet.position.y + yOffset)
+            tileSet.position = tileSet.position + absoluteOffset
         }
 
         // Move player sprite to offset the tilemap movement

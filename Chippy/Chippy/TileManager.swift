@@ -45,6 +45,10 @@ class TileManager {
         return backgroundTileSet.centerOfTile(atColumn: position.x, row: position.y)
     }
 
+    func centerOfTile(at position: Position) -> CGPoint {
+        return backgroundTileSet.centerOfTile(atColumn: position.x, row: position.y)
+    }
+
     //MARK: Tiles from Positions
 
     func backgroundTile(at pos: Position) -> Tile? {
