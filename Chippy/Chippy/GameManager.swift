@@ -10,6 +10,7 @@ import Foundation
 import GameplayKit
 
 class GameManager {
+
     var player: PlayerInfo
     var tileManager: TileManager
     var levelMetadata: LevelMetadata
@@ -31,27 +32,26 @@ class GameManager {
 
         var result = false
 
-        let nextAbsolutePositionX = player.sprite.position.x + (tileManager.backgroundTileSet.tileSize.width * CGFloat(dx))
-        let nextAbsolutePositionY = player.sprite.position.y + (tileManager.backgroundTileSet.tileSize.height * CGFloat(dy))
-        let nextAbsolutePoint = CGPoint(x: nextAbsolutePositionX, y: nextAbsolutePositionY)
+        let currentPos = tileManager.absolutePointToPosition(player.absolutePoint())
+        let nextPos = currentPos + Position(x: dx, y: dy)
 
-        let nextColumn = tileManager.backgroundTileSet.tileColumnIndex(fromPosition: nextAbsolutePoint)
-        let nextRow = tileManager.backgroundTileSet.tileRowIndex(fromPosition: nextAbsolutePoint)
-
-        guard let nextTile = tileManager.backgroundTileAtPosition(x: nextColumn, y: nextRow) else {
+        guard let nextTile = tileManager.backgroundTile(at: nextPos) else {
             return false
         }
 
         // Debugging
-        print("Next row: \(nextRow) column: \(nextColumn)")
+        print("Next position: \(nextPos)")
 
         // Handle passable background tiles.
         result = result || (nextTile is Passable)
 
         // If the foreground tile type is conditionally passable, we can only pass if we satisfy the pre-conditions
-        if let conditionalTile = tileManager.interactiveTileAtPosition(x: nextColumn, y: nextRow) as? ConditionallyPassable {
+        if let conditionalTile = tileManager.interactiveTile(at: nextPos) as? ConditionallyPassable {
             result = result && conditionalTile.canPlayerConditionallyPassTile(gameManager: self, player: player)
         }
+
+        // Handle moveable tiles
+        //TODO: Implement me.
 
         return result
     }
@@ -60,18 +60,14 @@ class GameManager {
     // E.g. moving the tilemaps, updating collectibles, changing the game state etc.
     func movePlayerByRelativeOffset(dx: Int, dy: Int, moveDirection: MoveDirection) {
 
-        let xOffset = CGFloat(-dx) * tileManager.backgroundTileSet.tileSize.width
-        let yOffset = CGFloat(-dy) * tileManager.backgroundTileSet.tileSize.height
+        let currentPos = tileManager.absolutePointToPosition(player.absolutePoint())
+        let nextPos = currentPos + Position(x: dx, y: dy)
 
-        let nextAbsolutePositionX = player.sprite.position.x + (tileManager.backgroundTileSet.tileSize.width * CGFloat(dx))
-        let nextAbsolutePositionY = player.sprite.position.y + (tileManager.backgroundTileSet.tileSize.height * CGFloat(dy))
-        let nextAbsolutePoint = CGPoint(x: nextAbsolutePositionX, y: nextAbsolutePositionY)
-
-        let nextColumn = tileManager.backgroundTileSet.tileColumnIndex(fromPosition: nextAbsolutePoint)
-        let nextRow = tileManager.backgroundTileSet.tileRowIndex(fromPosition: nextAbsolutePoint)
+        let xOffset = CGFloat(-dx) * tileManager.tileSize().width
+        let yOffset = CGFloat(-dy) * tileManager.tileSize().height
 
         // Center of new tile position
-        let newTileCenter = tileManager.backgroundTileSet.centerOfTile(atColumn: nextColumn, row: nextRow)
+        let newTileCenter = tileManager.backgroundTileSet.centerOfTile(atColumn: nextPos.x, row: nextPos.y)
 
         // Move tilesets
         tileManager.tileSets.forEach { (tileSet) in
@@ -82,43 +78,43 @@ class GameManager {
         player.sprite.position = newTileCenter
 
         // Handle collisions & side effects
-        handleCollisions(column: nextColumn, row: nextRow)
+        handleCollisions(position: nextPos)
     }
 
     // Handles side effects of collisions with tiles
     // row/column must correspond to the tilemap offsets the character is currently on
-    func handleCollisions(column: Int, row: Int) {
+    func handleCollisions(position: Position) {
 
         // TODO: Handle background tile collisions here...
 
         // Handle foreground tile collisions
-        guard let foregroundTile = tileManager.interactiveTileAtPosition(x: column, y: row) else {
+        guard let interactiveTile = tileManager.interactiveTile(at: position) else {
             return
         }
 
         // Collectables
-        if let collectableTile = foregroundTile as? Collectable {
-            handleCollectibleCollision(column: column, row: row, tile: collectableTile)
+        if let collectableTile = interactiveTile as? Collectable {
+            handleCollectibleCollision(position: position, tile: collectableTile)
         }
 
         // Conditionally passable tiles
-        if let conditionalTile = foregroundTile as? ConditionallyPassable {
-            handleConditionallyPassableCollisions(column: column, row: row, tile: conditionalTile)
+        if let conditionalTile = interactiveTile as? ConditionallyPassable {
+            handleConditionallyPassableCollisions(position: position, tile: conditionalTile)
         }
     }
 
-    func handleCollectibleCollision(column: Int, row: Int, tile: Collectable) {
+    func handleCollectibleCollision(position: Position, tile: Collectable) {
         // Perform tile action
         tile.performCollectableAction(gameManager: self, player: &player)
 
         // Remove sprite from tile map
-        tileManager.removeForegroundTileAtPosition(x: column, y: row)
+        tileManager.removeForegroundTile(at: position)
     }
 
-    func handleConditionallyPassableCollisions(column: Int, row: Int, tile: ConditionallyPassable) {
+    func handleConditionallyPassableCollisions(position: Position, tile: ConditionallyPassable) {
         // Remove tile if allowed
         if tile.shouldRemoveConditionallyPassableTileAfterCollision() {
-            tileManager.removeForegroundTileAtPosition(x: column, y: row)
+            tileManager.removeForegroundTile(at: position)
         }
 
         // Perform action

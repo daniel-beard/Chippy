@@ -22,4 +22,9 @@ struct PlayerInfo {
     init(sprite: SKNode) {
         self.sprite = sprite
     }
+
+    func absolutePoint() -> CGPoint {
+        return sprite.position
+    }
 }
+

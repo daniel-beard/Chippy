@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 protocol Tile {
     var name: String { get set }
@@ -45,7 +46,10 @@ protocol ConditionallyMoveable {
 
     // Called to check if a player moving in a certain direction can move this tile.
     // Usually depends on what is in "front" of the conditionally moveable tile relative to the player.
-    func canMoveConditionallyMoveableTile(gameManager: GameManager, player: inout PlayerInfo, direction: MoveDirection) -> Bool
+    func canMoveConditionallyMoveableTile(gameManager: GameManager,
+                                          player: inout PlayerInfo,
+                                          currentPosition: CGPoint,
+                                          nextPosition: CGPoint) -> Bool
 
     // Called to actually move the conditional tile.
     // Should handle tile updates here.

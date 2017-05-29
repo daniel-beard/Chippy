@@ -20,3 +20,19 @@ enum GameState {
     case failed
     case completed
 }
+
+// Represents a tile index position. E.g. 16,16 
+// Do not use for absolute sprite positions
+struct Position: CustomStringConvertible {
+    var x: Int
+    var y: Int
+
+    static func +(lhs: Position, rhs: Position) -> Position {
+        return Position(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
+    }
+
+    var description: String {
+        return "(x: \(x) y: \(y))"
+    }
+}
+

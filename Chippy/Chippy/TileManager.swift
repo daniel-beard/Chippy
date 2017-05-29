@@ -35,21 +35,41 @@ class TileManager {
         loadAllTiles()
     }
 
-    func backgroundTileAtPosition(x: Int, y: Int) -> Tile? {
-        return backgroundTiles[x, y]
+    //MARK: Positions
+
+    func absolutePointToPosition(_ absolutePoint: CGPoint) -> Position {
+        return Position(x: backgroundTileSet.tileColumnIndex(fromPosition: absolutePoint), y: backgroundTileSet.tileRowIndex(fromPosition: absolutePoint))
     }
 
-    func interactiveTileAtPosition(x: Int, y: Int) -> Tile? {
-        return interactiveTiles[x, y]
+    func positionToAbsolutePoint(_ position: Position) -> CGPoint {
+        return backgroundTileSet.centerOfTile(atColumn: position.x, row: position.y)
     }
 
-    func moveableTileAtPosition(x: Int, y: Int) -> Tile? {
-        return moveableTiles[x, y]
+    //MARK: Tiles from Positions
+
+    func backgroundTile(at pos: Position) -> Tile? {
+        return backgroundTiles[pos.x, pos.y]
     }
 
-    func removeForegroundTileAtPosition(x: Int, y: Int) {
-        interactiveTileSet.setTileGroup(nil, forColumn: x, row: y)
-        interactiveTiles[x, y] = nil
+    func interactiveTile(at pos: Position) -> Tile? {
+        return interactiveTiles[pos.x, pos.y]
+    }
+
+    func moveableTile(at pos: Position) -> Tile? {
+        return moveableTiles[pos.x, pos.y]
+    }
+
+    //MARK: Tile Sizing
+
+    func tileSize() -> CGSize {
+        return backgroundTileSet.tileSize
+    }
+
+    //MARK: Tile Operations
+
+    func removeForegroundTile(at position: Position) {
+        interactiveTileSet.setTileGroup(nil, forColumn: position.x, row: position.y)
+        interactiveTiles[position.x, position.y] = nil
     }
 }
 
