@@ -19,9 +19,9 @@ class TileManager {
     var tileSets: [SKTileMapNode]
 
     // Prebuilt Tile 2dArrays
-    private var backgroundTiles: Array2D<Tile>!
-    private var interactiveTiles: Array2D<Tile>!
-    private var moveableTiles: Array2D<Tile>!
+    fileprivate var backgroundTiles: Array2D<Tile>!
+    fileprivate var interactiveTiles: Array2D<Tile>!
+    fileprivate var moveableTiles: Array2D<Tile>!
 
     init(backgroundTileSet: SKTileMapNode,
          interactiveTileSet: SKTileMapNode,
@@ -34,6 +34,26 @@ class TileManager {
 
         loadAllTiles()
     }
+
+    func backgroundTileAtPosition(x: Int, y: Int) -> Tile? {
+        return backgroundTiles[x, y]
+    }
+
+    func interactiveTileAtPosition(x: Int, y: Int) -> Tile? {
+        return interactiveTiles[x, y]
+    }
+
+    func moveableTileAtPosition(x: Int, y: Int) -> Tile? {
+        return moveableTiles[x, y]
+    }
+
+    func removeForegroundTileAtPosition(x: Int, y: Int) {
+        interactiveTileSet.setTileGroup(nil, forColumn: x, row: y)
+        interactiveTiles[x, y] = nil
+    }
+}
+
+fileprivate extension TileManager {
 
     func loadAllTiles() {
 
@@ -71,34 +91,17 @@ class TileManager {
     // Factory method to create concrete tiles from their tileset names.
     func tileFactory(type: String) -> Tile? {
         switch type {
-            case "Floor":           return FloorTile(type)
-            case "Block":           return BlockTile(type)
-            case "Help":            return HelpTile(type)
-            case "Chip":            return ChipTile(type)
-            case "Board":           return BoardTile(type)
-            case "Home":            return HomeTile(type)
-            case "MovableBlock":    return MovableBlock(type)
-            case "keyred", "keyblue", "keygreen", "keyyellow": return KeyTile(type)
-            case "lockred", "lockblue", "lockgreen", "lockyellow": return LockTile(type)
-            default: print("Could not find tile implementation for tile type: \(type)")
+        case "Floor":           return FloorTile(type)
+        case "Block":           return BlockTile(type)
+        case "Help":            return HelpTile(type)
+        case "Chip":            return ChipTile(type)
+        case "Board":           return BoardTile(type)
+        case "Home":            return HomeTile(type)
+        case "MovableBlock":    return MovableBlock(type)
+        case "keyred", "keyblue", "keygreen", "keyyellow": return KeyTile(type)
+        case "lockred", "lockblue", "lockgreen", "lockyellow": return LockTile(type)
+        default: print("Could not find tile implementation for tile type: \(type)")
         }
         return nil
-    }
-
-    func backgroundTileAtPosition(x: Int, y: Int) -> Tile? {
-        return backgroundTiles[x, y]
-    }
-
-    func interactiveTileAtPosition(x: Int, y: Int) -> Tile? {
-        return interactiveTiles[x, y]
-    }
-
-    func moveableTileAtPosition(x: Int, y: Int) -> Tile? {
-        return moveableTiles[x, y]
-    }
-
-    func removeForegroundTileAtPosition(x: Int, y: Int) {
-        interactiveTileSet.setTileGroup(nil, forColumn: x, row: y)
-        interactiveTiles[x, y] = nil
     }
 }
