@@ -42,6 +42,7 @@ protocol ConditionallyPassable {
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool
 }
 
+//TODO: This needs rethinking.
 protocol ConditionallyMoveable {
 
     // Called to check if a player moving in a certain direction can move this tile.
@@ -61,5 +62,8 @@ protocol Key {}
 
 // All locks conform to this protocol
 protocol Lock {}
+
+// All boots conform to this protocol
+protocol Boot {}
 
 
