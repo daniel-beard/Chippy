@@ -53,6 +53,10 @@ class LevelLoader {
         return scene.childNode(withName: "Interactive") as! SKTileMapNode
     }
 
+    static func loadMoveableTiles(scene: SKScene) -> SKTileMapNode {
+        return scene.childNode(withName: "Top") as! SKTileMapNode
+    }
+
     static func loadPlayerSprite(scene: SKScene) -> SKSpriteNode {
         return loadBackgroundTiles(scene: scene).childNode(withName: "Chippy") as! SKSpriteNode
     }
@@ -72,21 +76,31 @@ class LevelLoader {
             fatalError("Could not find a background tile set.")
         }
 
-        guard let foregroundTiles = scene.childNode(withName: "Interactive") as? SKTileMapNode else {
-            fatalError("Could not find foreground tile set.")
+        guard let interactiveTiles = scene.childNode(withName: "Interactive") as? SKTileMapNode else {
+            fatalError("Could not find interactive tile set.")
+        }
+
+        guard let moveableTiles = scene.childNode(withName: "Top") as? SKTileMapNode else {
+            fatalError("Could not find moveable tile set.")
         }
 
         guard let playerSprite = backgroundTiles.childNode(withName: "Chippy") as? SKSpriteNode else {
             fatalError("Could not find Chippy sprite!")
         }
 
-        if backgroundTiles.tileSize != foregroundTiles.tileSize {
+        if backgroundTiles.tileSize != interactiveTiles.tileSize || backgroundTiles.tileSize != moveableTiles.tileSize {
             fatalError("Tile sizes MUST be equal.")
         }
 
         if playerSprite.parent != backgroundTiles {
             fatalError("Player sprite must be a child node of the background tiles")
         }
+
+        // Verify that the tileMaps are all the same size
+        if backgroundTiles.mapSize != interactiveTiles.mapSize || backgroundTiles.mapSize != moveableTiles.mapSize {
+            fatalError("Maps must all be the same size!")
+        }
+
 
         return true
     }

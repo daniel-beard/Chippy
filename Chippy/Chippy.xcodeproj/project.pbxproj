@@ -24,6 +24,9 @@
 		24118CC21E638A1D004A8AED /* BoardTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CC11E638A1D004A8AED /* BoardTile.swift */; };
 		24118CC71E6CB334004A8AED /* HomeTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CC61E6CB334004A8AED /* HomeTile.swift */; };
 		24118CC91E6CB659004A8AED /* Level2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 24118CC81E6CB659004A8AED /* Level2.sks */; };
+		24118CCB1E6CCB56004A8AED /* MonaShark.otf in Resources */ = {isa = PBXBuildFile; fileRef = 24118CCA1E6CCB56004A8AED /* MonaShark.otf */; };
+		24118CCD1E6CCFA2004A8AED /* MovableBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CCC1E6CCFA2004A8AED /* MovableBlock.swift */; };
+		24118CCF1E6CD1CF004A8AED /* CommonDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CCE1E6CD1CF004A8AED /* CommonDefinitions.swift */; };
 		244337441D31D552000E485B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244337431D31D552000E485B /* AppDelegate.swift */; };
 		244337481D31D552000E485B /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 244337471D31D552000E485B /* Actions.sks */; };
 		2443374A1D31D552000E485B /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244337491D31D552000E485B /* GameScene.swift */; };
@@ -33,6 +36,7 @@
 		244337541D31D552000E485B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 244337521D31D552000E485B /* LaunchScreen.storyboard */; };
 		2443375C1D31D84F000E485B /* TileSet.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2443375B1D31D84F000E485B /* TileSet.sks */; };
 		24D487481D3322CD00AC1095 /* Level1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 24D487471D3322CD00AC1095 /* Level1.sks */; };
+		24FA9F2B1EDCC66F0051F3E7 /* Tile2DArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FA9F2A1EDCC66F0051F3E7 /* Tile2DArray.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +57,9 @@
 		24118CC11E638A1D004A8AED /* BoardTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardTile.swift; sourceTree = "<group>"; };
 		24118CC61E6CB334004A8AED /* HomeTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTile.swift; sourceTree = "<group>"; };
 		24118CC81E6CB659004A8AED /* Level2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level2.sks; sourceTree = "<group>"; };
+		24118CCA1E6CCB56004A8AED /* MonaShark.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MonaShark.otf; sourceTree = "<group>"; };
+		24118CCC1E6CCFA2004A8AED /* MovableBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovableBlock.swift; sourceTree = "<group>"; };
+		24118CCE1E6CD1CF004A8AED /* CommonDefinitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonDefinitions.swift; sourceTree = "<group>"; };
 		244337401D31D552000E485B /* Chippy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chippy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		244337431D31D552000E485B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		244337471D31D552000E485B /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
@@ -64,6 +71,7 @@
 		244337551D31D552000E485B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2443375B1D31D84F000E485B /* TileSet.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = TileSet.sks; sourceTree = "<group>"; };
 		24D487471D3322CD00AC1095 /* Level1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level1.sks; sourceTree = "<group>"; };
+		24FA9F2A1EDCC66F0051F3E7 /* Tile2DArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tile2DArray.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +91,7 @@
 				24118C9C1E5A8C22004A8AED /* TileManager.swift */,
 				24118CA11E5A8CC8004A8AED /* Tile.swift */,
 				24118C9E1E5A8CA5004A8AED /* TileTypes */,
+				24FA9F2A1EDCC66F0051F3E7 /* Tile2DArray.swift */,
 			);
 			name = Tiles;
 			sourceTree = "<group>";
@@ -99,6 +108,7 @@
 				24118CBA1E5BD829004A8AED /* LockTile.swift */,
 				24118CC11E638A1D004A8AED /* BoardTile.swift */,
 				24118CC61E6CB334004A8AED /* HomeTile.swift */,
+				24118CCC1E6CCFA2004A8AED /* MovableBlock.swift */,
 			);
 			name = TileTypes;
 			sourceTree = "<group>";
@@ -151,6 +161,7 @@
 			children = (
 				24118CBE1E625CAC004A8AED /* Levels */,
 				24118CAA1E5A93CC004A8AED /* Utils.swift */,
+				24118CCE1E6CD1CF004A8AED /* CommonDefinitions.swift */,
 				24118CA31E5A8CE6004A8AED /* GameManager */,
 				24118C9B1E5A8BF3004A8AED /* Tiles */,
 				244337431D31D552000E485B /* AppDelegate.swift */,
@@ -162,6 +173,7 @@
 				2443374D1D31D552000E485B /* Main.storyboard */,
 				244337501D31D552000E485B /* Assets.xcassets */,
 				244337521D31D552000E485B /* LaunchScreen.storyboard */,
+				24118CCA1E6CCB56004A8AED /* MonaShark.otf */,
 				244337551D31D552000E485B /* Info.plist */,
 			);
 			path = Chippy;
@@ -229,6 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2443375C1D31D84F000E485B /* TileSet.sks in Resources */,
+				24118CCB1E6CCB56004A8AED /* MonaShark.otf in Resources */,
 				2443374F1D31D552000E485B /* Main.storyboard in Resources */,
 				244337511D31D552000E485B /* Assets.xcassets in Resources */,
 				244337541D31D552000E485B /* LaunchScreen.storyboard in Resources */,
@@ -248,13 +261,16 @@
 				24118CC21E638A1D004A8AED /* BoardTile.swift in Sources */,
 				24118CAF1E5A9C80004A8AED /* HelpTile.swift in Sources */,
 				24118CBB1E5BD829004A8AED /* LockTile.swift in Sources */,
+				24FA9F2B1EDCC66F0051F3E7 /* Tile2DArray.swift in Sources */,
 				24118CAD1E5A9B85004A8AED /* BlockTile.swift in Sources */,
 				2443374A1D31D552000E485B /* GameScene.swift in Sources */,
 				24118CA91E5A8EB3004A8AED /* FloorTile.swift in Sources */,
 				24118C9D1E5A8C22004A8AED /* TileManager.swift in Sources */,
+				24118CCF1E6CD1CF004A8AED /* CommonDefinitions.swift in Sources */,
 				24118CC01E625CB7004A8AED /* LevelLoader.swift in Sources */,
 				24118CB11E5BC9ED004A8AED /* KeyTile.swift in Sources */,
 				24118CB91E5BD080004A8AED /* BaseTile.swift in Sources */,
+				24118CCD1E6CCFA2004A8AED /* MovableBlock.swift in Sources */,
 				2443374C1D31D552000E485B /* GameViewController.swift in Sources */,
 				24118CC71E6CB334004A8AED /* HomeTile.swift in Sources */,
 				24118CA51E5A8CF0004A8AED /* GameManager.swift in Sources */,
