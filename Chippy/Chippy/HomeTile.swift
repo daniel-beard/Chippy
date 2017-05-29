@@ -22,5 +22,4 @@ class HomeTile: BaseTile, ConditionallyPassable {
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool {
         return false
     }
-
 }

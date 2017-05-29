@@ -21,12 +21,13 @@ class GameManager {
         player = PlayerInfo(sprite: LevelLoader.loadPlayerSprite(scene: scene))
         tileManager = TileManager(
             backgroundTileSet: LevelLoader.loadBackgroundTiles(scene: scene),
-            foregroundTileSet: LevelLoader.loadForegroundTiles(scene: scene)
+            interactiveTileSet: LevelLoader.loadForegroundTiles(scene: scene),
+            moveableTileSet: LevelLoader.loadMoveableTiles(scene: scene)
         )
     }
 
     // Checks whether a tile is passable
-    func canPlayerMoveByRelativeOffset(dx: Int, dy: Int) -> Bool {
+    func canPlayerMoveByRelativeOffset(dx: Int, dy: Int, moveDirection: MoveDirection) -> Bool {
 
         var result = false
 
@@ -48,7 +49,7 @@ class GameManager {
         result = result || (nextTile is Passable)
 
         // If the foreground tile type is conditionally passable, we can only pass if we satisfy the pre-conditions
-        if let conditionalTile = tileManager.foregroundTileAtPosition(x: nextColumn, y: nextRow) as? ConditionallyPassable {
+        if let conditionalTile = tileManager.interactiveTileAtPosition(x: nextColumn, y: nextRow) as? ConditionallyPassable {
             result = result && conditionalTile.canPlayerConditionallyPassTile(gameManager: self, player: player)
         }
 
@@ -57,7 +58,7 @@ class GameManager {
 
     // Runs the side effects of moving a player to a tile position
     // E.g. moving the tilemaps, updating collectibles, changing the game state etc.
-    func movePlayerByRelativeOffset(dx: Int, dy: Int) {
+    func movePlayerByRelativeOffset(dx: Int, dy: Int, moveDirection: MoveDirection) {
 
         let xOffset = CGFloat(-dx) * tileManager.backgroundTileSet.tileSize.width
         let yOffset = CGFloat(-dy) * tileManager.backgroundTileSet.tileSize.height
@@ -91,7 +92,7 @@ class GameManager {
         // TODO: Handle background tile collisions here...
 
         // Handle foreground tile collisions
-        guard let foregroundTile = tileManager.foregroundTileAtPosition(x: column, y: row) else {
+        guard let foregroundTile = tileManager.interactiveTileAtPosition(x: column, y: row) else {
             return
         }
 

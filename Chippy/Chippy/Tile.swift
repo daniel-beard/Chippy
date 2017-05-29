@@ -41,6 +41,17 @@ protocol ConditionallyPassable {
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool
 }
 
+protocol ConditionallyMoveable {
+
+    // Called to check if a player moving in a certain direction can move this tile.
+    // Usually depends on what is in "front" of the conditionally moveable tile relative to the player.
+    func canMoveConditionallyMoveableTile(gameManager: GameManager, player: inout PlayerInfo, direction: MoveDirection) -> Bool
+
+    // Called to actually move the conditional tile.
+    // Should handle tile updates here.
+    func moveConditionallyMoveableTile(gameManager: GameManager, player: inout PlayerInfo, direction: MoveDirection)
+}
+
 // All keys conform to this protocol
 protocol Key {}
 

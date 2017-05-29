@@ -9,19 +9,6 @@
 import SpriteKit
 import GameplayKit
 
-enum MoveDirection {
-    case left
-    case right
-    case up
-    case down
-}
-
-enum GameState {
-    case inProgress
-    case failed
-    case completed
-}
-
 class GameScene: SKScene {
 
     var entities = [GKEntity]()
@@ -139,8 +126,8 @@ extension GameScene {
             case .down: offset = (0, -1)
         }
 
-        if gameManager.canPlayerMoveByRelativeOffset(dx: offset.dx, dy: offset.dy) {
-            gameManager.movePlayerByRelativeOffset(dx: offset.dx, dy: offset.dy)
+        if gameManager.canPlayerMoveByRelativeOffset(dx: offset.dx, dy: offset.dy, moveDirection: direction) {
+            gameManager.movePlayerByRelativeOffset(dx: offset.dx, dy: offset.dy, moveDirection: direction)
         }
     }
 }
@@ -273,6 +260,13 @@ extension GameScene {
             shape.strokeColor = .clear
             camera.addChild(shape)
         }
+
+        // Draw title
+        let titleLabel = SKLabelNode(fontNamed: "MonaShark")
+        titleLabel.text = "C H I P P Y"
+        titleLabel.fontSize = 48.0
+        titleLabel.position = CGPoint(x: 0, y: distanceToBorder + 40)
+        camera.addChild(titleLabel)
     }
 }
 
