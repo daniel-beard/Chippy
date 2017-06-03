@@ -124,7 +124,7 @@ fileprivate extension TileManager {
         case "MovableBlock":    return MovableBlock(type)
         case "keyred", "keyblue", "keygreen", "keyyellow": return KeyTile(type)
         case "lockred", "lockblue", "lockgreen", "lockyellow": return LockTile(type)
-        case "bootfire": return BootTile(type)
+        case "bootfire", "bootice": return BootTile(type)
         default: print("Could not find tile implementation for tile type: \(type)")
         }
         return nil
