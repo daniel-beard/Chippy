@@ -27,7 +27,7 @@ class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadLevel(levelNumber: 1)
+        loadLevel(levelNumber: 2)
     }
 
     override var shouldAutorotate: Bool {
@@ -56,10 +56,15 @@ internal extension GameViewController {
 
     override var keyCommands: [UIKeyCommand]? {
         return [
+
+            // Movement
             UIKeyCommand(input: UIKeyInputUpArrow,      modifierFlags: [], action: #selector(swipeUp)),
             UIKeyCommand(input: UIKeyInputDownArrow,    modifierFlags: [], action: #selector(swipeDown)),
             UIKeyCommand(input: UIKeyInputLeftArrow,    modifierFlags: [], action: #selector(swipeLeft)),
             UIKeyCommand(input: UIKeyInputRightArrow,   modifierFlags: [], action: #selector(swipeRight)),
+
+            // Reload
+            UIKeyCommand(input: "r", modifierFlags: [], action: #selector(viewDidLoad))
         ]
     }
 }
