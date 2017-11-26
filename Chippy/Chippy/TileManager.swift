@@ -117,32 +117,35 @@ class TileManager {
 
     func removeTile(at position: Position, layer: TileLayer) {
         // Tile Set
-        setTileGroup(nil, at: position, layer: layer)
+        setTileGroup((nil, nil), at: position, layer: layer)
 
         // 2D Map
         tile2DFromLayer(layer)[position.x, position.y] = nil
     }
 
-    func setTileGroup(_ tileGroup: SKTileGroup?, at position: Position, layer: TileLayer) {
+    typealias SpriteTile = (group: SKTileGroup?, definition: SKTileDefinition?)
+    func setTileGroup(_ spriteTile: SpriteTile, at position: Position, layer: TileLayer) {
         let tileSet = tileSetFromLayer(layer)
-        tileSet.setTileGroup(tileGroup, forColumn: position.x, row: position.y)
+        guard let group = spriteTile.group, let definition = spriteTile.definition else {
+            tileSet.setTileGroup(nil, forColumn: position.x, row: position.y)
+            return
+        }
+        tileSet.setTileGroup(group, andTileDefinition: definition, forColumn: position.x, row: position.y)
     }
 
     func moveTile(at position: Position, layer: TileLayer, newPosition: Position) {
         let tileSet = tileSetFromLayer(layer)
-        let tileGroup = (tileSet.tileGroup(atColumn: position.x, row: position.y)?.copy() as? SKTileGroup)
-        let tileObj = tile2DFromLayer(layer)[position.x, position.y] // might need a copy here.
-
-        print("Tile before remove: \(tileSet.tileGroup(atColumn: position.x, row: position.y)), \(tile2DFromLayer(layer)[position.x, position.y])")
+        let tileDefinition = tileSet.tileDefinition(atColumn: position.x, row: position.y)
+        let tileGroup = tileSet.tileGroup(atColumn: position.x, row: position.y)
+        let tileObj = tile2DFromLayer(layer)[position.x, position.y]
 
         // remove from current position
         removeTile(at: position, layer: layer)
 
         // re-add to new position
-        setTileGroup(tileGroup, at: newPosition, layer: layer)
+        // Note: Need both the tileGroup and the definition here.
+        setTileGroup((group: tileGroup, definition: tileDefinition), at: newPosition, layer: layer)
         tile2DFromLayer(layer)[newPosition.x, newPosition.y] = tileObj
-
-        print("Tile after remove: \(tileSet.tileGroup(atColumn: position.x, row: position.y)), \(tile2DFromLayer(layer)[position.x, position.y])")
     }
 }
 

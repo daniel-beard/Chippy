@@ -9,7 +9,8 @@
 import Foundation
 
 // base class for all tiles, implements the Tile protocol only
-class BaseTile: NSObject, Tile {
+class BaseTile: Tile {
+
     // This value is set to the name of the TileSet tile. E.g. redkey, Floor, etc.
     var name: String = ""
     let layer: TileLayer
