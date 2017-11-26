@@ -123,6 +123,26 @@ class TileManager {
 
     //MARK: Tile Operations
 
+    func addTile(at position: Position, type: TileType) {
+        guard let tileClass = TileManager.mapTileEnumToClassName(tileType: type) else {
+            fatalError("Could not create tile from type: \(type.rawValue)")
+        }
+        let newTile = tileClass.init(type.rawValue)
+
+        // Remove any existing tiles at the same layer
+        removeTile(at: position, layer: newTile.layer())
+
+        // Get the tile group from the tileset
+        guard let tileGroup = spriteKitTileSet.tileGroups.first(where: { $0.name == type.rawValue }) else {
+            fatalError("Could not find tileGroup in tileSet: \(type.rawValue)")
+        }
+
+        // Update tileSet and 2D map
+        let tileSet = tileSetFromLayer(newTile.layer())
+        tileSet.setTileGroup(tileGroup, forColumn: position.x, row: position.y)
+        tile2DFromLayer(newTile.layer())[position.x, position.y] = newTile
+    }
+
     func removeForegroundTile(at position: Position) {
         interactiveTileSet.setTileGroup(nil, forColumn: position.x, row: position.y)
         interactiveTiles[position.x, position.y] = nil
@@ -137,7 +157,7 @@ class TileManager {
     }
 
     typealias SpriteTile = (group: SKTileGroup?, definition: SKTileDefinition?)
-    func setTileGroup(_ spriteTile: SpriteTile, at position: Position, layer: TileLayer) {
+    private func setTileGroup(_ spriteTile: SpriteTile, at position: Position, layer: TileLayer) {
         let tileSet = tileSetFromLayer(layer)
         guard let group = spriteTile.group, let definition = spriteTile.definition else {
             tileSet.setTileGroup(nil, forColumn: position.x, row: position.y)
