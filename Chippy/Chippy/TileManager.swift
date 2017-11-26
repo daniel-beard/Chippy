@@ -9,20 +9,25 @@
 import Foundation
 import GameplayKit
 
+public enum TileLayer {
+    case one
+    case two
+    case three
+}
+
 class TileManager {
 
-
     // Raw tileMapNodes
-    var backgroundTileSet: SKTileMapNode
-    var interactiveTileSet: SKTileMapNode
-    var moveableTileSet: SKTileMapNode
+    private var backgroundTileSet: SKTileMapNode
+    private var interactiveTileSet: SKTileMapNode
+    private var moveableTileSet: SKTileMapNode
 
-    var tileSets: [SKTileMapNode]
+    private var tileSets: [SKTileMapNode]
 
     // Prebuilt Tile 2dArrays
-    fileprivate var backgroundTiles: Array2D<Tile>!
-    fileprivate var interactiveTiles: Array2D<Tile>!
-    fileprivate var moveableTiles: Array2D<Tile>!
+    private var backgroundTiles: Array2D<Tile>!
+    private var interactiveTiles: Array2D<Tile>!
+    private var moveableTiles: Array2D<Tile>!
 
     init(backgroundTileSet: SKTileMapNode,
          interactiveTileSet: SKTileMapNode,
@@ -52,16 +57,49 @@ class TileManager {
 
     //MARK: Tiles from Positions
 
-    func backgroundTile(at pos: Position) -> Tile? {
-        return backgroundTiles[pos.x, pos.y]
+    func tiles(at pos: Position) -> [Tile] {
+        var result = [Tile?]()
+        result.append( backgroundTiles[pos.x, pos.y] )
+        result.append( interactiveTiles[pos.x, pos.y] )
+        result.append( moveableTiles[pos.x, pos.y] )
+        return result.flatMap{ $0 }
     }
 
-    func interactiveTile(at pos: Position) -> Tile? {
-        return interactiveTiles[pos.x, pos.y]
+    public func tiles(at pos: Position, offsetBy direction: MoveDirection) -> [Tile] {
+        let newPosition = offset(position: pos, byDirection: direction)
+        return tiles(at: newPosition)
     }
 
-    func moveableTile(at pos: Position) -> Tile? {
-        return moveableTiles[pos.x, pos.y]
+    public func tile(at pos: Position, layer: TileLayer) -> Tile? {
+        return tile2DFromLayer(layer)[pos.x, pos.y]
+    }
+
+    // MARK: Layer calculations
+
+    private func tileSetFromLayer(_ layer: TileLayer) -> SKTileMapNode {
+        switch(layer) {
+            case .one:      return backgroundTileSet
+            case .two:      return interactiveTileSet
+            case .three:    return moveableTileSet
+        }
+    }
+
+    private func tile2DFromLayer(_ layer: TileLayer) -> Array2D<Tile> {
+        switch layer {
+            case .one: return backgroundTiles
+            case .two: return interactiveTiles
+            case .three: return moveableTiles
+        }
+    }
+
+    // MARK: Moving TileSets
+
+    // Only used when moving the player.
+    // Offset is an absolute value.
+    func offsetTileSets(by offset: CGPoint) {
+        tileSets.forEach { tileSet in
+            tileSet.position = tileSet.position + offset
+        }
     }
 
     //MARK: Tile Sizing
@@ -76,9 +114,39 @@ class TileManager {
         interactiveTileSet.setTileGroup(nil, forColumn: position.x, row: position.y)
         interactiveTiles[position.x, position.y] = nil
     }
+
+    func removeTile(at position: Position, layer: TileLayer) {
+        // Tile Set
+        setTileGroup(nil, at: position, layer: layer)
+
+        // 2D Map
+        tile2DFromLayer(layer)[position.x, position.y] = nil
+    }
+
+    func setTileGroup(_ tileGroup: SKTileGroup?, at position: Position, layer: TileLayer) {
+        let tileSet = tileSetFromLayer(layer)
+        tileSet.setTileGroup(tileGroup, forColumn: position.x, row: position.y)
+    }
+
+    func moveTile(at position: Position, layer: TileLayer, newPosition: Position) {
+        let tileSet = tileSetFromLayer(layer)
+        let tileGroup = (tileSet.tileGroup(atColumn: position.x, row: position.y)?.copy() as? SKTileGroup)
+        let tileObj = tile2DFromLayer(layer)[position.x, position.y] // might need a copy here.
+
+        print("Tile before remove: \(tileSet.tileGroup(atColumn: position.x, row: position.y)), \(tile2DFromLayer(layer)[position.x, position.y])")
+
+        // remove from current position
+        removeTile(at: position, layer: layer)
+
+        // re-add to new position
+        setTileGroup(tileGroup, at: newPosition, layer: layer)
+        tile2DFromLayer(layer)[newPosition.x, newPosition.y] = tileObj
+
+        print("Tile after remove: \(tileSet.tileGroup(atColumn: position.x, row: position.y)), \(tile2DFromLayer(layer)[position.x, position.y])")
+    }
 }
 
-fileprivate extension TileManager {
+private extension TileManager {
 
     func loadAllTiles() {
 
@@ -116,16 +184,23 @@ fileprivate extension TileManager {
     // Factory method to create concrete tiles from their tileset names.
     func tileFactory(type: String) -> Tile? {
         switch type {
-        case "Floor":           return FloorTile(type)
-        case "Block":           return BlockTile(type)
-        case "Help":            return HelpTile(type)
-        case "Chip":            return ChipTile(type)
-        case "Board":           return BoardTile(type)
-        case "Home":            return HomeTile(type)
-        case "MovableBlock":    return MovableBlock(type)
-        case "keyred", "keyblue", "keygreen", "keyyellow": return KeyTile(type)
-        case "lockred", "lockblue", "lockgreen", "lockyellow": return LockTile(type)
-        case "bootfire", "bootice": return BootTile(type)
+
+        // Layer one tiles
+        case "Floor":           return FloorTile(type, layer: .one)
+        case "Help":            return HelpTile(type, layer: .one)
+        case "Home":            return HomeTile(type, layer: .one)
+        case "Block":           return BlockTile(type, layer: .one)
+
+        // Layer two tiles
+        case "Chip":            return ChipTile(type, layer: .two)
+        case "Board":           return BoardTile(type, layer: .two)
+        case "keyred", "keyblue", "keygreen", "keyyellow": return KeyTile(type, layer: .two)
+        case "lockred", "lockblue", "lockgreen", "lockyellow": return LockTile(type, layer: .two)
+        case "bootfire", "bootice": return BootTile(type, layer: .two)
+
+        // Layer three tiles
+        case "MovableBlock":    return MovableBlock(type, layer: .three)
+
         default: print("Could not find tile implementation for tile type: \(type)")
         }
         return nil

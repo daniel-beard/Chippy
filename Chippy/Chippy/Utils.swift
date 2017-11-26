@@ -16,6 +16,30 @@ extension CGPoint {
     }
 }
 
+extension Collection {
+    /// Checks if every element in an array matches a precondition
+    /// E.g. [2,3,4].all { $0 > 1 } // true
+    /// [2,3,4,5].all { $0 > 3 } // false
+    func all(_ condition:(Element) -> Bool) -> Bool {
+        for elem in self {
+            if !condition(elem) {
+                return false
+            }
+        }
+        return true
+    }
+
+    /// Checks if any element in an array passes a precondition
+    func any(_ condition:(Element) -> Bool) -> Bool {
+        for elem in self {
+            if condition(elem) {
+                return true
+            }
+        }
+        return false
+    }
+}
+
 func afterDelay(_ delay: TimeInterval, performBlock block:@escaping () -> Void) {
     let dispatchTime = DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
     DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: block)

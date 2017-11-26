@@ -9,28 +9,33 @@
 import Foundation
 import CoreGraphics
 
-class MovableBlock : BaseTile { //, ConditionallyMoveable {
+class MovableBlock :BaseTile, Passable, ConditionallyMoveable {
 
-//TODO: This whole class needs a cleanup
+    func canPlayerMoveTile(gameManager: GameManager,
+                           player: PlayerInfo,
+                           tilePosition: Position,
+                           direction: MoveDirection) -> Bool {
 
-//    func canMoveConditionallyMoveableTile(gameManager: GameManager,
-//                                          player: inout PlayerInfo,
-//                                          currentPosition: CGPoint,
-//                                          nextPosition: CGPoint) -> Bool {
-//        // Get tile after this moveable block in the direction we want
-//        let directionVector = CGPoint.directionVector(origin: currentPosition, next: nextPosition)
-//        let blockNextPos = nextPosition + directionVector
-//        let tileToMoveTo = gameManager.tileManager.backgroundTileAtPosition(x: Int(blockNextPos.x), y: Int(blockNextPos.y))
-//
-//        //TODO: This seems VERY hacky...
-//        if tileToMoveTo != nil && tileToMoveTo is Passable {
-//            return true
-//        }
-//        return false
-//    }
-//
-//    func moveConditionallyMoveableTile(gameManager: GameManager, player: inout PlayerInfo, direction: MoveDirection) {
-//        // Nothing for now.
-//    }
+        var result = false
 
+        let nextTiles = gameManager.tileManager.tiles(at: tilePosition, offsetBy: direction)
+        var tilesRemaining = nextTiles
+
+        // Here we whitelist the conditions when we can move this block
+        // Not sure if there will be more required here.
+        let haveMonster = tilesRemaining.any { $0 is Monster }
+        tilesRemaining = tilesRemaining.filter { !($0 is Monster) }
+        let canPassRestOfTiles = tilesRemaining.all { $0 is Passable && !($0 is MovableBlock) }
+
+        result = !haveMonster && canPassRestOfTiles
+        print("Trying to pass block with result: \(result)")
+        return result
+    }
+
+    func moveConditionallyMoveableTile(gameManager: GameManager,
+                                       player: inout PlayerInfo,
+                                       tilePosition: Position,
+                                       direction: MoveDirection) {
+
+    }
 }
