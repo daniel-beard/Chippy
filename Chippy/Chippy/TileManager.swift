@@ -204,6 +204,8 @@ private extension TileManager {
         case "Help":            return HelpTile(type, layer: .one)
         case "Home":            return HomeTile(type, layer: .one)
         case "Block":           return BlockTile(type, layer: .one)
+        case "dirt":            return DirtTile(type, layer: .one)
+        case "water":           return WaterTile(type, layer: .one)
 
         // Layer two tiles
         case "Chip":            return ChipTile(type, layer: .two)
