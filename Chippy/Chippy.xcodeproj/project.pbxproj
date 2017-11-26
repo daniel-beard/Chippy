@@ -38,6 +38,8 @@
 		24CBD4681EDCEBEE00154179 /* BootTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CBD4671EDCEBEE00154179 /* BootTile.swift */; };
 		24D487481D3322CD00AC1095 /* Level1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 24D487471D3322CD00AC1095 /* Level1.sks */; };
 		24FA9F2B1EDCC66F0051F3E7 /* Tile2DArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FA9F2A1EDCC66F0051F3E7 /* Tile2DArray.swift */; };
+		24FDE3261FCA7C2C00814A9D /* DirtTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FDE3251FCA7C2C00814A9D /* DirtTile.swift */; };
+		24FDE3281FCA7CB400814A9D /* WaterTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FDE3271FCA7CB300814A9D /* WaterTile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +76,8 @@
 		24CBD4671EDCEBEE00154179 /* BootTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BootTile.swift; sourceTree = "<group>"; };
 		24D487471D3322CD00AC1095 /* Level1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level1.sks; sourceTree = "<group>"; };
 		24FA9F2A1EDCC66F0051F3E7 /* Tile2DArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tile2DArray.swift; sourceTree = "<group>"; };
+		24FDE3251FCA7C2C00814A9D /* DirtTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirtTile.swift; sourceTree = "<group>"; };
+		24FDE3271FCA7CB300814A9D /* WaterTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterTile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +105,7 @@
 		24118C9E1E5A8CA5004A8AED /* TileTypes */ = {
 			isa = PBXGroup;
 			children = (
+				24FDE3271FCA7CB300814A9D /* WaterTile.swift */,
 				24118CB81E5BD080004A8AED /* BaseTile.swift */,
 				24118C9F1E5A8CBC004A8AED /* ChipTile.swift */,
 				24118CA81E5A8EB3004A8AED /* FloorTile.swift */,
@@ -112,6 +117,7 @@
 				24118CC11E638A1D004A8AED /* BoardTile.swift */,
 				24118CC61E6CB334004A8AED /* HomeTile.swift */,
 				24118CCC1E6CCFA2004A8AED /* MovableBlock.swift */,
+				24FDE3251FCA7C2C00814A9D /* DirtTile.swift */,
 			);
 			name = TileTypes;
 			sourceTree = "<group>";
@@ -209,7 +215,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = DanielBeard;
 				TargetAttributes = {
 					2443373F1D31D552000E485B = {
@@ -264,6 +270,7 @@
 				24118CC21E638A1D004A8AED /* BoardTile.swift in Sources */,
 				24118CAF1E5A9C80004A8AED /* HelpTile.swift in Sources */,
 				24118CBB1E5BD829004A8AED /* LockTile.swift in Sources */,
+				24FDE3261FCA7C2C00814A9D /* DirtTile.swift in Sources */,
 				24FA9F2B1EDCC66F0051F3E7 /* Tile2DArray.swift in Sources */,
 				24118CAD1E5A9B85004A8AED /* BlockTile.swift in Sources */,
 				2443374A1D31D552000E485B /* GameScene.swift in Sources */,
@@ -278,6 +285,7 @@
 				24118CC71E6CB334004A8AED /* HomeTile.swift in Sources */,
 				24CBD4681EDCEBEE00154179 /* BootTile.swift in Sources */,
 				24118CA51E5A8CF0004A8AED /* GameManager.swift in Sources */,
+				24FDE3281FCA7CB400814A9D /* WaterTile.swift in Sources */,
 				24118CAB1E5A93CC004A8AED /* Utils.swift in Sources */,
 				24118CBD1E6253B4004A8AED /* LevelRepository.swift in Sources */,
 				24118CA71E5A8D12004A8AED /* Player.swift in Sources */,
@@ -318,7 +326,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -326,7 +336,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -368,7 +382,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -376,7 +392,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

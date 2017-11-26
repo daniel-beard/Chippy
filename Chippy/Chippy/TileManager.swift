@@ -22,6 +22,9 @@ class TileManager {
     private var interactiveTileSet: SKTileMapNode
     private var moveableTileSet: SKTileMapNode
 
+    // TileSet
+    var spriteKitTileSet: SKTileSet
+
     private var tileSets: [SKTileMapNode]
 
     // Prebuilt Tile 2dArrays
@@ -32,6 +35,12 @@ class TileManager {
     init(backgroundTileSet: SKTileMapNode,
          interactiveTileSet: SKTileMapNode,
          moveableTileSet: SKTileMapNode) {
+
+        // hacky
+        guard let spriteKitTileSet = SKTileSet(named: "TileSet") else {
+            fatalError("Could not load tile set from disk")
+        }
+        self.spriteKitTileSet = spriteKitTileSet
 
         self.backgroundTileSet = backgroundTileSet
         self.interactiveTileSet = interactiveTileSet

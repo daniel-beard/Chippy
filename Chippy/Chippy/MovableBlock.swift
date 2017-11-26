@@ -23,7 +23,8 @@ class MovableBlock: BaseTile, Passable, ConditionallyMoveable {
         return nextTiles.all { tile in
             tile is Monster == false &&
             tile is Passable &&
-            tile is MovableBlock == false
+            tile is MovableBlock == false &&
+            tile is DirtTile == false
         }
     }
 
