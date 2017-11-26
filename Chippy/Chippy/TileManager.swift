@@ -133,6 +133,8 @@ class TileManager {
         tileSet.setTileGroup(group, andTileDefinition: definition, forColumn: position.x, row: position.y)
     }
 
+    /// Moves a tile on a given layer from one position to another.
+    /// This affects both the Tile & Sprite based representations
     func moveTile(at position: Position, layer: TileLayer, newPosition: Position) {
         let tileSet = tileSetFromLayer(layer)
         let tileDefinition = tileSet.tileDefinition(atColumn: position.x, row: position.y)

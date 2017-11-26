@@ -53,12 +53,12 @@ protocol ConditionallyMoveable: Tile {
                            tilePosition: Position,
                            direction: MoveDirection) -> Bool
 
-    // Called to actually move the conditional tile.
-    // Should handle tile updates here.
-    func moveConditionallyMoveableTile(gameManager: GameManager,
-                                       player: inout PlayerInfo,
-                                       tilePosition: Position,
-                                       direction: MoveDirection)
+    // Called after the player has moved the tile.
+    // Handle things like changing the tile type here. E.g. block + water -> dirt
+    func didMoveConditionallyMoveableTile(gameManager: GameManager,
+                                          player: inout PlayerInfo,
+                                          tilePosition: Position,
+                                          direction: MoveDirection)
 }
 
 // All keys conform to this protocol

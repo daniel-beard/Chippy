@@ -9,33 +9,29 @@
 import Foundation
 import CoreGraphics
 
-class MovableBlock :BaseTile, Passable, ConditionallyMoveable {
+class MovableBlock: BaseTile, Passable, ConditionallyMoveable {
 
     func canPlayerMoveTile(gameManager: GameManager,
                            player: PlayerInfo,
                            tilePosition: Position,
                            direction: MoveDirection) -> Bool {
 
-        var result = false
-
         let nextTiles = gameManager.tileManager.tiles(at: tilePosition, offsetBy: direction)
-        var tilesRemaining = nextTiles
-
-        // Here we whitelist the conditions when we can move this block
+        // Here we whitelist the movable conditions
         // Not sure if there will be more required here.
-        let haveMonster = tilesRemaining.any { $0 is Monster }
-        tilesRemaining = tilesRemaining.filter { !($0 is Monster) }
-        let canPassRestOfTiles = tilesRemaining.all { $0 is Passable && !($0 is MovableBlock) }
-
-        result = !haveMonster && canPassRestOfTiles
-        print("Trying to pass block with result: \(result)")
-        return result
+        // Note: If we get many more conditions here, break them out.
+        return nextTiles.all { tile in
+            tile is Monster == false &&
+            tile is Passable &&
+            tile is MovableBlock == false
+        }
     }
 
-    func moveConditionallyMoveableTile(gameManager: GameManager,
-                                       player: inout PlayerInfo,
-                                       tilePosition: Position,
-                                       direction: MoveDirection) {
+    func didMoveConditionallyMoveableTile(gameManager: GameManager,
+                                          player: inout PlayerInfo,
+                                          tilePosition: Position,
+                                          direction: MoveDirection) {
 
+        //TODO: Handle tile type changes here.
     }
 }
