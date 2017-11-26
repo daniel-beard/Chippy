@@ -10,6 +10,10 @@ import Foundation
 
 class BootTile: BaseTile, Passable, Collectable, Boot {
 
+    override func layer() -> TileLayer {
+        return .two
+    }
+
     func performCollectableAction(gameManager: GameManager, player: inout PlayerInfo) {
         switch name {
             case "bootfire":    player.hasFireBoots = true

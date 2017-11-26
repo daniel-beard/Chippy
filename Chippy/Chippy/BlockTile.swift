@@ -10,4 +10,8 @@ import Foundation
 
 class BlockTile: BaseTile {
 
+    override func layer() -> TileLayer {
+        return .one
+    }
+
 }

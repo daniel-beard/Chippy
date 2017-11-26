@@ -10,6 +10,10 @@ import Foundation
 
 class BoardTile: BaseTile, ConditionallyPassable {
 
+    override func layer() -> TileLayer {
+        return .two
+    }
+
     func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool {
         return player.chipCount >= gameManager.levelMetadata.chipsRequired
     }

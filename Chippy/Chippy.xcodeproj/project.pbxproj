@@ -105,8 +105,8 @@
 		24118C9E1E5A8CA5004A8AED /* TileTypes */ = {
 			isa = PBXGroup;
 			children = (
-				24FDE3271FCA7CB300814A9D /* WaterTile.swift */,
 				24118CB81E5BD080004A8AED /* BaseTile.swift */,
+				24FDE3271FCA7CB300814A9D /* WaterTile.swift */,
 				24118C9F1E5A8CBC004A8AED /* ChipTile.swift */,
 				24118CA81E5A8EB3004A8AED /* FloorTile.swift */,
 				24118CAC1E5A9B85004A8AED /* BlockTile.swift */,

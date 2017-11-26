@@ -10,6 +10,10 @@ import Foundation
 
 class HomeTile: BaseTile, ConditionallyPassable {
 
+    override func layer() -> TileLayer {
+        return .one
+    }
+
     func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool {
         return true
     }

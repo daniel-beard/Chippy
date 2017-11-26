@@ -42,6 +42,10 @@ class TileManager {
         }
         self.spriteKitTileSet = spriteKitTileSet
 
+        // debug only
+        print(self.spriteKitTileSet.tileGroups.flatMap { $0.name })
+        let tileGroup = self.spriteKitTileSet.tileGroups[0]
+
         self.backgroundTileSet = backgroundTileSet
         self.interactiveTileSet = interactiveTileSet
         self.moveableTileSet = moveableTileSet
@@ -196,29 +200,45 @@ private extension TileManager {
     }
 
     // Factory method to create concrete tiles from their tileset names.
+    // Used when populating our 2D maps from the existing level tilemaps.
     func tileFactory(type: String) -> Tile? {
-        switch type {
 
-        // Layer one tiles
-        case "Floor":           return FloorTile(type, layer: .one)
-        case "Help":            return HelpTile(type, layer: .one)
-        case "Home":            return HomeTile(type, layer: .one)
-        case "Block":           return BlockTile(type, layer: .one)
-        case "dirt":            return DirtTile(type, layer: .one)
-        case "water":           return WaterTile(type, layer: .one)
-
-        // Layer two tiles
-        case "Chip":            return ChipTile(type, layer: .two)
-        case "Board":           return BoardTile(type, layer: .two)
-        case "keyred", "keyblue", "keygreen", "keyyellow": return KeyTile(type, layer: .two)
-        case "lockred", "lockblue", "lockgreen", "lockyellow": return LockTile(type, layer: .two)
-        case "bootfire", "bootice", "bootwater": return BootTile(type, layer: .two)
-
-        // Layer three tiles
-        case "MovableBlock":    return MovableBlock(type, layer: .three)
-
-        default: print("Could not find tile implementation for tile type: \(type)")
+        guard let tileType = TileType(rawValue: type) else {
+            print("Could not find tile implementation for tile type: \(type)")
+            return nil
         }
-        return nil
+
+        guard let tileClass = TileManager.mapTileEnumToClassName(tileType: tileType) else {
+            fatalError("Class mapping not found for tile type: \(type)")
+        }
+        return tileClass.init(type)
+    }
+
+    /// We need this because our mapping from tile type isn't 1-1 with class names
+    /// Also centralizes this mapping.
+    /// Some classes hold multiple types, e.g. boots, keys, locks, etc.
+    static func mapTileEnumToClassName(tileType: TileType) -> Tile.Type? {
+        switch tileType {
+            case .block: return BlockTile.self
+            case .water: return WaterTile.self
+            case .floor: return FloorTile.self
+            case .movableblock: return MovableBlock.self
+            case .help: return HelpTile.self
+            case .home: return HomeTile.self
+            case .chip: return ChipTile.self
+            case .board: return BoardTile.self
+            case .bluekey: fallthrough
+            case .redkey: fallthrough
+            case .greenkey: fallthrough
+            case .yellowkey: return KeyTile.self
+            case .redlock: fallthrough
+            case .bluelock: fallthrough
+            case .greenlock: fallthrough
+            case .yellowlock: return LockTile.self
+            case .fireboot: fallthrough
+            case .iceskate: fallthrough
+            case .flipper: return BootTile.self
+            case .dirt: return DirtTile.self
+        }
     }
 }

@@ -10,4 +10,8 @@ import Foundation
 
 class FloorTile: BaseTile, Passable {
 
+    override func layer() -> TileLayer {
+        return .one
+    }
+
 }

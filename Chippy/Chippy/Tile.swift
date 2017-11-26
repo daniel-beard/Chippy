@@ -9,10 +9,34 @@
 import Foundation
 import CoreGraphics
 
+/// Enum that maps from tile type to tileset name
+public enum TileType: String {
+    case water          = "water"
+    case floor          = "Floor"
+    case block          = "Block"
+    case movableblock   = "MovableBlock"
+    case help           = "Help"
+    case home           = "Home"
+    case chip           = "Chip"
+    case board          = "Board"
+    case bluekey        = "keyblue"
+    case redkey         = "keyred"
+    case greenkey       = "keygreen"
+    case yellowkey      = "keyyellow"
+    case redlock        = "lockred"
+    case bluelock       = "lockblue"
+    case greenlock      = "lockgreen"
+    case yellowlock     = "lockyellow"
+    case fireboot       = "bootfire"
+    case iceskate       = "bootice"
+    case flipper        = "bootwater"
+    case dirt           = "dirt"
+}
+
 protocol Tile {
     var name: String { get set }
-    var layer: TileLayer { get }
-    init(_ name: String, layer: TileLayer)
+    func layer() -> TileLayer
+    init(_ name: String)
 }
 
 // Collectable tiles are removed from the tileset after a player visits that tile

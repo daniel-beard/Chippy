@@ -112,13 +112,13 @@ class GameManager {
                                               direction: MoveDirection) {
         let currentTilePos = position
         let nextTilePos = offset(position: position, byDirection: direction)
-        let layer = tile.layer
+        let tileLayer = tile.layer()
 
         // Move the tile
-        tileManager.moveTile(at: currentTilePos, layer: tile.layer, newPosition: nextTilePos)
+        tileManager.moveTile(at: currentTilePos, layer: tileLayer, newPosition: nextTilePos)
 
         // Run post action on new positioned tile
-        let newTile = (tileManager.tile(at: nextTilePos, layer: layer) as! ConditionallyMoveable)
+        let newTile = (tileManager.tile(at: nextTilePos, layer: tileLayer) as! ConditionallyMoveable)
         newTile.didMoveConditionallyMoveableTile(gameManager: self,
                                                  player: &self.player,
                                                  tilePosition: nextTilePos,
