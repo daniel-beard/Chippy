@@ -212,7 +212,7 @@ private extension TileManager {
         case "Board":           return BoardTile(type, layer: .two)
         case "keyred", "keyblue", "keygreen", "keyyellow": return KeyTile(type, layer: .two)
         case "lockred", "lockblue", "lockgreen", "lockyellow": return LockTile(type, layer: .two)
-        case "bootfire", "bootice": return BootTile(type, layer: .two)
+        case "bootfire", "bootice", "bootwater": return BootTile(type, layer: .two)
 
         // Layer three tiles
         case "MovableBlock":    return MovableBlock(type, layer: .three)
