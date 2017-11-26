@@ -10,10 +10,13 @@ import Foundation
 
 // base class for all tiles, implements the Tile protocol only
 class BaseTile: Tile {
+
     // This value is set to the name of the TileSet tile. E.g. redkey, Floor, etc.
     var name: String = ""
+    let layer: TileLayer
 
-    required init(_ name: String) {
+    required init(_ name: String, layer: TileLayer) {
         self.name = name
+        self.layer = layer
     }
 }

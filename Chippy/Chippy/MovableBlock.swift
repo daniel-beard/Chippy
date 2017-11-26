@@ -9,28 +9,29 @@
 import Foundation
 import CoreGraphics
 
-class MovableBlock : BaseTile { //, ConditionallyMoveable {
+class MovableBlock: BaseTile, Passable, ConditionallyMoveable {
 
-//TODO: This whole class needs a cleanup
+    func canPlayerMoveTile(gameManager: GameManager,
+                           player: PlayerInfo,
+                           tilePosition: Position,
+                           direction: MoveDirection) -> Bool {
 
-//    func canMoveConditionallyMoveableTile(gameManager: GameManager,
-//                                          player: inout PlayerInfo,
-//                                          currentPosition: CGPoint,
-//                                          nextPosition: CGPoint) -> Bool {
-//        // Get tile after this moveable block in the direction we want
-//        let directionVector = CGPoint.directionVector(origin: currentPosition, next: nextPosition)
-//        let blockNextPos = nextPosition + directionVector
-//        let tileToMoveTo = gameManager.tileManager.backgroundTileAtPosition(x: Int(blockNextPos.x), y: Int(blockNextPos.y))
-//
-//        //TODO: This seems VERY hacky...
-//        if tileToMoveTo != nil && tileToMoveTo is Passable {
-//            return true
-//        }
-//        return false
-//    }
-//
-//    func moveConditionallyMoveableTile(gameManager: GameManager, player: inout PlayerInfo, direction: MoveDirection) {
-//        // Nothing for now.
-//    }
+        let nextTiles = gameManager.tileManager.tiles(at: tilePosition, offsetBy: direction)
+        // Here we whitelist the movable conditions
+        // Not sure if there will be more required here.
+        // Note: If we get many more conditions here, break them out.
+        return nextTiles.all { tile in
+            tile is Monster == false &&
+            tile is Passable &&
+            tile is MovableBlock == false
+        }
+    }
 
+    func didMoveConditionallyMoveableTile(gameManager: GameManager,
+                                          player: inout PlayerInfo,
+                                          tilePosition: Position,
+                                          direction: MoveDirection) {
+
+        //TODO: Handle tile type changes here.
+    }
 }

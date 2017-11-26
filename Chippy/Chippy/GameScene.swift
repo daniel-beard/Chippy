@@ -86,10 +86,10 @@ class GameScene: SKScene {
 //MARK: Movement extension
 extension GameScene {
 
-    func moveUp()       { move(direction: .up) }
-    func moveDown()     { move(direction: .down) }
-    func moveLeft()     { move(direction: .left) }
-    func moveRight()    { move(direction: .right) }
+    @objc func moveUp()       { move(direction: .up) }
+    @objc func moveDown()     { move(direction: .down) }
+    @objc func moveLeft()     { move(direction: .left) }
+    @objc func moveRight()    { move(direction: .right) }
 
     func move(direction: MoveDirection) {
 
@@ -118,6 +118,7 @@ extension GameScene {
             }
         }
 
+        //TODO: Move to using move direction offsets instead.
         let offset: (dx: Int, dy: Int)
         switch direction {
             case .left: offset = (-1, 0)

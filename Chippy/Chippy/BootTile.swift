@@ -8,7 +8,7 @@
 
 import Foundation
 
-class BootTile: BaseTile, Collectable, Boot {
+class BootTile: BaseTile, Passable, Collectable, Boot {
 
     func performCollectableAction(gameManager: GameManager, player: inout PlayerInfo) {
         switch name {

@@ -49,10 +49,10 @@ class GameViewController: UIViewController {
 
 //MARK: Movement
 internal extension GameViewController {
-    func swipeUp() { sceneNode.move(direction: .up) }
-    func swipeDown() { sceneNode.move(direction: .down) }
-    func swipeLeft() { sceneNode.move(direction: .left) }
-    func swipeRight() { sceneNode.move(direction: .right) }
+    @objc func swipeUp() { sceneNode.move(direction: .up) }
+    @objc func swipeDown() { sceneNode.move(direction: .down) }
+    @objc func swipeLeft() { sceneNode.move(direction: .left) }
+    @objc func swipeRight() { sceneNode.move(direction: .right) }
 
     override var keyCommands: [UIKeyCommand]? {
         return [
