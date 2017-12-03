@@ -18,7 +18,7 @@ class BoardTile: BaseTile, ConditionallyPassable {
         return player.chipCount >= gameManager.levelMetadata.chipsRequired
     }
 
-    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo) {
+    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
         // nothin'
     }
 

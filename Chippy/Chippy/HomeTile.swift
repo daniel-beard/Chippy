@@ -18,7 +18,7 @@ class HomeTile: BaseTile, ConditionallyPassable {
         return true
     }
 
-    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo) {
+    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
         // Display end game message
         NotificationCenter.default.post(name: Notification.Name("DisplayEndGameLabel"), object: nil)
     }

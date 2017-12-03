@@ -18,7 +18,7 @@ class WaterTile: BaseTile, ConditionallyPassable {
         return true
     }
 
-    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo) {
+    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
         if !player.hasFlippers {
             //TODO: Die.
         }

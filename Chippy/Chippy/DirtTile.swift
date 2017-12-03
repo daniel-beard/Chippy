@@ -18,9 +18,9 @@ class DirtTile: BaseTile, ConditionallyPassable {
         return true
     }
 
-    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo) {
-        // Remove tile
-        // Add tile of type 'floor'
+    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
+        // Change to floor as a player walks over
+        gameManager.tileManager.addTile(at: position, type: .floor)
     }
 
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool {

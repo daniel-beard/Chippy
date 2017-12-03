@@ -140,7 +140,7 @@ class GameManager {
         }
 
         // Perform action
-        tile.playerDidPassConditionalTile(gameManager: self, player: &self.player)
+        tile.playerDidPassConditionalTile(gameManager: self, player: &self.player, position: position)
     }
 }
 

@@ -18,7 +18,7 @@ class HelpTile: BaseTile, ConditionallyPassable {
         return true
     }
 
-    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo) {
+    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
         NotificationCenter.default.post(
             name: Notification.Name("DisplayHelp"),
             object: nil,
