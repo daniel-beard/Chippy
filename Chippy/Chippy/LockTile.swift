@@ -9,6 +9,11 @@
 import Foundation
 
 class LockTile: BaseTile, ConditionallyPassable, Lock {
+
+    override func layer() -> TileLayer {
+        return .two
+    }
+
     func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool {
         switch name {
             case "lockgreen":   return player.greenKeyCount > 0
@@ -17,11 +22,10 @@ class LockTile: BaseTile, ConditionallyPassable, Lock {
             case "lockyellow":  return player.yellowKeyCount > 0
             default:            fatalError("Unrecognized lock type")
         }
-        return false
     }
 
 
-    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo) {
+    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
         switch name {
             case "lockgreen":   player.greenKeyCount -= 1
             case "lockblue":    player.blueKeyCount -= 1

@@ -1,28 +1,32 @@
 //
-//  BoardTile.swift
+//  WaterTile.swift
 //  Chippy
 //
-//  Created by Daniel Beard on 2/26/17.
+//  Created by Daniel Beard on 11/25/17.
 //  Copyright © 2017 DanielBeard. All rights reserved.
 //
 
 import Foundation
 
-class BoardTile: BaseTile, ConditionallyPassable {
+class WaterTile: BaseTile, ConditionallyPassable {
 
     override func layer() -> TileLayer {
-        return .two
+        return .one
     }
 
     func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool {
-        return player.chipCount >= gameManager.levelMetadata.chipsRequired
+        return true
     }
 
     func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
-        // nothin'
+        if !player.hasFlippers {
+            NotificationCenter.default.post(name: Notification.Name("DisplayDied"), object: nil, userInfo: [
+                "message": "Oops! Chippy can't swim without flippers!"
+            ])
+        }
     }
 
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool {
-        return true
+        return false
     }
 }

@@ -8,7 +8,11 @@
 
 import Foundation
 
-class KeyTile: BaseTile, Collectable, Key {
+class KeyTile: BaseTile, Collectable, Key, Passable {
+
+    override func layer() -> TileLayer {
+        return .two
+    }
 
     func performCollectableAction(gameManager: GameManager, player: inout PlayerInfo) {
         switch name {

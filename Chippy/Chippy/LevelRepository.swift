@@ -15,7 +15,7 @@ import GameplayKit
 // All level related / game related data is stored on this object after a level is loaded.
 class LevelRepository {
 
-    static let sharedInstance = LevelRepository()
+    static let shared = LevelRepository()
     public private(set) var gameManager: GameManager?
 
     func setGameManager(_ gameManager: GameManager) {

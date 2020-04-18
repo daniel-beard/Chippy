@@ -11,6 +11,10 @@ import CoreGraphics
 
 class MovableBlock: BaseTile, Passable, ConditionallyMoveable {
 
+    override func layer() -> TileLayer {
+        return .three
+    }
+
     func canPlayerMoveTile(gameManager: GameManager,
                            player: PlayerInfo,
                            tilePosition: Position,
@@ -23,7 +27,8 @@ class MovableBlock: BaseTile, Passable, ConditionallyMoveable {
         return nextTiles.all { tile in
             tile is Monster == false &&
             tile is Passable &&
-            tile is MovableBlock == false
+            tile is MovableBlock == false &&
+            tile is DirtTile == false
         }
     }
 
@@ -32,6 +37,13 @@ class MovableBlock: BaseTile, Passable, ConditionallyMoveable {
                                           tilePosition: Position,
                                           direction: MoveDirection) {
 
-        //TODO: Handle tile type changes here.
+        // Get the tiles under our block right now
+        let tiles = gameManager.tileManager.tiles(at: tilePosition)
+        if tiles.any({ $0 is WaterTile }) {
+            // Add dirt
+            gameManager.tileManager.addTile(at: tilePosition, type: .dirt)
+            // Remove self
+            gameManager.tileManager.removeTile(at: tilePosition, layer: self.layer())
+        }
     }
 }

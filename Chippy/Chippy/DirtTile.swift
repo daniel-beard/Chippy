@@ -1,28 +1,29 @@
 //
-//  BoardTile.swift
+//  WaterTile.swift
 //  Chippy
 //
-//  Created by Daniel Beard on 2/26/17.
+//  Created by Daniel Beard on 11/25/17.
 //  Copyright © 2017 DanielBeard. All rights reserved.
 //
 
 import Foundation
 
-class BoardTile: BaseTile, ConditionallyPassable {
+class DirtTile: BaseTile, ConditionallyPassable {
 
     override func layer() -> TileLayer {
-        return .two
+        return .one
     }
-
+    
     func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool {
-        return player.chipCount >= gameManager.levelMetadata.chipsRequired
+        return true
     }
 
     func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
-        // nothin'
+        // Change to floor as a player walks over
+        gameManager.tileManager.addTile(at: position, type: .floor)
     }
 
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool {
-        return true
+        return false
     }
 }

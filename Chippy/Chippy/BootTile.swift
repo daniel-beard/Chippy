@@ -10,11 +10,17 @@ import Foundation
 
 class BootTile: BaseTile, Passable, Collectable, Boot {
 
+    override func layer() -> TileLayer {
+        return .two
+    }
+
     func performCollectableAction(gameManager: GameManager, player: inout PlayerInfo) {
         switch name {
-        case "bootfire": player.hasFireBoots = true
-        case "bootice":  player.hasIceSkates = true
-        default: fatalError("Unknown key type!")
+            case "bootfire":    player.hasFireBoots = true
+            case "bootice":     player.hasIceSkates = true
+            case "bootwater":   player.hasFlippers = true
+            //TODO: Suction boots
+            default: fatalError("Unknown key type!")
         }
     }
 }

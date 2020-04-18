@@ -10,11 +10,15 @@ import Foundation
 
 class HelpTile: BaseTile, ConditionallyPassable {
 
+    override func layer() -> TileLayer {
+        return .one
+    }
+
     func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool {
         return true
     }
 
-    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo) {
+    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
         NotificationCenter.default.post(
             name: Notification.Name("DisplayHelp"),
             object: nil,

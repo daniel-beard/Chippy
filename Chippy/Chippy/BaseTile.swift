@@ -13,10 +13,12 @@ class BaseTile: Tile {
 
     // This value is set to the name of the TileSet tile. E.g. redkey, Floor, etc.
     var name: String = ""
-    let layer: TileLayer
 
-    required init(_ name: String, layer: TileLayer) {
+    func layer() -> TileLayer {
+        fatalError("Subclasses MUST override")
+    }
+
+    required init(_ name: String) {
         self.name = name
-        self.layer = layer
     }
 }

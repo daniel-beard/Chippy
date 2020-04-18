@@ -22,6 +22,9 @@ class TileManager {
     private var interactiveTileSet: SKTileMapNode
     private var moveableTileSet: SKTileMapNode
 
+    // TileSet
+    var spriteKitTileSet: SKTileSet
+
     private var tileSets: [SKTileMapNode]
 
     // Prebuilt Tile 2dArrays
@@ -33,6 +36,11 @@ class TileManager {
          interactiveTileSet: SKTileMapNode,
          moveableTileSet: SKTileMapNode) {
 
+        // hacky
+        guard let spriteKitTileSet = SKTileSet(named: "TileSet") else {
+            fatalError("Could not load tile set from disk")
+        }
+        self.spriteKitTileSet = spriteKitTileSet
         self.backgroundTileSet = backgroundTileSet
         self.interactiveTileSet = interactiveTileSet
         self.moveableTileSet = moveableTileSet
@@ -62,7 +70,7 @@ class TileManager {
         result.append( backgroundTiles[pos.x, pos.y] )
         result.append( interactiveTiles[pos.x, pos.y] )
         result.append( moveableTiles[pos.x, pos.y] )
-        return result.flatMap{ $0 }
+        return result.compactMap{ $0 }
     }
 
     public func tiles(at pos: Position, offsetBy direction: MoveDirection) -> [Tile] {
@@ -110,6 +118,26 @@ class TileManager {
 
     //MARK: Tile Operations
 
+    func addTile(at position: Position, type: TileType) {
+        guard let tileClass = TileManager.mapTileEnumToClassName(tileType: type) else {
+            fatalError("Could not create tile from type: \(type.rawValue)")
+        }
+        let newTile = tileClass.init(type.rawValue)
+
+        // Remove any existing tiles at the same layer
+        removeTile(at: position, layer: newTile.layer())
+
+        // Get the tile group from the tileset
+        guard let tileGroup = spriteKitTileSet.tileGroups.first(where: { $0.name == type.rawValue }) else {
+            fatalError("Could not find tileGroup in tileSet: \(type.rawValue)")
+        }
+
+        // Update tileSet and 2D map
+        let tileSet = tileSetFromLayer(newTile.layer())
+        tileSet.setTileGroup(tileGroup, forColumn: position.x, row: position.y)
+        tile2DFromLayer(newTile.layer())[position.x, position.y] = newTile
+    }
+
     func removeForegroundTile(at position: Position) {
         interactiveTileSet.setTileGroup(nil, forColumn: position.x, row: position.y)
         interactiveTiles[position.x, position.y] = nil
@@ -124,7 +152,7 @@ class TileManager {
     }
 
     typealias SpriteTile = (group: SKTileGroup?, definition: SKTileDefinition?)
-    func setTileGroup(_ spriteTile: SpriteTile, at position: Position, layer: TileLayer) {
+    private func setTileGroup(_ spriteTile: SpriteTile, at position: Position, layer: TileLayer) {
         let tileSet = tileSetFromLayer(layer)
         guard let group = spriteTile.group, let definition = spriteTile.definition else {
             tileSet.setTileGroup(nil, forColumn: position.x, row: position.y)
@@ -187,27 +215,45 @@ private extension TileManager {
     }
 
     // Factory method to create concrete tiles from their tileset names.
+    // Used when populating our 2D maps from the existing level tilemaps.
     func tileFactory(type: String) -> Tile? {
-        switch type {
 
-        // Layer one tiles
-        case "Floor":           return FloorTile(type, layer: .one)
-        case "Help":            return HelpTile(type, layer: .one)
-        case "Home":            return HomeTile(type, layer: .one)
-        case "Block":           return BlockTile(type, layer: .one)
-
-        // Layer two tiles
-        case "Chip":            return ChipTile(type, layer: .two)
-        case "Board":           return BoardTile(type, layer: .two)
-        case "keyred", "keyblue", "keygreen", "keyyellow": return KeyTile(type, layer: .two)
-        case "lockred", "lockblue", "lockgreen", "lockyellow": return LockTile(type, layer: .two)
-        case "bootfire", "bootice": return BootTile(type, layer: .two)
-
-        // Layer three tiles
-        case "MovableBlock":    return MovableBlock(type, layer: .three)
-
-        default: print("Could not find tile implementation for tile type: \(type)")
+        guard let tileType = TileType(rawValue: type) else {
+            print("Could not find tile implementation for tile type: \(type)")
+            return nil
         }
-        return nil
+
+        guard let tileClass = TileManager.mapTileEnumToClassName(tileType: tileType) else {
+            fatalError("Class mapping not found for tile type: \(type)")
+        }
+        return tileClass.init(type)
+    }
+
+    /// We need this because our mapping from tile type isn't 1-1 with class names
+    /// Also centralizes this mapping.
+    /// Some classes hold multiple types, e.g. boots, keys, locks, etc.
+    static func mapTileEnumToClassName(tileType: TileType) -> Tile.Type? {
+        switch tileType {
+            case .block: return BlockTile.self
+            case .water: return WaterTile.self
+            case .floor: return FloorTile.self
+            case .movableblock: return MovableBlock.self
+            case .help: return HelpTile.self
+            case .home: return HomeTile.self
+            case .chip: return ChipTile.self
+            case .board: return BoardTile.self
+            case .bluekey: fallthrough
+            case .redkey: fallthrough
+            case .greenkey: fallthrough
+            case .yellowkey: return KeyTile.self
+            case .redlock: fallthrough
+            case .bluelock: fallthrough
+            case .greenlock: fallthrough
+            case .yellowlock: return LockTile.self
+            case .fireboot: fallthrough
+            case .iceskate: fallthrough
+            case .flipper: return BootTile.self
+            case .dirt: return DirtTile.self
+        }
     }
 }

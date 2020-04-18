@@ -62,10 +62,9 @@ class GameScene: SKScene {
         addSwipeGesture(to: self, direction: .left, selector: #selector(GameScene.moveLeft))
         addSwipeGesture(to: self, direction: .right, selector: #selector(GameScene.moveRight))
     }
-    
+
+    // Called before each frame is rendered
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
-        
         // Initialize _lastUpdateTime if it has not already been
         if (self.lastUpdateTime == 0) {
             self.lastUpdateTime = currentTime
@@ -75,10 +74,7 @@ class GameScene: SKScene {
         let dt = currentTime - self.lastUpdateTime
         
         // Update entities
-        for entity in self.entities {
-            entity.update(deltaTime: dt)
-        }
-        
+        entities.forEach { $0.update(deltaTime: dt) }
         self.lastUpdateTime = currentTime
     }
 }
@@ -93,7 +89,7 @@ extension GameScene {
 
     func move(direction: MoveDirection) {
 
-        guard let gameManager = LevelRepository.sharedInstance.gameManager else {
+        guard let gameManager = LevelRepository.shared.gameManager else {
             return
         }
 
@@ -110,11 +106,16 @@ extension GameScene {
             // Check game state
             // Load new level.
             if case .completed = gameState {
-                NotificationCenter.default.post(
-                    name: Notification.Name("LoadLevel"),
+                NotificationCenter.default.post(name: Notification.Name("LoadLevel"),
                     object: nil,
-                    userInfo: ["level": gameManager.nextLevelNumber()]
-                )
+                    userInfo: ["level": gameManager.nextLevelNumber()])
+            }
+
+            // Failed / died, restart at same level
+            if case .failed = gameState {
+                NotificationCenter.default.post(name: Notification.Name("LoadLevel"),
+                                                object: nil,
+                                                userInfo: ["level": gameManager.levelMetadata.levelNumber])
             }
         }
 
@@ -141,19 +142,17 @@ extension GameScene {
     }
 
     func setupNotifications() {
-        NotificationCenter.default.addObserver(
-            self,
+        NotificationCenter.default.addObserver(self,
             selector: #selector(GameScene.displayHelp),
-            name: Notification.Name("DisplayHelp"),
-            object: nil
-        )
+            name: Notification.Name("DisplayHelp"), object: nil)
 
-        NotificationCenter.default.addObserver(
-            self,
+        NotificationCenter.default.addObserver(self,
             selector: #selector(GameScene.displayEndGameLabel),
-            name: Notification.Name("DisplayEndGameLabel"),
-            object: nil
-        )
+            name: Notification.Name("DisplayEndGameLabel"), object: nil)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(GameScene.displayDied),
+                                               name: Notification.Name("DisplayDied"), object: nil)
     }
 
     func removeOverlays() {
@@ -162,13 +161,13 @@ extension GameScene {
         if let helpOverlay = scene.childNode(withName: "help_overlay") {
             helpOverlay.removeFromParent()
         }
+        if let diedOverlay = scene.childNode(withName: "died_overlay") {
+            diedOverlay.removeFromParent()
+        }
     }
 
     @objc func displayEndGameLabel(notification: Notification) {
-        guard let scene = scene else {
-            return
-        }
-
+        guard let scene = scene else { return }
         self.gameState = .completed
         self.isPausing = true
         let chippy = LevelLoader.loadPlayerSprite(scene: scene)
@@ -182,6 +181,27 @@ extension GameScene {
         endGameOverlay.position = worldPosition
         endGameOverlay.name = "help_overlay"
         scene.addChild(endGameOverlay)
+
+        afterDelay(0.2) {
+            self.view?.isPaused = true
+            self.isPausing = false
+        }
+    }
+
+    @objc func displayDied(notification: Notification) {
+        guard let scene = scene, let message = notification.userInfo?["message"] as? String else { return }
+
+        gameState = .failed
+        isPausing = true
+        let chippy = LevelLoader.loadPlayerSprite(scene: scene)
+        let background = LevelLoader.loadBackgroundTiles(scene: scene)
+        let diedOverlay = informativeTextLabel(origin: chippy.position, message: message)
+
+        // Convert to world coords.
+        let worldPosition = scene.convert(diedOverlay.position, from: background)
+        diedOverlay.position = worldPosition
+        diedOverlay.name = "died_overlay"
+        scene.addChild(diedOverlay)
 
         afterDelay(0.2) {
             self.view?.isPaused = true

@@ -9,10 +9,34 @@
 import Foundation
 import CoreGraphics
 
+/// Enum that maps from tile type to tileset name
+public enum TileType: String {
+    case water          = "water"
+    case floor          = "Floor"
+    case block          = "Block"
+    case movableblock   = "MovableBlock"
+    case help           = "Help"
+    case home           = "Home"
+    case chip           = "Chip"
+    case board          = "Board"
+    case bluekey        = "keyblue"
+    case redkey         = "keyred"
+    case greenkey       = "keygreen"
+    case yellowkey      = "keyyellow"
+    case redlock        = "lockred"
+    case bluelock       = "lockblue"
+    case greenlock      = "lockgreen"
+    case yellowlock     = "lockyellow"
+    case fireboot       = "bootfire"
+    case iceskate       = "bootice"
+    case flipper        = "bootwater"
+    case dirt           = "dirt"
+}
+
 protocol Tile {
     var name: String { get set }
-    var layer: TileLayer { get }
-    init(_ name: String, layer: TileLayer)
+    func layer() -> TileLayer
+    init(_ name: String)
 }
 
 // Collectable tiles are removed from the tileset after a player visits that tile
@@ -37,7 +61,7 @@ protocol ConditionallyPassable: Passable {
 
     // Called after a player moves to a conditionally passable tile
     // This method is encouraged to change state. E.g. updating key counts after passing through a lock.
-    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo)
+    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position)
 
     // Indicates whether the Game Manager should remove this tile after the player moves through it
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool

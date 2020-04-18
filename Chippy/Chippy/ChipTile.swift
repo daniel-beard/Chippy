@@ -9,6 +9,11 @@
 import Foundation
 
 class ChipTile: BaseTile, Collectable, Passable {
+
+    override func layer() -> TileLayer {
+        return .two
+    }
+
     internal func performCollectableAction(gameManager: GameManager, player: inout PlayerInfo) {
         player.chipCount += 1
     }    
