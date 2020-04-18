@@ -22,7 +22,6 @@ class LockTile: BaseTile, ConditionallyPassable, Lock {
             case "lockyellow":  return player.yellowKeyCount > 0
             default:            fatalError("Unrecognized lock type")
         }
-        return false
     }
 
 

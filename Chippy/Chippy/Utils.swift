@@ -21,20 +21,16 @@ extension Collection {
     /// E.g. [2,3,4].all { $0 > 1 } // true
     /// [2,3,4,5].all { $0 > 3 } // false
     func all(_ condition:(Element) -> Bool) -> Bool {
-        for elem in self {
-            if !condition(elem) {
-                return false
-            }
+        for elem in self where !condition(elem) {
+            return false
         }
         return true
     }
 
     /// Checks if any element in an array passes a precondition
     func any(_ condition:(Element) -> Bool) -> Bool {
-        for elem in self {
-            if condition(elem) {
-                return true
-            }
+        for elem in self where condition(elem) {
+            return true
         }
         return false
     }
@@ -76,7 +72,7 @@ func informativeTextLabel(origin: CGPoint, message: String) -> SKNode {
     return helpOverlay
 }
 
-func addSwipeGesture(to scene: SKScene, direction: UISwipeGestureRecognizerDirection, selector: Selector) {
+func addSwipeGesture(to scene: SKScene, direction: UISwipeGestureRecognizer.Direction, selector: Selector) {
     let swipeGesture = UISwipeGestureRecognizer(target: scene, action: selector)
     swipeGesture.direction = direction
     scene.view?.addGestureRecognizer(swipeGesture)

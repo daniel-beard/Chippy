@@ -10,6 +10,7 @@ import UIKit
 import SpriteKit
 import GameplayKit
 
+//MARK: View Controller Lifecycle
 class GameViewController: UIViewController {
 
     var gameScene: GKScene!
@@ -30,21 +31,9 @@ class GameViewController: UIViewController {
         loadLevel(levelNumber: 2)
     }
 
-    override var shouldAutorotate: Bool {
-        return false
-    }
-
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
-        } else {
-            return .all
-        }
-    }
-
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
+    override var shouldAutorotate: Bool { false }
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask { .all }
+    override var prefersStatusBarHidden: Bool { true }
 }
 
 //MARK: Movement
@@ -56,13 +45,11 @@ internal extension GameViewController {
 
     override var keyCommands: [UIKeyCommand]? {
         return [
-
             // Movement
-            UIKeyCommand(input: UIKeyInputUpArrow,      modifierFlags: [], action: #selector(swipeUp)),
-            UIKeyCommand(input: UIKeyInputDownArrow,    modifierFlags: [], action: #selector(swipeDown)),
-            UIKeyCommand(input: UIKeyInputLeftArrow,    modifierFlags: [], action: #selector(swipeLeft)),
-            UIKeyCommand(input: UIKeyInputRightArrow,   modifierFlags: [], action: #selector(swipeRight)),
-
+            UIKeyCommand(input: UIKeyCommand.inputUpArrow,      modifierFlags: [], action: #selector(swipeUp)),
+            UIKeyCommand(input: UIKeyCommand.inputDownArrow,    modifierFlags: [], action: #selector(swipeDown)),
+            UIKeyCommand(input: UIKeyCommand.inputLeftArrow,    modifierFlags: [], action: #selector(swipeLeft)),
+            UIKeyCommand(input: UIKeyCommand.inputRightArrow,   modifierFlags: [], action: #selector(swipeRight)),
             // Reload
             UIKeyCommand(input: "r", modifierFlags: [], action: #selector(viewDidLoad))
         ]
@@ -93,7 +80,7 @@ fileprivate extension GameViewController {
             if let sceneNode = scene.rootNode as! GameScene? {
 
                 // Create the game manager
-                LevelRepository.sharedInstance.setGameManager(GameManager(scene: sceneNode, levelMetadata: levelMetadata))
+                LevelRepository.shared.setGameManager(GameManager(scene: sceneNode, levelMetadata: levelMetadata))
 
                 self.sceneNode = sceneNode
 

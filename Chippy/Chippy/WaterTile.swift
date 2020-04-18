@@ -20,7 +20,9 @@ class WaterTile: BaseTile, ConditionallyPassable {
 
     func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
         if !player.hasFlippers {
-            //TODO: Die.
+            NotificationCenter.default.post(name: Notification.Name("DisplayDied"), object: nil, userInfo: [
+                "message": "Oops! Chippy can't swim without flippers!"
+            ])
         }
     }
 

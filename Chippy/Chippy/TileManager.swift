@@ -41,11 +41,6 @@ class TileManager {
             fatalError("Could not load tile set from disk")
         }
         self.spriteKitTileSet = spriteKitTileSet
-
-        // debug only
-        print(self.spriteKitTileSet.tileGroups.flatMap { $0.name })
-        let tileGroup = self.spriteKitTileSet.tileGroups[0]
-
         self.backgroundTileSet = backgroundTileSet
         self.interactiveTileSet = interactiveTileSet
         self.moveableTileSet = moveableTileSet
@@ -75,7 +70,7 @@ class TileManager {
         result.append( backgroundTiles[pos.x, pos.y] )
         result.append( interactiveTiles[pos.x, pos.y] )
         result.append( moveableTiles[pos.x, pos.y] )
-        return result.flatMap{ $0 }
+        return result.compactMap{ $0 }
     }
 
     public func tiles(at pos: Position, offsetBy direction: MoveDirection) -> [Tile] {

@@ -40,9 +40,6 @@ class GameManager {
             return false
         }
 
-        // Debugging
-        print("Next position: \(nextPos)")
-
         // Handle passable tiles
         result = result || (nextTiles.all { $0 is Passable })
 
