@@ -179,6 +179,7 @@ class TileManager {
     }
 }
 
+//MARK: Tile Loading
 private extension TileManager {
 
     func loadAllTiles() {
@@ -234,26 +235,49 @@ private extension TileManager {
     /// Some classes hold multiple types, e.g. boots, keys, locks, etc.
     static func mapTileEnumToClassName(tileType: TileType) -> Tile.Type? {
         switch tileType {
-            case .block: return BlockTile.self
-            case .water: return WaterTile.self
-            case .floor: return FloorTile.self
-            case .movableblock: return MovableBlock.self
-            case .help: return HelpTile.self
-            case .home: return HomeTile.self
-            case .chip: return ChipTile.self
-            case .board: return BoardTile.self
-            case .bluekey: fallthrough
-            case .redkey: fallthrough
-            case .greenkey: fallthrough
-            case .yellowkey: return KeyTile.self
-            case .redlock: fallthrough
-            case .bluelock: fallthrough
-            case .greenlock: fallthrough
-            case .yellowlock: return LockTile.self
-            case .fireboot: fallthrough
-            case .iceskate: fallthrough
-            case .flipper: return BootTile.self
-            case .dirt: return DirtTile.self
+            case .block:            return BlockTile.self
+            case .water:            return WaterTile.self
+            case .floor:            return FloorTile.self
+            case .movableblock:     return MovableBlock.self
+            case .help:             return HelpTile.self
+            case .home:             return HomeTile.self
+            case .chip:             return ChipTile.self
+            case .board:            return BoardTile.self
+            case .bluekey:          return KeyTile.self
+            case .redkey:           return KeyTile.self
+            case .greenkey:         return KeyTile.self
+            case .yellowkey:        return KeyTile.self
+            case .redlock:          return LockTile.self
+            case .bluelock:         return LockTile.self
+            case .greenlock:        return LockTile.self
+            case .yellowlock:       return LockTile.self
+            case .fireboot:         return BootTile.self
+            case .iceskate:         return BootTile.self
+            case .flipper:          return BootTile.self
+            case .dirt:             return DirtTile.self
         }
+    }
+}
+
+//MARK: Sprite Loading
+/// These extensions are used for loading raw sprites, for things like the UI
+extension TileManager {
+
+    static func loadUISprite(byType type: TileType, scaleFactor: CGFloat = 1.0) -> SKTileGroup {
+        // Get the tile group from the tileset
+        guard let spriteKitTileSet = SKTileSet(named: "TileSet") else {
+            fatalError("Could not load tile set from disk")
+        }
+        guard let tileGroup = spriteKitTileSet.tileGroups.first(where: { $0.name == type.rawValue }) else {
+            fatalError("Could not find tileGroup in tileSet: \(type.rawValue)")
+        }
+        return tileGroup
+    }
+
+    static func uiTileSet() -> SKTileSet {
+        guard let spriteKitTileSet = SKTileSet(named: "TileSet") else {
+            fatalError("Could not load tile set from disk")
+        }
+        return spriteKitTileSet
     }
 }

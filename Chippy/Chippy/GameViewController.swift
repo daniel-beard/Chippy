@@ -18,22 +18,18 @@ class GameViewController: UIViewController {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-
         setupNotifications()
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadLevel(levelNumber: 2)
+        loadLevel(levelNumber: 1)
     }
 
     override var shouldAutorotate: Bool { false }
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask { .all }
     override var prefersStatusBarHidden: Bool { true }
+    deinit { NotificationCenter.default.removeObserver(self) }
 }
 
 //MARK: Movement

@@ -91,15 +91,15 @@ class GameManager {
 
         tiles.forEach { tile in
             switch (tile) {
-            case is Collectable:
-                handleCollectibleCollision(position: position, tile: (tile as! Collectable))
-            case is ConditionallyPassable:
-                handleConditionallyPassableCollisions(position: position, tile: (tile as! ConditionallyPassable))
-            case is ConditionallyMoveable:
-                handleConditionallyMoveableCollision(position: position,
-                                                      tile: (tile as! ConditionallyMoveable),
-                                                      direction: direction)
-            default: break
+                case is Collectable:
+                    handleCollectibleCollision(position: position, tile: (tile as! Collectable))
+                case is ConditionallyPassable:
+                    handleConditionallyPassableCollisions(position: position, tile: (tile as! ConditionallyPassable))
+                case is ConditionallyMoveable:
+                    handleConditionallyMoveableCollision(position: position,
+                                                          tile: (tile as! ConditionallyMoveable),
+                                                          direction: direction)
+                default: break
             }
         }
     }
@@ -128,6 +128,9 @@ class GameManager {
 
         // Remove sprite from tile map
         tileManager.removeForegroundTile(at: position)
+
+        // Notify there has been a UI change
+        NotificationCenter.default.post(Notification(name: Notification.Name("UpdatePlayerUI")))
     }
 
     func handleConditionallyPassableCollisions(position: Position, tile: ConditionallyPassable) {
@@ -138,6 +141,9 @@ class GameManager {
 
         // Perform action
         tile.playerDidPassConditionalTile(gameManager: self, player: &self.player, position: position)
+
+        // Notify there has been a UI change
+        NotificationCenter.default.post(Notification(name: Notification.Name("UpdatePlayerUI")))
     }
 }
 

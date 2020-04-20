@@ -15,6 +15,13 @@ class GameScene: SKScene {
     var graphs = [String: GKGraph]()
     var cameraScale: CGFloat = 2.0
 
+    // Game UI
+    var levelLabel: SKLabelNode!
+    var timeLabel: SKLabelNode!
+    var chipsLeftLabel: SKLabelNode!
+    var keyUI: SKTileMapNode!
+    var bootUI: SKTileMapNode!
+
     // Indicates that we are running an animation just before pausing.
     // Means that we should discard keypresses.
     var isPausing = false
@@ -23,10 +30,6 @@ class GameScene: SKScene {
     var gameState: GameState = .inProgress
     
     private var lastUpdateTime : TimeInterval = 0
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
 
     override func sceneDidLoad() {
         super.sceneDidLoad()
@@ -77,6 +80,8 @@ class GameScene: SKScene {
         entities.forEach { $0.update(deltaTime: dt) }
         self.lastUpdateTime = currentTime
     }
+
+    deinit { tearDownNotifications() }
 }
 
 //MARK: Movement extension
@@ -153,6 +158,8 @@ extension GameScene {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(GameScene.displayDied),
                                                name: Notification.Name("DisplayDied"), object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(GameScene.updateInventoryUI), name: Notification.Name("UpdatePlayerUI"), object: nil)
     }
 
     func removeOverlays() {
@@ -232,6 +239,27 @@ extension GameScene {
         }
     }
 
+    @objc func updateInventoryUI(notification: Notification) {
+        guard let gameManager = LevelRepository.shared.gameManager else {
+            return
+        }
+        let player = gameManager.player
+
+        let tile = { (type: TileType, tileMap: SKTileMapNode, column: Int) in
+            let sprite = TileManager.loadUISprite(byType: type)
+            tileMap.setTileGroup(sprite, andTileDefinition: SKTileDefinition(), forColumn: column, row: 0)
+        }
+
+        player.hasFlippers  ?   tile(.flipper, bootUI, 0)   : tile(.floor, bootUI, 0)
+        player.hasFireBoots ?   tile(.fireboot, bootUI, 1)  : tile(.floor, bootUI, 1)
+        player.hasIceSkates ?   tile(.iceskate, bootUI, 2)  : tile(.floor, bootUI, 2)
+        //TODO: Suction boots
+        player.redKeyCount    > 0 ? tile(.redkey, keyUI, 0)     : tile(.floor, keyUI, 0)
+        player.greenKeyCount  > 0 ? tile(.greenkey, keyUI, 1)   : tile(.floor, keyUI, 1)
+        player.blueKeyCount   > 0 ? tile(.bluekey, keyUI, 2)    : tile(.floor, keyUI, 2)
+        player.yellowKeyCount > 0 ? tile(.yellowkey, keyUI, 3)  : tile(.floor, keyUI, 3)
+    }
+
     // Responsible for drawing the overlay for the viewport
     // Other dynamic UI elements are drawn elsewhere.
     func drawGameUI() {
@@ -251,6 +279,9 @@ extension GameScene {
         // Math!
 
         let distanceToBorder = (background.tileSize.width * 4.5) / cameraScale
+        let scaledTileSize = tileSize / cameraScale
+        let leftBorderX = 0 - distanceToBorder
+        let rightBorderX = 0 + distanceToBorder
 
         // Top of the level rect
         let topRect = CGRect(x: 0 - (tileSize*10), y: distanceToBorder,
@@ -288,6 +319,33 @@ extension GameScene {
         titleLabel.fontSize = 48.0
         titleLabel.position = CGPoint(x: 0, y: distanceToBorder + 40)
         camera.addChild(titleLabel)
+
+        // Draw label outline
+        //TODO: Finish drawing this label outline, then split into threes for labels
+        let levelInfoOutline = SKShapeNode(rect: CGRect(x: leftBorderX,
+                                                        y: 0 - distanceToBorder - (tileSize * 2),
+                                                        width: scaledTileSize * 9,
+                                                        height: scaledTileSize * 2), cornerRadius: 3.0)
+        levelInfoOutline.fillColor = .white
+        camera.addChild(levelInfoOutline)
+
+        // Boots UI
+        let tileSet = TileManager.uiTileSet()
+        let floorSprite = TileManager.loadUISprite(byType: .floor, scaleFactor: cameraScale)
+        bootUI = SKTileMapNode(tileSet: tileSet, columns: 4, rows: 1, tileSize: CGSize(width: tileSize, height: scaledTileSize), fillWith: floorSprite)
+        bootUI.xScale = 1.0 / cameraScale
+        bootUI.yScale = 1.0 / cameraScale
+        bootUI.position = CGPoint(x: leftBorderX + scaledTileSize + scaledTileSize,
+                                  y: 0 - distanceToBorder - (scaledTileSize * 1.25))
+        camera.addChild(bootUI)
+
+        // Key UI
+        keyUI = SKTileMapNode(tileSet: tileSet, columns: 4, rows: 1, tileSize: CGSize(width: tileSize, height: scaledTileSize), fillWith: floorSprite)
+        keyUI.xScale = 1.0 / cameraScale
+        keyUI.yScale = 1.0 / cameraScale
+        keyUI.position = CGPoint(x: rightBorderX - (scaledTileSize * 2.0),
+                                 y: 0 - distanceToBorder - (scaledTileSize * 1.25))
+        camera.addChild(keyUI)
     }
 }
 
