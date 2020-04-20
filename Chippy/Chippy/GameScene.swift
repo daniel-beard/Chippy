@@ -50,6 +50,8 @@ class GameScene: SKScene {
 
             // debugging
             view?.showsNodeCount = true
+            view?.showsFPS = true
+            view?.showsNodeCount = true
         }
 
         drawGameUI()
@@ -94,14 +96,9 @@ extension GameScene {
 
     func move(direction: MoveDirection) {
 
-        guard let gameManager = LevelRepository.shared.gameManager else {
-            return
-        }
-
+        guard let gameManager = LevelRepository.shared.gameManager else { return }
         // Drop all events if we are in the process of pausing the game with an animation
-        if self.isPausing {
-            return
-        }
+        guard !isPausing else { return }
 
         // unpause the scene (for stuff like the help message)
         if let paused = scene?.view?.isPaused, paused == true {
@@ -244,20 +241,19 @@ extension GameScene {
             return
         }
         let player = gameManager.player
-
         let tile = { (type: TileType, tileMap: SKTileMapNode, column: Int) in
             let sprite = TileManager.loadUISprite(byType: type)
             tileMap.setTileGroup(sprite, andTileDefinition: SKTileDefinition(), forColumn: column, row: 0)
         }
 
-        player.hasFlippers  ?   tile(.flipper, bootUI, 0)   : tile(.floor, bootUI, 0)
-        player.hasFireBoots ?   tile(.fireboot, bootUI, 1)  : tile(.floor, bootUI, 1)
-        player.hasIceSkates ?   tile(.iceskate, bootUI, 2)  : tile(.floor, bootUI, 2)
+        player.hasFlippers  ?   tile(.flipperfloor, bootUI, 0)   : tile(.floor, bootUI, 0)
+        player.hasFireBoots ?   tile(.firebootfloor, bootUI, 1)  : tile(.floor, bootUI, 1)
+        player.hasIceSkates ?   tile(.iceskatefloor, bootUI, 2)  : tile(.floor, bootUI, 2)
         //TODO: Suction boots
-        player.redKeyCount    > 0 ? tile(.redkey, keyUI, 0)     : tile(.floor, keyUI, 0)
-        player.greenKeyCount  > 0 ? tile(.greenkey, keyUI, 1)   : tile(.floor, keyUI, 1)
-        player.blueKeyCount   > 0 ? tile(.bluekey, keyUI, 2)    : tile(.floor, keyUI, 2)
-        player.yellowKeyCount > 0 ? tile(.yellowkey, keyUI, 3)  : tile(.floor, keyUI, 3)
+        player.redKeyCount    > 0 ? tile(.redkeyfloor, keyUI, 0)     : tile(.floor, keyUI, 0)
+        player.greenKeyCount  > 0 ? tile(.greenkeyfloor, keyUI, 1)   : tile(.floor, keyUI, 1)
+        player.blueKeyCount   > 0 ? tile(.bluekeyfloor, keyUI, 2)    : tile(.floor, keyUI, 2)
+        player.yellowKeyCount > 0 ? tile(.yellowkeyfloor, keyUI, 3)  : tile(.floor, keyUI, 3)
     }
 
     // Responsible for drawing the overlay for the viewport
@@ -333,16 +329,14 @@ extension GameScene {
         let tileSet = TileManager.uiTileSet()
         let floorSprite = TileManager.loadUISprite(byType: .floor, scaleFactor: cameraScale)
         bootUI = SKTileMapNode(tileSet: tileSet, columns: 4, rows: 1, tileSize: CGSize(width: tileSize, height: scaledTileSize), fillWith: floorSprite)
-        bootUI.xScale = 1.0 / cameraScale
-        bootUI.yScale = 1.0 / cameraScale
+        bootUI.setScale(1.0 / cameraScale)
         bootUI.position = CGPoint(x: leftBorderX + scaledTileSize + scaledTileSize,
                                   y: 0 - distanceToBorder - (scaledTileSize * 1.25))
         camera.addChild(bootUI)
 
         // Key UI
         keyUI = SKTileMapNode(tileSet: tileSet, columns: 4, rows: 1, tileSize: CGSize(width: tileSize, height: scaledTileSize), fillWith: floorSprite)
-        keyUI.xScale = 1.0 / cameraScale
-        keyUI.yScale = 1.0 / cameraScale
+        keyUI.setScale(1.0 / cameraScale)
         keyUI.position = CGPoint(x: rightBorderX - (scaledTileSize * 2.0),
                                  y: 0 - distanceToBorder - (scaledTileSize * 1.25))
         camera.addChild(keyUI)

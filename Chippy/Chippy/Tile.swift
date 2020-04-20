@@ -31,6 +31,16 @@ public enum TileType: String {
     case iceskate       = "bootice"
     case flipper        = "bootwater"
     case dirt           = "dirt"
+
+    // UI only tiles
+    case firebootfloor  = "firebootfloor"
+    case iceskatefloor  = "iceskatefloor"
+    case flipperfloor   = "flipperfloor"
+    //TODO: Suction boots
+    case redkeyfloor    = "redkeyfloor"
+    case bluekeyfloor   = "bluekeyfloor"
+    case yellowkeyfloor = "yellowkeyfloor"
+    case greenkeyfloor  = "greenkeyfloor"
 }
 
 protocol Tile {

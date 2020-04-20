@@ -235,26 +235,37 @@ private extension TileManager {
     /// Some classes hold multiple types, e.g. boots, keys, locks, etc.
     static func mapTileEnumToClassName(tileType: TileType) -> Tile.Type? {
         switch tileType {
-            case .block:            return BlockTile.self
-            case .water:            return WaterTile.self
-            case .floor:            return FloorTile.self
-            case .movableblock:     return MovableBlock.self
-            case .help:             return HelpTile.self
-            case .home:             return HomeTile.self
-            case .chip:             return ChipTile.self
-            case .board:            return BoardTile.self
-            case .bluekey:          return KeyTile.self
-            case .redkey:           return KeyTile.self
-            case .greenkey:         return KeyTile.self
-            case .yellowkey:        return KeyTile.self
-            case .redlock:          return LockTile.self
-            case .bluelock:         return LockTile.self
-            case .greenlock:        return LockTile.self
-            case .yellowlock:       return LockTile.self
-            case .fireboot:         return BootTile.self
-            case .iceskate:         return BootTile.self
-            case .flipper:          return BootTile.self
-            case .dirt:             return DirtTile.self
+        case .block:            return BlockTile.self
+        case .water:            return WaterTile.self
+        case .floor:            return FloorTile.self
+        case .movableblock:     return MovableBlock.self
+        case .help:             return HelpTile.self
+        case .home:             return HomeTile.self
+        case .chip:             return ChipTile.self
+        case .board:            return BoardTile.self
+        case .bluekey:          return KeyTile.self
+        case .redkey:           return KeyTile.self
+        case .greenkey:         return KeyTile.self
+        case .yellowkey:        return KeyTile.self
+        case .redlock:          return LockTile.self
+        case .bluelock:         return LockTile.self
+        case .greenlock:        return LockTile.self
+        case .yellowlock:       return LockTile.self
+        case .fireboot:         return BootTile.self
+        case .iceskate:         return BootTile.self
+        case .flipper:          return BootTile.self
+        case .dirt:             return DirtTile.self
+
+        // UI only tiles
+        //==========================================
+        case .firebootfloor:    return BootTile.self
+        case .iceskatefloor:    return BootTile.self
+        case .flipperfloor:     return BootTile.self
+        //TODO: Suction boots
+        case .redkeyfloor:      return KeyTile.self
+        case .bluekeyfloor:     return KeyTile.self
+        case .greenkeyfloor:    return KeyTile.self
+        case .yellowkeyfloor:   return KeyTile.self
         }
     }
 }
