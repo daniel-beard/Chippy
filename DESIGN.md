@@ -1,9 +1,10 @@
 This document is a brain dump on rules and current design.
 
 **TODO**
-- Create a water block
-- Create a dirt block
-- Add the moveable block change to dirt when pushed in water.
+- Add suction cup boots.
+- Add gravel block
+- Add monster sprite
+- Add monster AI
 
 ### Tiles
 Tiles will be split up into 3 distinct layers:
