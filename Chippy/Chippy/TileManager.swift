@@ -254,6 +254,7 @@ private extension TileManager {
         case .fireboot:         return BootTile.self
         case .iceskate:         return BootTile.self
         case .flipper:          return BootTile.self
+        case .suctionboot:      return BootTile.self
         case .dirt:             return DirtTile.self
 
         // UI only tiles
@@ -261,7 +262,7 @@ private extension TileManager {
         case .firebootfloor:    return BootTile.self
         case .iceskatefloor:    return BootTile.self
         case .flipperfloor:     return BootTile.self
-        //TODO: Suction boots
+        case .suctionbootfloor: return BootTile.self
         case .redkeyfloor:      return KeyTile.self
         case .bluekeyfloor:     return KeyTile.self
         case .greenkeyfloor:    return KeyTile.self

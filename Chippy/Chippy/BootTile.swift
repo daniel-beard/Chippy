@@ -19,7 +19,7 @@ class BootTile: BaseTile, Passable, Collectable, Boot {
             case "bootfire":    player.hasFireBoots = true
             case "bootice":     player.hasIceSkates = true
             case "bootwater":   player.hasFlippers = true
-            //TODO: Suction boots
+            case "bootsuction": player.hasSuctionBoots = true
             default: fatalError("Unknown key type!")
         }
     }

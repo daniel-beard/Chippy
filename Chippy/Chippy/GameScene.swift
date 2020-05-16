@@ -13,7 +13,7 @@ class GameScene: SKScene {
 
     var entities = [GKEntity]()
     var graphs = [String: GKGraph]()
-    var cameraScale: CGFloat = 2.0
+    var cameraScale: CGFloat = 2.5
 
     // Game UI
     var levelLabel: SKLabelNode!
@@ -246,10 +246,10 @@ extension GameScene {
             tileMap.setTileGroup(sprite, andTileDefinition: SKTileDefinition(), forColumn: column, row: 0)
         }
 
-        player.hasFlippers  ?   tile(.flipperfloor, bootUI, 0)   : tile(.floor, bootUI, 0)
-        player.hasFireBoots ?   tile(.firebootfloor, bootUI, 1)  : tile(.floor, bootUI, 1)
-        player.hasIceSkates ?   tile(.iceskatefloor, bootUI, 2)  : tile(.floor, bootUI, 2)
-        //TODO: Suction boots
+        player.hasFlippers      ?   tile(.flipperfloor, bootUI, 0)   : tile(.floor, bootUI, 0)
+        player.hasFireBoots     ?   tile(.firebootfloor, bootUI, 1)  : tile(.floor, bootUI, 1)
+        player.hasIceSkates     ?   tile(.iceskatefloor, bootUI, 2)  : tile(.floor, bootUI, 2)
+        player.hasSuctionBoots  ? tile(.suctionbootfloor, bootUI, 3) : tile(.floor, bootUI, 3)
         player.redKeyCount    > 0 ? tile(.redkeyfloor, keyUI, 0)     : tile(.floor, keyUI, 0)
         player.greenKeyCount  > 0 ? tile(.greenkeyfloor, keyUI, 1)   : tile(.floor, keyUI, 1)
         player.blueKeyCount   > 0 ? tile(.bluekeyfloor, keyUI, 2)    : tile(.floor, keyUI, 2)

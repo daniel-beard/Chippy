@@ -30,13 +30,14 @@ public enum TileType: String {
     case fireboot       = "bootfire"
     case iceskate       = "bootice"
     case flipper        = "bootwater"
+    case suctionboot    = "bootsuction"
     case dirt           = "dirt"
 
     // UI only tiles
-    case firebootfloor  = "firebootfloor"
-    case iceskatefloor  = "iceskatefloor"
-    case flipperfloor   = "flipperfloor"
-    //TODO: Suction boots
+    case firebootfloor      = "firebootfloor"
+    case iceskatefloor      = "iceskatefloor"
+    case flipperfloor       = "flipperfloor"
+    case suctionbootfloor   = "suctionbootfloor"
     case redkeyfloor    = "redkeyfloor"
     case bluekeyfloor   = "bluekeyfloor"
     case yellowkeyfloor = "yellowkeyfloor"
