@@ -11,7 +11,7 @@ import GameplayKit
 
 struct PlayerInfo {
 
-    var sprite: SKNode
+    var sprite: SKSpriteNode
     var chipCount: Int = 0
 
     var redKeyCount:    Int = 0
@@ -23,13 +23,30 @@ struct PlayerInfo {
     var hasFlippers:        Bool = false
     var hasIceSkates:       Bool = false
     var hasSuctionBoots:    Bool = false
+
+    var previousMoveDirection: MoveDirection
     
-    init(sprite: SKNode) {
+    init(sprite: SKSpriteNode) {
         self.sprite = sprite
+        self.previousMoveDirection = .down
     }
 
     func absolutePoint() -> CGPoint {
         return sprite.position
+    }
+
+    func updateSpriteForMoveDirection(moveDirection: MoveDirection) {
+        self.sprite.removeAllActions()
+        let waitAction = SKAction.wait(forDuration: 1.0)
+        let resetChippySprite = SKAction.setTexture(SKTexture(imageNamed: "chippyfront"))
+        let group = SKAction.sequence([waitAction, resetChippySprite])
+        switch moveDirection {
+            case .up:       self.sprite.texture = SKTexture(imageNamed: "chippyback")
+            case .down:     self.sprite.texture = SKTexture(imageNamed: "chippyfront")
+            case .left:     self.sprite.texture = SKTexture(imageNamed: "chippyleft")
+            case .right:    self.sprite.texture = SKTexture(imageNamed: "chippyright")
+        }
+        self.sprite.run(group)
     }
 }
 

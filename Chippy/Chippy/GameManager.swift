@@ -77,6 +77,7 @@ class GameManager {
 
         // Move player sprite to offset the tilemap movement
         player.sprite.position = newTileCenter
+        player.updateSpriteForMoveDirection(moveDirection: moveDirection)
 
         // Handle collisions & side effects
         handleCollisions(position: nextPos, direction: moveDirection)

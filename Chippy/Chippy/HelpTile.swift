@@ -19,13 +19,9 @@ class HelpTile: BaseTile, ConditionallyPassable {
     }
 
     func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
-        NotificationCenter.default.post(
-            name: Notification.Name("DisplayHelp"),
-            object: nil,
-            userInfo: [
-                "message": gameManager.levelMetadata.helpMessage
-            ]
-        )
+        NotificationCenter.gameNotification(name: Notification.Name("DisplayHelp"), userInfo: [
+            "message": gameManager.levelMetadata.helpMessage
+        ])
     }
 
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool {

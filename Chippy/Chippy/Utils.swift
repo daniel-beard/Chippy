@@ -36,6 +36,18 @@ extension Collection {
     }
 }
 
+// Because we communicate from GameManager -> GameScene with notifications,
+// This extension attempts to prevent simulataneous access to game objects
+// This is a bit of a kludge, but by having this separate, I can at least switch out this implementation
+// with a better approach in future.
+extension NotificationCenter {
+    class func gameNotification(name: Notification.Name, userInfo: [AnyHashable : Any]? = nil) {
+        afterDelay(0.01) {
+            NotificationCenter.default.post(name: name, object: nil, userInfo: userInfo)
+        }
+    }
+}
+
 func afterDelay(_ delay: TimeInterval, performBlock block:@escaping () -> Void) {
     let dispatchTime = DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
     DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: block)

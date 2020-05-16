@@ -174,7 +174,8 @@ extension GameScene {
         guard let scene = scene else { return }
         self.gameState = .completed
         self.isPausing = true
-        let chippy = LevelLoader.loadPlayerSprite(scene: scene)
+        guard let gameManager = LevelRepository.shared.gameManager else { return }
+        let chippy = gameManager.player.sprite
         let background = LevelLoader.loadBackgroundTiles(scene: scene)
         let message = "Congratulations, a new record!\nPress any key to continue."
         let endGameOverlay = informativeTextLabel(origin: chippy.position,
@@ -194,10 +195,11 @@ extension GameScene {
 
     @objc func displayDied(notification: Notification) {
         guard let scene = scene, let message = notification.userInfo?["message"] as? String else { return }
+        guard let gameManager = LevelRepository.shared.gameManager else { return }
 
         gameState = .failed
         isPausing = true
-        let chippy = LevelLoader.loadPlayerSprite(scene: scene)
+        let chippy = gameManager.player.sprite
         let background = LevelLoader.loadBackgroundTiles(scene: scene)
         let diedOverlay = informativeTextLabel(origin: chippy.position, message: message)
 
@@ -214,13 +216,14 @@ extension GameScene {
     }
 
     @objc func displayHelp(notification: Notification) {
-
+        guard let gameManager = LevelRepository.shared.gameManager else { return }
         guard let scene = scene, let message = notification.userInfo?["message"] as? String else {
             return
         }
 
+
         self.isPausing = true
-        let chippy = LevelLoader.loadPlayerSprite(scene: scene)
+        let chippy = gameManager.player.sprite
         let background = LevelLoader.loadBackgroundTiles(scene: scene)
         let helpOverlay = informativeTextLabel(origin: chippy.position, message: message)
 

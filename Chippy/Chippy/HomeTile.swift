@@ -20,7 +20,7 @@ class HomeTile: BaseTile, ConditionallyPassable {
 
     func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
         // Display end game message
-        NotificationCenter.default.post(name: Notification.Name("DisplayEndGameLabel"), object: nil)
+        NotificationCenter.gameNotification(name: Notification.Name("DisplayEndGameLabel"))
     }
 
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool {
