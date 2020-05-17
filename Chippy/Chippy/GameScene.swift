@@ -11,7 +11,6 @@ import GameplayKit
 
 class GameScene: SKScene {
 
-    var entities = [GKEntity]()
     var graphs = [String: GKGraph]()
     var cameraScale: CGFloat = 2.5
 
@@ -25,6 +24,9 @@ class GameScene: SKScene {
     // Indicates that we are running an animation just before pausing.
     // Means that we should discard keypresses.
     var isPausing = false
+
+    // Entity manager
+    var entityManager: EntityManager!
 
     // Game State: Used to determine actions after pausing or showing messages
     var gameState: GameState = .inProgress
@@ -66,6 +68,19 @@ class GameScene: SKScene {
         addSwipeGesture(to: self, direction: .down, selector: #selector(GameScene.moveDown))
         addSwipeGesture(to: self, direction: .left, selector: #selector(GameScene.moveLeft))
         addSwipeGesture(to: self, direction: .right, selector: #selector(GameScene.moveRight))
+
+        entityManager = EntityManager(scene: self)
+
+        guard let gameManager = LevelRepository.shared.gameManager else { return }
+        let chippyPosition = gameManager.player.sprite.position
+
+        let bugEntity = BugEntity(entityManager: entityManager)
+        if let bugSprite = bugEntity.component(ofType: SpriteComponent.self) {
+            let gridPos = gameManager.tileManager.positionToAbsolutePoint(
+                offset(position: gameManager.tileManager.absolutePointToPosition(chippyPosition), byDirection: .down))
+            bugSprite.node.position = gridPos
+        }
+        entityManager.add(bugEntity)
     }
 
     // Called before each frame is rendered
@@ -79,7 +94,7 @@ class GameScene: SKScene {
         let dt = currentTime - self.lastUpdateTime
         
         // Update entities
-        entities.forEach { $0.update(deltaTime: dt) }
+        entityManager.update(dt)
         self.lastUpdateTime = currentTime
     }
 

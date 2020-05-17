@@ -10,21 +10,13 @@ import Foundation
 
 class HelpTile: BaseTile, ConditionallyPassable {
 
-    override func layer() -> TileLayer {
-        return .one
-    }
-
-    func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool {
-        return true
-    }
+    override func layer() -> TileLayer { .one }
+    func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool { true }
+    func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool { false }
 
     func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
         NotificationCenter.gameNotification(name: Notification.Name("DisplayHelp"), userInfo: [
             "message": gameManager.levelMetadata.helpMessage
         ])
-    }
-
-    func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool {
-        return false
     }
 }

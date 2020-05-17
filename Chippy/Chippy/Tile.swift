@@ -100,6 +100,12 @@ protocol ConditionallyMoveable: Tile {
                                           direction: MoveDirection)
 }
 
+// Tiles that can capture, or move the player in some way.
+// They have the capability to capture key inputs
+protocol PlayerEffectable: ConditionallyPassable {
+    //TODO: Figure out what to put here...
+}
+
 // All keys conform to this protocol
 protocol Key: Tile {}
 

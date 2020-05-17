@@ -10,7 +10,21 @@ import Foundation
 import CoreGraphics
 import GameplayKit
 
+
+// MARK: Points and vectors
+extension vector_float2 {
+  init(_ point: CGPoint) {
+    self.init(x: Float(point.x), y: Float(point.y))
+  }
+}
+
 extension CGPoint {
+    init(_ point: vector_float2) {
+      self.init()
+      self.x = CGFloat(point.x)
+      self.y = CGFloat(point.y)
+    }
+
     static func +(lhs: CGPoint, rhs: CGPoint) -> CGPoint {
         return CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
     }
