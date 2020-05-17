@@ -10,9 +10,7 @@ import Foundation
 
 class BootTile: BaseTile, Passable, Collectable, Boot {
 
-    override func layer() -> TileLayer {
-        return .two
-    }
+    override func layer() -> TileLayer { .two }
 
     func performCollectableAction(gameManager: GameManager, player: inout PlayerInfo) {
         switch name {

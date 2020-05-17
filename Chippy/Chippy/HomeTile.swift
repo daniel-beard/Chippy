@@ -10,20 +10,12 @@ import Foundation
 
 class HomeTile: BaseTile, ConditionallyPassable {
 
-    override func layer() -> TileLayer {
-        return .one
-    }
-
-    func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool {
-        return true
-    }
+    override func layer() -> TileLayer { .one }
+    func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool { false }
+    func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool { true }
 
     func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
         // Display end game message
         NotificationCenter.gameNotification(name: Notification.Name("DisplayEndGameLabel"))
-    }
-
-    func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool {
-        return false
     }
 }

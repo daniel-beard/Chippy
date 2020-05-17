@@ -258,6 +258,9 @@ private extension TileManager {
         case .dirt:             return DirtTile.self
         case .fire:             return FireTile.self
 
+        // Monsters
+        case .bug:              return BugTile.self
+
         // UI only tiles
         //==========================================
         case .firebootfloor:    return BootTile.self

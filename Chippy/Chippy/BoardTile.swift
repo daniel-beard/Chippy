@@ -10,9 +10,8 @@ import Foundation
 
 class BoardTile: BaseTile, ConditionallyPassable {
 
-    override func layer() -> TileLayer {
-        return .two
-    }
+    override func layer() -> TileLayer { .two }
+    func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool { true }
 
     func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool {
         return player.chipCount >= gameManager.levelMetadata.chipsRequired
@@ -20,9 +19,5 @@ class BoardTile: BaseTile, ConditionallyPassable {
 
     func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
         // nothin'
-    }
-
-    func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool {
-        return true
     }
 }

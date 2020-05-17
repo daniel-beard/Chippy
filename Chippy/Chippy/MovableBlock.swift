@@ -11,9 +11,7 @@ import CoreGraphics
 
 class MovableBlock: BaseTile, Passable, ConditionallyMoveable {
 
-    override func layer() -> TileLayer {
-        return .three
-    }
+    override func layer() -> TileLayer { .three }
 
     func canPlayerMoveTile(gameManager: GameManager,
                            player: PlayerInfo,

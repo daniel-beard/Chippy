@@ -10,13 +10,9 @@ import Foundation
 
 class WaterTile: BaseTile, ConditionallyPassable {
 
-    override func layer() -> TileLayer {
-        return .one
-    }
-
-    func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool {
-        return true
-    }
+    override func layer() -> TileLayer { .one }
+    func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool { true }
+    func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool { false }
 
     func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
         if !player.hasFlippers {
@@ -24,9 +20,5 @@ class WaterTile: BaseTile, ConditionallyPassable {
                 "message": "Oops! Chippy can't swim without flippers!"
             ])
         }
-    }
-
-    func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool {
-        return false
     }
 }
