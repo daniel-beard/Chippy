@@ -161,13 +161,8 @@ extension GameScene {
 
     func removeOverlays() {
         guard let scene = scene else { return }
-
-        if let helpOverlay = scene.childNode(withName: "help_overlay") {
-            helpOverlay.removeFromParent()
-        }
-        if let diedOverlay = scene.childNode(withName: "died_overlay") {
-            diedOverlay.removeFromParent()
-        }
+        scene.childNode(withName: "help_overlay")?.removeFromParent()
+        scene.childNode(withName: "died_overlay")?.removeFromParent()
     }
 
     @objc func displayEndGameLabel(notification: Notification) {
@@ -177,6 +172,7 @@ extension GameScene {
         guard let gameManager = LevelRepository.shared.gameManager else { return }
         let chippy = gameManager.player.sprite
         let background = LevelLoader.loadBackgroundTiles(scene: scene)
+        //TODO: Add proper records..
         let message = "Congratulations, a new record!\nPress any key to continue."
         let endGameOverlay = informativeTextLabel(origin: chippy.position,
                                                   message: message)
@@ -319,16 +315,31 @@ extension GameScene {
         titleLabel.position = CGPoint(x: 0, y: distanceToBorder + 40)
         camera.addChild(titleLabel)
 
-        // Draw label outline
-        //TODO: Finish drawing this label outline, then split into threes for labels
-        let levelInfoOutline = SKShapeNode(rect: CGRect(x: leftBorderX,
-                                                        y: 0 - distanceToBorder - (tileSize * 2),
+        // Level Info UI
+        //===============================================
+
+        let levelInfoOutline = SKShapeNode(rect: CGRect(x: 0, y: 0,
                                                         width: scaledTileSize * 9,
                                                         height: scaledTileSize * 2), cornerRadius: 3.0)
-        levelInfoOutline.fillColor = .white
+        levelInfoOutline.position = CGPoint(x: leftBorderX, y: 0 - distanceToBorder - (tileSize * 2))
+
+        levelInfoOutline.fillColor = .lightGray
         camera.addChild(levelInfoOutline)
 
+        let titleTimeLabel = SKLabelNode(text: "TIME")
+        titleTimeLabel.fontColor = .black
+        titleTimeLabel.fontSize = 20
+        //TODO: Calculate this from the sizes..
+        titleTimeLabel.position = CGPoint(x: scaledTileSize, y: scaledTileSize)
+        levelInfoOutline.addChild(titleTimeLabel)
+
+
+
+
+        //TODO: Labels and text
+
         // Boots UI
+        //===============================================
         let tileSet = TileManager.uiTileSet()
         let floorSprite = TileManager.loadUISprite(byType: .floor, scaleFactor: cameraScale)
         bootUI = SKTileMapNode(tileSet: tileSet, columns: 4, rows: 1, tileSize: CGSize(width: tileSize, height: scaledTileSize), fillWith: floorSprite)
@@ -338,6 +349,7 @@ extension GameScene {
         camera.addChild(bootUI)
 
         // Key UI
+        //===============================================
         keyUI = SKTileMapNode(tileSet: tileSet, columns: 4, rows: 1, tileSize: CGSize(width: tileSize, height: scaledTileSize), fillWith: floorSprite)
         keyUI.setScale(1.0 / cameraScale)
         keyUI.position = CGPoint(x: rightBorderX - (scaledTileSize * 2.0),

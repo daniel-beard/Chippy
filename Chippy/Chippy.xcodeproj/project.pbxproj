@@ -37,6 +37,7 @@
 		2443375C1D31D84F000E485B /* TileSet.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2443375B1D31D84F000E485B /* TileSet.sks */; };
 		24CBD4681EDCEBEE00154179 /* BootTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CBD4671EDCEBEE00154179 /* BootTile.swift */; };
 		24D487481D3322CD00AC1095 /* Level1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 24D487471D3322CD00AC1095 /* Level1.sks */; };
+		24F9D2692470F80E007E541C /* FireTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D2682470F80E007E541C /* FireTile.swift */; };
 		24FA9F2B1EDCC66F0051F3E7 /* Tile2DArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FA9F2A1EDCC66F0051F3E7 /* Tile2DArray.swift */; };
 		24FDE3261FCA7C2C00814A9D /* DirtTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FDE3251FCA7C2C00814A9D /* DirtTile.swift */; };
 		24FDE3281FCA7CB400814A9D /* WaterTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FDE3271FCA7CB300814A9D /* WaterTile.swift */; };
@@ -75,6 +76,7 @@
 		2443375B1D31D84F000E485B /* TileSet.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = TileSet.sks; sourceTree = "<group>"; };
 		24CBD4671EDCEBEE00154179 /* BootTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BootTile.swift; sourceTree = "<group>"; };
 		24D487471D3322CD00AC1095 /* Level1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level1.sks; sourceTree = "<group>"; };
+		24F9D2682470F80E007E541C /* FireTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireTile.swift; sourceTree = "<group>"; };
 		24FA9F2A1EDCC66F0051F3E7 /* Tile2DArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tile2DArray.swift; sourceTree = "<group>"; };
 		24FDE3251FCA7C2C00814A9D /* DirtTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirtTile.swift; sourceTree = "<group>"; };
 		24FDE3271FCA7CB300814A9D /* WaterTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterTile.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				24118CC61E6CB334004A8AED /* HomeTile.swift */,
 				24118CCC1E6CCFA2004A8AED /* MovableBlock.swift */,
 				24FDE3251FCA7C2C00814A9D /* DirtTile.swift */,
+				24F9D2682470F80E007E541C /* FireTile.swift */,
 			);
 			name = TileTypes;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 				24FDE3281FCA7CB400814A9D /* WaterTile.swift in Sources */,
 				24118CAB1E5A93CC004A8AED /* Utils.swift in Sources */,
 				24118CBD1E6253B4004A8AED /* LevelRepository.swift in Sources */,
+				24F9D2692470F80E007E541C /* FireTile.swift in Sources */,
 				24118CA71E5A8D12004A8AED /* Player.swift in Sources */,
 				24118CA21E5A8CC8004A8AED /* Tile.swift in Sources */,
 				244337441D31D552000E485B /* AppDelegate.swift in Sources */,

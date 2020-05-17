@@ -32,6 +32,7 @@ public enum TileType: String {
     case flipper        = "bootwater"
     case suctionboot    = "bootsuction"
     case dirt           = "dirt"
+    case fire           = "fire"
 
     // UI only tiles
     case firebootfloor      = "firebootfloor"

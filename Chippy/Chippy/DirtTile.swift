@@ -10,20 +10,12 @@ import Foundation
 
 class DirtTile: BaseTile, ConditionallyPassable {
 
-    override func layer() -> TileLayer {
-        return .one
-    }
-    
-    func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool {
-        return true
-    }
+    override func layer() -> TileLayer { .one }
+    func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool { true }
+    func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool { false }
 
     func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
         // Change to floor as a player walks over
         gameManager.tileManager.addTile(at: position, type: .floor)
-    }
-
-    func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool {
-        return false
     }
 }

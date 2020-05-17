@@ -256,6 +256,7 @@ private extension TileManager {
         case .flipper:          return BootTile.self
         case .suctionboot:      return BootTile.self
         case .dirt:             return DirtTile.self
+        case .fire:             return FireTile.self
 
         // UI only tiles
         //==========================================
