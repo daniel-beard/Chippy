@@ -1,7 +1,6 @@
 This document is a brain dump on rules and current design.
 
 **TODO**
-- Add suction cup boots.
 - Add gravel block
 - Add monster sprite
 - Add monster AI
@@ -17,6 +16,8 @@ Tiles will be split up into 3 distinct layers:
 - Conveyor blocks
 - Help
 - Home
+
+NOTE: Everything above layer 1 should probably be an entity that we convert at load time.
 
 #### Layer 2
 - Chips

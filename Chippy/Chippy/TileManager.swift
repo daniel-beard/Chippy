@@ -100,16 +100,6 @@ class TileManager {
         }
     }
 
-    // MARK: Moving TileSets
-
-    // Only used when moving the player.
-    // Offset is an absolute value.
-    func offsetTileSets(by offset: CGPoint) {
-        tileSets.forEach { tileSet in
-            tileSet.position = tileSet.position + offset
-        }
-    }
-
     //MARK: Tile Sizing
 
     func tileSize() -> CGSize {

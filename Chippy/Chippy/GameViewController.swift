@@ -89,9 +89,7 @@ fileprivate extension GameViewController {
                 // Present the scene
                 if let view = self.view as! SKView? {
                     view.presentScene(sceneNode)
-
                     view.ignoresSiblingOrder = true
-
                     view.showsFPS = true
                     view.showsNodeCount = true
                 }
