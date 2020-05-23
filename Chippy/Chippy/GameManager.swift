@@ -16,16 +16,21 @@ class GameManager {
     var levelMetadata: LevelMetadata
     var scene: SKScene
 
+    // Entity manager
+    var entityManager: EntityManager!
+
     init(scene: SKScene, levelMetadata: LevelMetadata) {
 
         self.scene = scene
+        self.entityManager = EntityManager(scene: scene)
         self.levelMetadata = levelMetadata
         _ = LevelLoader.verifyLevel(levelNumber: levelMetadata.levelNumber)
         player = PlayerInfo(sprite: LevelLoader.loadPlayerSprite(scene: scene))
         tileManager = TileManager(
             backgroundTileSet: LevelLoader.loadBackgroundTiles(scene: scene),
             interactiveTileSet: LevelLoader.loadForegroundTiles(scene: scene),
-            moveableTileSet: LevelLoader.loadMoveableTiles(scene: scene)
+            moveableTileSet: LevelLoader.loadMoveableTiles(scene: scene),
+            entityManager: entityManager
         )
     }
 

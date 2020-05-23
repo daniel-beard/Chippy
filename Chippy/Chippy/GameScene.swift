@@ -21,12 +21,14 @@ class GameScene: SKScene {
     var keyUI: SKTileMapNode!
     var bootUI: SKTileMapNode!
 
+    // Helpers
+    var gameManager: GameManager! { LevelRepository.shared.gameManager }
+    var entityManager: EntityManager! { LevelRepository.shared.gameManager?.entityManager }
+    var tileManager: TileManager! { LevelRepository.shared.gameManager?.tileManager }
+
     // Indicates that we are running an animation just before pausing.
     // Means that we should discard keypresses.
     var isPausing = false
-
-    // Entity manager
-    var entityManager: EntityManager!
 
     // Game State: Used to determine actions after pausing or showing messages
     var gameState: GameState = .inProgress
@@ -69,12 +71,10 @@ class GameScene: SKScene {
         addSwipeGesture(to: self, direction: .left, selector: #selector(GameScene.moveLeft))
         addSwipeGesture(to: self, direction: .right, selector: #selector(GameScene.moveRight))
 
-        entityManager = EntityManager(scene: self)
-
         guard let gameManager = LevelRepository.shared.gameManager else { return }
         let chippyPosition = gameManager.player.sprite.position
 
-        let bugEntity = BugEntity(entityManager: entityManager)
+        let bugEntity = BugEntity(name: "bug", entityManager: entityManager)
         if let bugSprite = bugEntity.component(ofType: SpriteComponent.self) {
             let gridPos = gameManager.tileManager.positionToAbsolutePoint(
                 offset(position: gameManager.tileManager.absolutePointToPosition(chippyPosition), byDirection: .down))
@@ -94,7 +94,7 @@ class GameScene: SKScene {
         let dt = currentTime - self.lastUpdateTime
         
         // Update entities
-        entityManager.update(dt)
+        gameManager.entityManager.update(dt)
         self.lastUpdateTime = currentTime
     }
 

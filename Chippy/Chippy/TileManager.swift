@@ -27,6 +27,8 @@ class TileManager {
 
     private var tileSets: [SKTileMapNode]
 
+    private var entityManager: EntityManager
+
     // Prebuilt Tile 2dArrays
     private var backgroundTiles: Array2D<Tile>!
     private var interactiveTiles: Array2D<Tile>!
@@ -34,12 +36,14 @@ class TileManager {
 
     init(backgroundTileSet: SKTileMapNode,
          interactiveTileSet: SKTileMapNode,
-         moveableTileSet: SKTileMapNode) {
+         moveableTileSet: SKTileMapNode,
+         entityManager: EntityManager) {
 
         // hacky
         guard let spriteKitTileSet = SKTileSet(named: "TileSet") else {
             fatalError("Could not load tile set from disk")
         }
+        self.entityManager = entityManager
         self.spriteKitTileSet = spriteKitTileSet
         self.backgroundTileSet = backgroundTileSet
         self.interactiveTileSet = interactiveTileSet
@@ -112,7 +116,7 @@ class TileManager {
         guard let tileClass = TileManager.mapTileEnumToClassName(tileType: type) else {
             fatalError("Could not create tile from type: \(type.rawValue)")
         }
-        let newTile = tileClass.init(type.rawValue)
+        let newTile = tileClass.init(name: type.rawValue, entityManager: entityManager)
 
         // Remove any existing tiles at the same layer
         removeTile(at: position, layer: newTile.layer())
@@ -217,7 +221,8 @@ private extension TileManager {
         guard let tileClass = TileManager.mapTileEnumToClassName(tileType: tileType) else {
             fatalError("Class mapping not found for tile type: \(type)")
         }
-        return tileClass.init(type)
+
+        return tileClass.init(name: type, entityManager: entityManager)
     }
 
     /// We need this because our mapping from tile type isn't 1-1 with class names
@@ -249,7 +254,7 @@ private extension TileManager {
         case .fire:             return FireTile.self
 
         // Monsters
-        case .bug:              return BugTile.self
+        case .bug:              return BugEntity.self
 
         // UI only tiles
         //==========================================

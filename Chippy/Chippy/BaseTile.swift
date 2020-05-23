@@ -18,7 +18,8 @@ class BaseTile: Tile {
         fatalError("Subclasses MUST override")
     }
 
-    required init(_ name: String) {
+    // Static tiles don't use the entityManager, but the GKEntity based tiles do.
+    required init(name: String, entityManager: EntityManager) {
         self.name = name
     }
 }
