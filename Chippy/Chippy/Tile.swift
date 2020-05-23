@@ -48,8 +48,10 @@ public enum TileType: String {
     case greenkeyfloor  = "greenkeyfloor"
 }
 
-protocol Tile {
+protocol Tile: class {
     var name: String { get set }
+    var uuid: UUID { get }
+    var position: Position { get set }
     func layer() -> TileLayer
     init(_ name: String)
 }
@@ -100,6 +102,17 @@ protocol ConditionallyMoveable: Tile {
                                           direction: MoveDirection)
 }
 
+// Tiles that can capture, or move the player in some way.
+// They have the capability to capture key inputs
+protocol PlayerEffectable: ConditionallyPassable {
+    //TODO: Figure out what to put here...
+}
+
+/// Tiles that can update themselves
+protocol UpdateableTile: Tile {
+    func update(delta: TimeInterval, gameManager: GameManager)
+}
+
 // All keys conform to this protocol
 protocol Key: Tile {}
 
@@ -110,5 +123,5 @@ protocol Lock: Tile {}
 protocol Boot: Tile {}
 
 // All monsters conform to this protocol
-protocol Monster {}
+protocol Monster: UpdateableTile {}
 

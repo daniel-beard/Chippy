@@ -14,9 +14,10 @@ class GameManager {
     var player: PlayerInfo
     var tileManager: TileManager
     var levelMetadata: LevelMetadata
+    var scene: SKScene
 
     init(scene: SKScene, levelMetadata: LevelMetadata) {
-
+        self.scene = scene
         self.levelMetadata = levelMetadata
         _ = LevelLoader.verifyLevel(levelNumber: levelMetadata.levelNumber)
         player = PlayerInfo(sprite: LevelLoader.loadPlayerSprite(scene: scene))
@@ -25,6 +26,12 @@ class GameManager {
             interactiveTileSet: LevelLoader.loadForegroundTiles(scene: scene),
             moveableTileSet: LevelLoader.loadMoveableTiles(scene: scene)
         )
+    }
+
+    func update(delta: TimeInterval) {
+        // Get all the dynamic tiles and update them
+        let dynamicTiles = tileManager.allUpdateableTiles(forLayer: .three)
+        dynamicTiles.forEach { $0.update(delta: delta, gameManager: self) }
     }
 
     // Checks whether a tile is passable
@@ -66,17 +73,12 @@ class GameManager {
         let currentPos = tileManager.absolutePointToPosition(player.absolutePoint())
         let nextPos = currentPos + Position(x: dx, y: dy)
 
-        // Absolute offset
-        let absoluteOffset = CGPoint(x: CGFloat(-dx) * tileManager.tileSize().width, y: CGFloat(-dy) * tileManager.tileSize().height)
-
         // Center of new tile position
         let newTileCenter = tileManager.centerOfTile(at: nextPos)
 
-        // Move tilesets
-        tileManager.offsetTileSets(by: absoluteOffset)
-
-        // Move player sprite to offset the tilemap movement
+        // Move player sprite + camera
         player.sprite.position = newTileCenter
+        scene.camera?.position = newTileCenter
         player.updateSpriteForMoveDirection(moveDirection: moveDirection)
 
         // Handle collisions & side effects
@@ -150,7 +152,5 @@ class GameManager {
 
 // Level Information
 extension GameManager {
-    func nextLevelNumber() -> Int {
-        return self.levelMetadata.levelNumber + 1
-    }
+    func nextLevelNumber() -> Int { self.levelMetadata.levelNumber + 1 }
 }

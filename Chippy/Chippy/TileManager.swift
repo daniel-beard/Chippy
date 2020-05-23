@@ -28,9 +28,9 @@ class TileManager {
     private var tileSets: [SKTileMapNode]
 
     // Prebuilt Tile 2dArrays
-    private var backgroundTiles: Array2D<Tile>!
-    private var interactiveTiles: Array2D<Tile>!
-    private var moveableTiles: Array2D<Tile>!
+    private var backgroundTiles: Tile2D!
+    private var interactiveTiles: Tile2D!
+    private var moveableTiles: Tile2D!
 
     init(backgroundTileSet: SKTileMapNode,
          interactiveTileSet: SKTileMapNode,
@@ -82,6 +82,26 @@ class TileManager {
         return tile2DFromLayer(layer)[pos.x, pos.y]
     }
 
+    // MARK: Positions from Tiles
+
+    func position(of inTile: Tile, inLayer: TileLayer) -> Position? {
+        let grid = tile2DFromLayer(inLayer)
+        guard let index = grid.matrix.firstIndex(where: { (tile) -> Bool in
+            guard let tile = tile else { return false }
+            return tile.uuid == inTile.uuid
+        }) else { return nil }
+        return grid.gridPosition(for: index)
+    }
+
+    // MARK: Dynamic Tile updates
+
+    func allUpdateableTiles(forLayer layer: TileLayer) -> [UpdateableTile] {
+        let tiles = tile2DFromLayer(layer)
+        return tiles.matrix.compactMap({$0}).filter { (tile) -> Bool in
+            return tile is UpdateableTile
+        } as! [UpdateableTile]
+    }
+
     // MARK: Layer calculations
 
     private func tileSetFromLayer(_ layer: TileLayer) -> SKTileMapNode {
@@ -92,7 +112,7 @@ class TileManager {
         }
     }
 
-    private func tile2DFromLayer(_ layer: TileLayer) -> Array2D<Tile> {
+    private func tile2DFromLayer(_ layer: TileLayer) -> Tile2D {
         switch layer {
             case .one: return backgroundTiles
             case .two: return interactiveTiles
@@ -112,9 +132,7 @@ class TileManager {
 
     //MARK: Tile Sizing
 
-    func tileSize() -> CGSize {
-        return backgroundTileSet.tileSize
-    }
+    func tileSize() -> CGSize { backgroundTileSet.tileSize }
 
     //MARK: Tile Operations
 
@@ -185,17 +203,18 @@ private extension TileManager {
     func loadAllTiles() {
 
         // Get default size:
-        let cols = backgroundTileSet.numberOfColumns
-        let rows = backgroundTileSet.numberOfRows
+        let gridSize = backgroundTileSet.numberOfColumns
+        // For now, assume that levels must be same size
+        //let rows = backgroundTileSet.numberOfRows
 
         // Init with default values
-        backgroundTiles = Array2D<Tile>(cols: cols, rows: rows, defaultValue: nil)
-        interactiveTiles = Array2D<Tile>(cols: cols, rows: rows, defaultValue: nil)
-        moveableTiles = Array2D<Tile>(cols: cols, rows: rows, defaultValue: nil)
+        backgroundTiles = Tile2D(size: gridSize, defaultValue: nil)
+        interactiveTiles = Tile2D(size: gridSize, defaultValue: nil)
+        moveableTiles = Tile2D(size: gridSize, defaultValue: nil)
 
         // Load background tiles
-        for x in 0..<cols {
-            for y in 0..<rows {
+        for x in 0..<gridSize {
+            for y in 0..<gridSize {
                 if let backgroundTile = backgroundTileSet.tileDefinition(atColumn: x, row: y),
                     let name = backgroundTile.name {
                     backgroundTiles[x, y] = tileFactory(type: name)

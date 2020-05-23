@@ -22,6 +22,10 @@ class GameScene: SKScene {
     var keyUI: SKTileMapNode!
     var bootUI: SKTileMapNode!
 
+    // Helpers
+    var gameManager: GameManager! { LevelRepository.shared.gameManager }
+    var tileManager: TileManager! { LevelRepository.shared.gameManager?.tileManager }
+
     // Indicates that we are running an animation just before pausing.
     // Means that we should discard keypresses.
     var isPausing = false
@@ -77,6 +81,9 @@ class GameScene: SKScene {
         
         // Calculate time since last update
         let dt = currentTime - self.lastUpdateTime
+
+        // Update GameManager
+        gameManager.update(delta: dt)
         
         // Update entities
         entities.forEach { $0.update(deltaTime: dt) }

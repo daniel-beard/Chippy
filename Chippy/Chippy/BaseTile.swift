@@ -13,6 +13,10 @@ class BaseTile: Tile {
 
     // This value is set to the name of the TileSet tile. E.g. redkey, Floor, etc.
     var name: String = ""
+    // Tile identifier
+    var uuid: UUID
+    // Don't update manually, this is set via Tile2D
+    var position: Position = Position(x: 0, y: 0)
 
     func layer() -> TileLayer {
         fatalError("Subclasses MUST override")
@@ -20,5 +24,6 @@ class BaseTile: Tile {
 
     required init(_ name: String) {
         self.name = name
+        self.uuid = UUID()
     }
 }
