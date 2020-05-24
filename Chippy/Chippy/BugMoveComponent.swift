@@ -11,70 +11,63 @@ import GameplayKit
 
 class BugMoveComponent: GKAgent2D, GKAgentDelegate {
 
-  let entityManager: EntityManager
-
-  init(entityManager: EntityManager) {
-    self.entityManager = entityManager
-    super.init()
-    delegate = self
-  }
-
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  func agentWillUpdate(_ agent: GKAgent) {
-    guard let spriteComponent = entity?.component(ofType: SpriteComponent.self) else {
-      return
+    override init() {
+        super.init()
+        setup()
     }
 
-    position = vector_float2(spriteComponent.node.position)
-  }
+    required init?(coder aDecoder: NSCoder) {
+        super.init()
+        setup()
+    }
+    override class var supportsSecureCoding: Bool { true }
+
+    func setup() {
+        delegate = self
+        rotation = -(.pi / 2) // facing right
+    }
+
+    override func didAddToEntity() {
+        // if we have a sprite node, set our position for the first update.
+        if let sprite = entity?.component(ofType: GKSKNodeComponent.self) {
+            position = vector_float2(sprite.node.position)
+        }
+    }
+
+    func agentWillUpdate(_ agent: GKAgent) {
+        // nothing
+    }
 
   func agentDidUpdate(_ agent: GKAgent) {
-    guard let spriteComponent = entity?.component(ofType: SpriteComponent.self) else {
-      return
+    // Update default GKSKNodeComponent if we have one
+    if let spriteComponent = entity?.component(ofType: GKSKNodeComponent.self) {
+        spriteComponent.node.position = CGPoint(position)
+        spriteComponent.node.zRotation = CGFloat(rotation)
     }
-
-    spriteComponent.node.position = CGPoint(position)
-    spriteComponent.node.zRotation = CGFloat(self.rotation)
-
   }
 
-//  func closestMoveComponent(for team: Team) -> GKAgent2D? {
-//
-//    var closestMoveComponent: MoveComponent? = nil
-//    var closestDistance = CGFloat(0)
-//
-//    let enemyMoveComponents = entityManager.moveComponents(for: team)
-//    for enemyMoveComponent in enemyMoveComponents {
-//      let distance = (CGPoint(enemyMoveComponent.position) - CGPoint(position)).length()
-//      if closestMoveComponent == nil || distance < closestDistance {
-//        closestMoveComponent = enemyMoveComponent
-//        closestDistance = distance
-//      }
-//    }
-//    return closestMoveComponent
-//
-//  }
+  //TODO: Remove these, just to test out movement quickly
+  var lastMoveTime: CFTimeInterval? = nil
 
   override func update(deltaTime seconds: TimeInterval) {
     super.update(deltaTime: seconds)
+    guard let lastMoveTime = lastMoveTime else { self.lastMoveTime = Date.timeIntervalSinceReferenceDate as Double; return }
+    let now = Date.timeIntervalSinceReferenceDate as Double
+    let moveEvery: TimeInterval = 1.0
 
     guard let entity = entity else { return }
-    self.rotation += 0.01
+//    self.rotation += 0.01
 
-//    guard let entity = entity,
-//      let teamComponent = entity.component(ofType: TeamComponent.self) else {
-//        return
-//    }
-//
-//    guard let enemyMoveComponent = closestMoveComponent(for: teamComponent.team.oppositeTeam()) else {
-//      return
-//    }
-//
-//    let alliedMoveComponents = entityManager.moveComponents(for: teamComponent.team)
-//
-//    behavior = MoveBehavior(targetSpeed: maxSpeed, seek: enemyMoveComponent, avoid: alliedMoveComponents)
+    guard let spriteComponent = entity.component(ofType: GKSKNodeComponent.self) else {
+      return
+    }
+
+    // Position in tile grid
+    if now > lastMoveTime + moveEvery {
+        var positionInGrid = LevelRepository.shared.gameManager!.tileManager.absolutePointToPosition(spriteComponent.node.position)
+        positionInGrid = positionInGrid + MoveDirection.right
+        position = vector_float2(LevelRepository.shared.gameManager!.tileManager.positionToAbsolutePoint(positionInGrid))
+        self.lastMoveTime = Date.timeIntervalSinceReferenceDate as Double
+    }
   }
 }

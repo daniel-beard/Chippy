@@ -51,7 +51,7 @@ public enum TileType: String {
 protocol Tile {
     var name: String { get set }
     func layer() -> TileLayer
-    init(name: String, entityManager: EntityManager)
+    init(name: String)
 }
 
 // Collectable tiles are removed from the tileset after a player visits that tile

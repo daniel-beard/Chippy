@@ -27,8 +27,6 @@ class TileManager {
 
     private var tileSets: [SKTileMapNode]
 
-    private var entityManager: EntityManager
-
     // Prebuilt Tile 2dArrays
     private var backgroundTiles: Array2D<Tile>!
     private var interactiveTiles: Array2D<Tile>!
@@ -36,14 +34,12 @@ class TileManager {
 
     init(backgroundTileSet: SKTileMapNode,
          interactiveTileSet: SKTileMapNode,
-         moveableTileSet: SKTileMapNode,
-         entityManager: EntityManager) {
+         moveableTileSet: SKTileMapNode) {
 
         // hacky
         guard let spriteKitTileSet = SKTileSet(named: "TileSet") else {
             fatalError("Could not load tile set from disk")
         }
-        self.entityManager = entityManager
         self.spriteKitTileSet = spriteKitTileSet
         self.backgroundTileSet = backgroundTileSet
         self.interactiveTileSet = interactiveTileSet
@@ -116,7 +112,7 @@ class TileManager {
         guard let tileClass = TileManager.mapTileEnumToClassName(tileType: type) else {
             fatalError("Could not create tile from type: \(type.rawValue)")
         }
-        let newTile = tileClass.init(name: type.rawValue, entityManager: entityManager)
+        let newTile = tileClass.init(name: type.rawValue)
 
         // Remove any existing tiles at the same layer
         removeTile(at: position, layer: newTile.layer())
@@ -222,7 +218,7 @@ private extension TileManager {
             fatalError("Class mapping not found for tile type: \(type)")
         }
 
-        return tileClass.init(name: type, entityManager: entityManager)
+        return tileClass.init(name: type)
     }
 
     /// We need this because our mapping from tile type isn't 1-1 with class names
@@ -253,9 +249,6 @@ private extension TileManager {
         case .dirt:             return DirtTile.self
         case .fire:             return FireTile.self
 
-        // Monsters
-        case .bug:              return BugEntity.self
-
         // UI only tiles
         //==========================================
         case .firebootfloor:    return BootTile.self
@@ -266,6 +259,9 @@ private extension TileManager {
         case .bluekeyfloor:     return KeyTile.self
         case .greenkeyfloor:    return KeyTile.self
         case .yellowkeyfloor:   return KeyTile.self
+
+        default:
+            fatalError("Found unexpected case")
         }
     }
 }

@@ -29,8 +29,7 @@ class GameManager {
         tileManager = TileManager(
             backgroundTileSet: LevelLoader.loadBackgroundTiles(scene: scene),
             interactiveTileSet: LevelLoader.loadForegroundTiles(scene: scene),
-            moveableTileSet: LevelLoader.loadMoveableTiles(scene: scene),
-            entityManager: entityManager
+            moveableTileSet: LevelLoader.loadMoveableTiles(scene: scene)
         )
     }
 
@@ -152,7 +151,5 @@ class GameManager {
 
 // Level Information
 extension GameManager {
-    func nextLevelNumber() -> Int {
-        return self.levelMetadata.levelNumber + 1
-    }
+    func nextLevelNumber() -> Int { self.levelMetadata.levelNumber + 1 }
 }

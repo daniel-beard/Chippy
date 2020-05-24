@@ -11,7 +11,7 @@ import GameplayKit
 
 class GameScene: SKScene {
 
-    var graphs = [String: GKGraph]()
+    var gameScene: GKScene!
     var cameraScale: CGFloat = 2.5
 
     // Game UI
@@ -71,16 +71,8 @@ class GameScene: SKScene {
         addSwipeGesture(to: self, direction: .left, selector: #selector(GameScene.moveLeft))
         addSwipeGesture(to: self, direction: .right, selector: #selector(GameScene.moveRight))
 
-        guard let gameManager = LevelRepository.shared.gameManager else { return }
-        let chippyPosition = gameManager.player.sprite.position
-
-        let bugEntity = BugEntity(name: "bug", entityManager: entityManager)
-        if let bugSprite = bugEntity.component(ofType: SpriteComponent.self) {
-            let gridPos = gameManager.tileManager.positionToAbsolutePoint(
-                offset(position: gameManager.tileManager.absolutePointToPosition(chippyPosition), byDirection: .down))
-            bugSprite.node.position = gridPos
-        }
-        entityManager.add(bugEntity)
+        // Add all the scene entities to the entitymanager
+        gameScene.entities.forEach({ entityManager.add($0) })
     }
 
     // Called before each frame is rendered

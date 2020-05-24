@@ -11,14 +11,13 @@ import GameplayKit
 
 class SpriteComponent: GKComponent {
 
-  let node: SKSpriteNode
+    var node: SKSpriteNode
 
-  init(texture: SKTexture) {
-    node = SKSpriteNode(texture: texture, color: .white, size: texture.size())
-    super.init()
-  }
+    init(texture: SKTexture) {
+        node = SKSpriteNode(texture: texture, color: .white, size: texture.size())
+        super.init()
+    }
 
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
+    required init?(coder: NSCoder) { fatalError("No impl") }
+    override class var supportsSecureCoding: Bool { true }
 }

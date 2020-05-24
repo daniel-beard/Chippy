@@ -1,29 +1,42 @@
+////
+////  BugEntity.swift
+////  Chippy
+////
+////  Created by Daniel Beard on 5/17/20.
+////  Copyright © 2020 DanielBeard. All rights reserved.
+////
 //
-//  BugEntity.swift
-//  Chippy
+//import SpriteKit
+//import GameplayKit
 //
-//  Created by Daniel Beard on 5/17/20.
-//  Copyright © 2020 DanielBeard. All rights reserved.
+//class BugEntity: GKEntity, Tile, Monster {
+//    var uuid: UUID = UUID()
+//    var position: Position = Position(x: 0, y: 0)
 //
-
-import SpriteKit
-import GameplayKit
-
-class BugEntity: GKEntity, Tile, Monster {
-
-    required init(name: String, entityManager: EntityManager) {
-        super.init()
-        let texture = SKTexture(imageNamed: "bug")
-        let spriteComponent = SpriteComponent(texture: texture)
-        addComponent(spriteComponent)
-        addComponent(BugMoveComponent(entityManager: entityManager))
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    //MARK: Tile conformance
-    func layer() -> TileLayer { .three }
-    var name: String = "bug"
-}
+//    required init(_ name: String) {fatalError("Not implemented") }
+//
+//    func update(delta: TimeInterval, gameManager: GameManager) {
+//    }
+//
+//
+//    required init(name: String, entityManager: EntityManager) {
+//        super.init()
+//        let texture = SKTexture(imageNamed: "bug")
+//        let spriteComponent = SpriteComponent(texture: texture)
+//        addComponent(spriteComponent)
+//        addComponent(BugMoveComponent())
+//    }
+//
+//    required init?(coder aDecoder: NSCoder) {
+////        fatalError("init(coder:) has not been implemented")
+//        super.init()
+//        let texture = SKTexture(imageNamed: "bug")
+//        let spriteComponent = SpriteComponent(texture: texture)
+//        addComponent(spriteComponent)
+//        addComponent(BugMoveComponent())
+//    }
+//
+//    //MARK: Tile conformance
+//    func layer() -> TileLayer { .three }
+//    var name: String = "bug"
+//}
