@@ -65,9 +65,9 @@ class BugMoveComponent: GKAgent2D, GKAgentDelegate {
 
     // Position in tile grid
     if now > lastMoveTime + moveEvery {
-        var positionInGrid = tiles.absolutePointToPosition(spriteComponent.node.position)
-        positionInGrid = positionInGrid + MoveDirection.right
-        position = vector_float2(tiles.positionToAbsolutePoint(positionInGrid))
+        var gridPos = tiles.gridPosition(forPoint: spriteComponent.node.position)
+        gridPos = gridPos + .right()
+        position = vector_float2(tiles.centerOfTile(at: gridPos))
         self.lastMoveTime = Date.timeIntervalSinceReferenceDate as Double
     }
   }

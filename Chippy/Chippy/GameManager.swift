@@ -38,7 +38,7 @@ class GameManager {
 
         var result = false
 
-        let currentPos = tiles.absolutePointToPosition(player.absolutePoint())
+        let currentPos = tiles.gridPosition(forPoint: player.absolutePoint())
         let nextPos = currentPos + Position(x: dx, y: dy)
         let nextTiles = tiles.at(pos: nextPos)
 
@@ -69,7 +69,7 @@ class GameManager {
     func movePlayerByRelativeOffset(dx: Int, dy: Int, moveDirection: MoveDirection) {
 
         // Positions
-        let currentPos = tiles.absolutePointToPosition(player.absolutePoint())
+        let currentPos = tiles.gridPosition(forPoint: player.absolutePoint())
         let nextPos = currentPos + Position(x: dx, y: dy)
 
         // Center of new tile position
@@ -117,7 +117,7 @@ class GameManager {
         tiles.move(at: currentTilePos, to: nextTilePos, layer: tileLayer)
 
         // Run post action on new positioned tile
-        let newTile = (tiles.tile(at: nextTilePos, layer: tileLayer) as! ConditionallyMoveable)
+        let newTile = (tiles.at(pos: nextTilePos, layer: tileLayer) as! ConditionallyMoveable)
         newTile.didMoveConditionallyMoveableTile(gameManager: self,
                                                  player: &self.player,
                                                  tilePosition: nextTilePos,

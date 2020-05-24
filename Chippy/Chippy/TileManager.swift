@@ -51,16 +51,15 @@ class TileManager {
 
     //MARK: Positions
 
-    func absolutePointToPosition(_ absolutePoint: CGPoint) -> Position {
-        return Position(x: backgroundTileSet.tileColumnIndex(fromPosition: absolutePoint), y: backgroundTileSet.tileRowIndex(fromPosition: absolutePoint))
+    /// Returns a grid position `Position` value for a given tileset CGPoint coord
+    func gridPosition(forPoint absolutePoint: CGPoint) -> Position {
+        Position(x: backgroundTileSet.tileColumnIndex(fromPosition: absolutePoint),
+                 y: backgroundTileSet.tileRowIndex(fromPosition: absolutePoint))
     }
 
-    func positionToAbsolutePoint(_ position: Position) -> CGPoint {
-        return backgroundTileSet.centerOfTile(atColumn: position.x, row: position.y)
-    }
-
+    /// Converts a grid position `Position` to a tileset coord
     func centerOfTile(at position: Position) -> CGPoint {
-        return backgroundTileSet.centerOfTile(atColumn: position.x, row: position.y)
+        backgroundTileSet.centerOfTile(atColumn: position.x, row: position.y)
     }
 
     //MARK: Tiles from Positions
@@ -75,13 +74,10 @@ class TileManager {
         return result.compactMap{ $0 }
     }
 
-    public func tiles(at pos: Position, offsetBy direction: MoveDirection) -> [Tile] {
-        let newPosition = offset(position: pos, byDirection: direction)
-        return at(pos: newPosition)
-    }
-
-    public func tile(at pos: Position, layer: TileLayer) -> Tile? {
-        return tile2DFromLayer(layer)[pos.x, pos.y]
+    /// Returns a Tile? for a grid position and layer
+    /// `tiles.at(pos: Position(x: 0, y: 0)`
+    public func at(pos: Position, layer: TileLayer) -> Tile? {
+        tile2DFromLayer(layer)[pos.x, pos.y]
     }
 
     // MARK: Layer calculations
@@ -104,9 +100,7 @@ class TileManager {
 
     //MARK: Tile Sizing
 
-    func tileSize() -> CGSize {
-        return backgroundTileSet.tileSize
-    }
+    func tileSize() -> CGSize { backgroundTileSet.tileSize }
 
     //MARK: Tile Operations
 

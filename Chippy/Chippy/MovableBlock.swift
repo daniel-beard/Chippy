@@ -18,7 +18,8 @@ class MovableBlock: BaseTile, Passable, ConditionallyMoveable {
                            tilePosition: Position,
                            direction: MoveDirection) -> Bool {
 
-        let nextTiles = gameManager.tiles.tiles(at: tilePosition, offsetBy: direction)
+        let nextTiles = gameManager.tiles.at(pos: tilePosition + direction)
+
         // Here we whitelist the movable conditions
         // Not sure if there will be more required here.
         // Note: If we get many more conditions here, break them out.
