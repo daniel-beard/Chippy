@@ -52,31 +52,32 @@ class TileManager {
     //MARK: Positions
 
     /// Returns a grid position `Position` value for a given tileset CGPoint coord
-    func gridPosition(forPoint absolutePoint: CGPoint) -> Position {
-        Position(x: backgroundTileSet.tileColumnIndex(fromPosition: absolutePoint),
+    func gridPosition(forPoint absolutePoint: CGPoint) -> GridPos {
+        GridPos(x: backgroundTileSet.tileColumnIndex(fromPosition: absolutePoint),
                  y: backgroundTileSet.tileRowIndex(fromPosition: absolutePoint))
     }
 
     /// Converts a grid position `Position` to a tileset coord
-    func centerOfTile(at position: Position) -> CGPoint {
-        backgroundTileSet.centerOfTile(atColumn: position.x, row: position.y)
+    func centerOfTile(at position: GridPos) -> CGPoint {
+        backgroundTileSet.centerOfTile(atColumn: Int(position.x), row: Int(position.y))
     }
 
     //MARK: Tiles from Positions
 
     /// Returns all tiles at a given position
     /// `tiles.at(pos: Position(x: 0, y: 0)`
-    func at(pos: Position) -> [Tile] {
+    func at(pos: GridPos) -> [Tile] {
         var result = [Tile?]()
-        result.append( backgroundTiles[pos.x, pos.y] )
-        result.append( interactiveTiles[pos.x, pos.y] )
-        result.append( moveableTiles[pos.x, pos.y] )
+        let x = pos.x; let y = pos.y
+        result.append( backgroundTiles[x, y] )
+        result.append( interactiveTiles[x, y] )
+        result.append( moveableTiles[x, y] )
         return result.compactMap{ $0 }
     }
 
     /// Returns a Tile? for a grid position and layer
     /// `tiles.at(pos: Position(x: 0, y: 0)`
-    public func at(pos: Position, layer: TileLayer) -> Tile? {
+    public func at(pos: GridPos, layer: TileLayer) -> Tile? {
         tile2DFromLayer(layer)[pos.x, pos.y]
     }
 
@@ -106,7 +107,7 @@ class TileManager {
 
     /// Add a new tile of `TileType` to the given position
     /// `tiles.add(.floor, at: Position(x:0, y:0))`
-    func add(_ type: TileType, at position: Position) {
+    func add(_ type: TileType, at position: GridPos) {
         guard let tileClass = TileManager.mapTileEnumToClassName(tileType: type) else {
             fatalError("Could not create tile from type: \(type.rawValue)")
         }
@@ -122,18 +123,18 @@ class TileManager {
 
         // Update tileSet and 2D map
         let tileSet = tileSetFromLayer(newTile.layer())
-        tileSet.setTileGroup(tileGroup, forColumn: position.x, row: position.y)
+        tileSet.setTileGroup(tileGroup, forColumn: Int(position.x), row: Int(position.y))
         tile2DFromLayer(newTile.layer())[position.x, position.y] = newTile
     }
 
-    func removeForegroundTile(at position: Position) {
-        interactiveTileSet.setTileGroup(nil, forColumn: position.x, row: position.y)
+    func removeForegroundTile(at position: GridPos) {
+        interactiveTileSet.setTileGroup(nil, forColumn: Int(position.x), row: Int(position.y))
         interactiveTiles[position.x, position.y] = nil
     }
 
     /// Removes a given tile from the tileset for a position and layer
     /// Usage: `tiles.remove(at: .zero(), layer: .three)`
-    func remove(at position: Position, layer: TileLayer) {
+    func remove(at position: GridPos, layer: TileLayer) {
         // Tile Set
         setTileGroup((nil, nil), at: position, layer: layer)
 
@@ -142,22 +143,23 @@ class TileManager {
     }
 
     typealias SpriteTile = (group: SKTileGroup?, definition: SKTileDefinition?)
-    private func setTileGroup(_ spriteTile: SpriteTile, at position: Position, layer: TileLayer) {
+    private func setTileGroup(_ spriteTile: SpriteTile, at position: GridPos, layer: TileLayer) {
         let tileSet = tileSetFromLayer(layer)
         guard let group = spriteTile.group, let definition = spriteTile.definition else {
-            tileSet.setTileGroup(nil, forColumn: position.x, row: position.y)
+            tileSet.setTileGroup(nil, forColumn: Int(position.x), row: Int(position.y))
             return
         }
-        tileSet.setTileGroup(group, andTileDefinition: definition, forColumn: position.x, row: position.y)
+        tileSet.setTileGroup(group, andTileDefinition: definition, forColumn: Int(position.x), row: Int(position.y))
     }
 
     /// Moves a tile on a given layer from one position to another.
     /// This affects both the Tile & Sprite based representations
-    func move(at position: Position, to newPosition: Position, layer: TileLayer) {
+    func move(at position: GridPos, to newPosition: GridPos, layer: TileLayer) {
+        let x = Int(position.x); let y = Int(position.y)
         let tileSet = tileSetFromLayer(layer)
-        let tileDefinition = tileSet.tileDefinition(atColumn: position.x, row: position.y)
-        let tileGroup = tileSet.tileGroup(atColumn: position.x, row: position.y)
-        let tileObj = tile2DFromLayer(layer)[position.x, position.y]
+        let tileDefinition = tileSet.tileDefinition(atColumn: x, row: y)
+        let tileGroup = tileSet.tileGroup(atColumn: x, row: y)
+        let tileObj = tile2DFromLayer(layer)[x, y]
 
         // remove from current position
         remove(at: position, layer: layer)
@@ -165,7 +167,7 @@ class TileManager {
         // re-add to new position
         // Note: Need both the tileGroup and the definition here.
         setTileGroup((group: tileGroup, definition: tileDefinition), at: newPosition, layer: layer)
-        tile2DFromLayer(layer)[newPosition.x, newPosition.y] = tileObj
+        tile2DFromLayer(layer)[x, y] = tileObj
     }
 }
 

@@ -28,12 +28,16 @@ class Array2D<T> {
         }
     }
 
-    func colCount() -> Int {
-        return self.cols
+    subscript(col: Int32, row: Int32) -> T? {
+        get{
+            return matrix[cols * Int(row) + Int(col)]
+        }
+        set{
+            matrix[cols * Int(row) + Int(col)] = newValue
+        }
     }
-    
-    func rowCount() -> Int {
-        return self.rows
-    }
+
+    func colCount() -> Int { self.cols }
+    func rowCount() -> Int { self.rows }
 }
 

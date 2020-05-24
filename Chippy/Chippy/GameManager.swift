@@ -34,12 +34,12 @@ class GameManager {
     }
 
     // Checks whether a tile is passable
-    func canPlayerMoveByRelativeOffset(dx: Int, dy: Int, moveDirection: MoveDirection) -> Bool {
+    func canPlayerMove(inDirection moveDirection: MoveDirection) -> Bool {
 
         var result = false
 
         let currentPos = tiles.gridPosition(forPoint: player.absolutePoint())
-        let nextPos = currentPos + Position(x: dx, y: dy)
+        let nextPos = currentPos + moveDirection
         let nextTiles = tiles.at(pos: nextPos)
 
         guard !nextTiles.isEmpty else {
@@ -66,11 +66,11 @@ class GameManager {
 
     // Runs the side effects of moving a player to a tile position
     // E.g. moving the tilemaps, updating collectibles, changing the game state etc.
-    func movePlayerByRelativeOffset(dx: Int, dy: Int, moveDirection: MoveDirection) {
+    func movePlayer(inDirection moveDirection: MoveDirection) {
 
         // Positions
         let currentPos = tiles.gridPosition(forPoint: player.absolutePoint())
-        let nextPos = currentPos + Position(x: dx, y: dy)
+        let nextPos = currentPos + moveDirection
 
         // Center of new tile position
         let newTileCenter = tiles.centerOfTile(at: nextPos)
@@ -86,7 +86,7 @@ class GameManager {
 
     // Handles side effects of collisions with tiles
     // row/column must correspond to the tilemap offsets the character is currently on
-    func handleCollisions(position: Position, direction: MoveDirection) {
+    func handleCollisions(position: GridPos, direction: MoveDirection) {
 
         let t = tiles.at(pos: position)
         guard !t.isEmpty else { return }
@@ -106,11 +106,11 @@ class GameManager {
         }
     }
 
-    func handleConditionallyMoveableCollision(position: Position,
+    func handleConditionallyMoveableCollision(position: GridPos,
                                               tile: ConditionallyMoveable,
                                               direction: MoveDirection) {
         let currentTilePos = position
-        let nextTilePos = offset(position: position, byDirection: direction)
+        let nextTilePos = position + direction
         let tileLayer = tile.layer()
 
         // Move the tile
@@ -124,7 +124,7 @@ class GameManager {
                                                  direction: direction)
     }
 
-    func handleCollectibleCollision(position: Position, tile: Collectable) {
+    func handleCollectibleCollision(position: GridPos, tile: Collectable) {
         // Perform tile action
         tile.performCollectableAction(gameManager: self, player: &player)
 
@@ -135,7 +135,7 @@ class GameManager {
         NotificationCenter.default.post(Notification(name: Notification.Name("UpdatePlayerUI")))
     }
 
-    func handleConditionallyPassableCollisions(position: Position, tile: ConditionallyPassable) {
+    func handleConditionallyPassableCollisions(position: GridPos, tile: ConditionallyPassable) {
         // Remove tile if allowed
         if tile.shouldRemoveConditionallyPassableTileAfterCollision() {
             tiles.removeForegroundTile(at: position)

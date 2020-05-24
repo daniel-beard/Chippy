@@ -14,7 +14,7 @@ class BoostTile: BaseTile, ConditionallyPassable {
     func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool { true }
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool { false }
 
-    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
+    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: GridPos) {
         //TODO: Implement. Consider a PlayerEffectable protocol for grabbing the player movement
         // Then we can use for Ice without skates, the boost tile, and the bear trap, etc.
         // Have to be able to grab key direction too for boost + keypress.

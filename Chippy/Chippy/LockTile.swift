@@ -23,7 +23,7 @@ class LockTile: BaseTile, ConditionallyPassable, Lock {
         }
     }
 
-    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
+    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: GridPos) {
         switch name {
             case "lockgreen":   player.greenKeyCount -= 1
             case "lockblue":    player.blueKeyCount -= 1

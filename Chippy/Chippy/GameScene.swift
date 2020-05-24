@@ -128,17 +128,8 @@ extension GameScene {
             }
         }
 
-        //TODO: Move to using move direction offsets instead.
-        let offset: (dx: Int, dy: Int)
-        switch direction {
-            case .left: offset = (-1, 0)
-            case .right: offset = (1, 0)
-            case .up: offset = (0, 1)
-            case .down: offset = (0, -1)
-        }
-
-        if gameManager.canPlayerMoveByRelativeOffset(dx: offset.dx, dy: offset.dy, moveDirection: direction) {
-            gameManager.movePlayerByRelativeOffset(dx: offset.dx, dy: offset.dy, moveDirection: direction)
+        if gameManager.canPlayerMove(inDirection: direction) {
+            gameManager.movePlayer(inDirection: direction)
         }
     }
 }

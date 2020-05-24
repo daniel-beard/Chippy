@@ -14,17 +14,15 @@ enum MoveDirection {
     case right
     case up
     case down
-}
 
-func offset(position: Position, byDirection direction: MoveDirection) -> Position {
-    let offset: (dx: Int, dy: Int)
-    switch direction {
-        case .left: offset = (-1, 0)
-        case .right: offset = (1, 0)
-        case .up: offset = (0, 1)
-        case .down: offset = (0, -1)
+    func toPos() -> GridPos {
+        switch self {
+        case .left:      return .left()
+        case .right:     return .right()
+        case .up:        return .up()
+        case .down:      return .down()
+        }
     }
-    return position + Position(x: offset.dx, y: offset.dy)
 }
 
 enum GameState {
@@ -33,28 +31,49 @@ enum GameState {
     case completed
 }
 
-// Represents a tile index position. E.g. 16,16 
-// Do not use for absolute sprite positions
-struct Position: CustomStringConvertible {
-    var x: Int
-    var y: Int
+// MARK: Points and vectors
+extension vector_float2 {
+  init(_ point: CGPoint) {
+    self.init(x: Float(point.x), y: Float(point.y))
+  }
+}
 
-    static func left() -> Position { Position(x: -1, y: 0) }
-    static func right() -> Position { Position(x: 1, y: 0) }
-    static func up() -> Position { Position(x: 0, y: 1) }
-    static func down() -> Position { Position(x: 0, y: -1) }
-    static func zero() -> Position { Position(x: 0, y: 0) }
-
-    static func +(lhs: Position, rhs: Position) -> Position {
-        return Position(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
+extension CGPoint {
+    init(_ point: vector_float2) {
+      self.init()
+      self.x = CGFloat(point.x)
+      self.y = CGFloat(point.y)
     }
 
-    static func +(lhs: Position, rhs: MoveDirection) -> Position {
-        return offset(position:lhs, byDirection:rhs)
+    static func +(lhs: CGPoint, rhs: CGPoint) -> CGPoint {
+        return CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
+    }
+}
+
+// Used for tile indicies and directions
+typealias GridPos = vector_int2
+extension vector_int2 {
+    static func left()  -> GridPos { GridPos(x: -1, y:  0) }
+    static func right() -> GridPos { GridPos(x:  1, y:  0) }
+    static func up()    -> GridPos { GridPos(x:  0, y:  1) }
+    static func down()  -> GridPos { GridPos(x:  0, y: -1) }
+    static func zero()  -> GridPos { GridPos(x:  0, y:  0) }
+
+    init(x: Int, y: Int) {
+        self.init()
+        self.x = Int32(x)
+        self.y = Int32(y)
+    }
+
+    static func +(lhs: GridPos, rhs: GridPos) -> GridPos {
+        return GridPos(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
+    }
+
+    static func +(lhs: GridPos, rhs: MoveDirection) -> GridPos {
+        lhs + rhs.toPos()
     }
 
     var description: String {
         return "(x: \(x) y: \(y))"
     }
 }
-
