@@ -48,12 +48,10 @@ public enum TileType: String {
     case greenkeyfloor  = "greenkeyfloor"
 }
 
-protocol Tile: class {
+protocol Tile {
     var name: String { get set }
-    var uuid: UUID { get }
-    var position: Position { get set }
     func layer() -> TileLayer
-    init(_ name: String)
+    init(name: String)
 }
 
 // Collectable tiles are removed from the tileset after a player visits that tile
@@ -78,7 +76,7 @@ protocol ConditionallyPassable: Passable {
 
     // Called after a player moves to a conditionally passable tile
     // This method is encouraged to change state. E.g. updating key counts after passing through a lock.
-    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position)
+    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: GridPos)
 
     // Indicates whether the Game Manager should remove this tile after the player moves through it
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool
@@ -91,14 +89,14 @@ protocol ConditionallyMoveable: Tile {
     // Usually depends on what is in "front" of the conditionally moveable tile relative to the player.
     func canPlayerMoveTile(gameManager: GameManager,
                            player: PlayerInfo,
-                           tilePosition: Position,
+                           tilePosition: GridPos,
                            direction: MoveDirection) -> Bool
 
     // Called after the player has moved the tile.
     // Handle things like changing the tile type here. E.g. block + water -> dirt
     func didMoveConditionallyMoveableTile(gameManager: GameManager,
                                           player: inout PlayerInfo,
-                                          tilePosition: Position,
+                                          tilePosition: GridPos,
                                           direction: MoveDirection)
 }
 
@@ -106,11 +104,6 @@ protocol ConditionallyMoveable: Tile {
 // They have the capability to capture key inputs
 protocol PlayerEffectable: ConditionallyPassable {
     //TODO: Figure out what to put here...
-}
-
-/// Tiles that can update themselves
-protocol UpdateableTile: Tile {
-    func update(delta: TimeInterval, gameManager: GameManager)
 }
 
 // All keys conform to this protocol
@@ -123,5 +116,5 @@ protocol Lock: Tile {}
 protocol Boot: Tile {}
 
 // All monsters conform to this protocol
-protocol Monster: UpdateableTile {}
+protocol Monster {}
 

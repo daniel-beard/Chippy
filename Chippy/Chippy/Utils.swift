@@ -10,12 +10,6 @@ import Foundation
 import CoreGraphics
 import GameplayKit
 
-extension CGPoint {
-    static func +(lhs: CGPoint, rhs: CGPoint) -> CGPoint {
-        return CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
-    }
-}
-
 extension Collection {
     /// Checks if every element in an array matches a precondition
     /// E.g. [2,3,4].all { $0 > 1 } // true

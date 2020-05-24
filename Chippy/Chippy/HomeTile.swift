@@ -14,7 +14,7 @@ class HomeTile: BaseTile, ConditionallyPassable {
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool { false }
     func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool { true }
 
-    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: Position) {
+    func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: GridPos) {
         // Display end game message
         NotificationCenter.gameNotification(name: Notification.Name("DisplayEndGameLabel"))
     }

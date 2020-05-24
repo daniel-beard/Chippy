@@ -28,9 +28,9 @@ class TileManager {
     private var tileSets: [SKTileMapNode]
 
     // Prebuilt Tile 2dArrays
-    private var backgroundTiles: Tile2D!
-    private var interactiveTiles: Tile2D!
-    private var moveableTiles: Tile2D!
+    private var backgroundTiles: Array2D<Tile>!
+    private var interactiveTiles: Array2D<Tile>!
+    private var moveableTiles: Array2D<Tile>!
 
     init(backgroundTileSet: SKTileMapNode,
          interactiveTileSet: SKTileMapNode,
@@ -51,55 +51,34 @@ class TileManager {
 
     //MARK: Positions
 
-    func absolutePointToPosition(_ absolutePoint: CGPoint) -> Position {
-        return Position(x: backgroundTileSet.tileColumnIndex(fromPosition: absolutePoint), y: backgroundTileSet.tileRowIndex(fromPosition: absolutePoint))
+    /// Returns a grid position `Position` value for a given tileset CGPoint coord
+    func gridPosition(forPoint absolutePoint: CGPoint) -> GridPos {
+        GridPos(x: backgroundTileSet.tileColumnIndex(fromPosition: absolutePoint),
+                 y: backgroundTileSet.tileRowIndex(fromPosition: absolutePoint))
     }
 
-    func positionToAbsolutePoint(_ position: Position) -> CGPoint {
-        return backgroundTileSet.centerOfTile(atColumn: position.x, row: position.y)
-    }
-
-    func centerOfTile(at position: Position) -> CGPoint {
-        return backgroundTileSet.centerOfTile(atColumn: position.x, row: position.y)
+    /// Converts a grid position `Position` to a tileset coord
+    func centerOfTile(at position: GridPos) -> CGPoint {
+        backgroundTileSet.centerOfTile(atColumn: Int(position.x), row: Int(position.y))
     }
 
     //MARK: Tiles from Positions
 
-    func tiles(at pos: Position) -> [Tile] {
+    /// Returns all tiles at a given position
+    /// `tiles.at(pos: Position(x: 0, y: 0)`
+    func at(pos: GridPos) -> [Tile] {
         var result = [Tile?]()
-        result.append( backgroundTiles[pos.x, pos.y] )
-        result.append( interactiveTiles[pos.x, pos.y] )
-        result.append( moveableTiles[pos.x, pos.y] )
+        let x = pos.x; let y = pos.y
+        result.append( backgroundTiles[x, y] )
+        result.append( interactiveTiles[x, y] )
+        result.append( moveableTiles[x, y] )
         return result.compactMap{ $0 }
     }
 
-    public func tiles(at pos: Position, offsetBy direction: MoveDirection) -> [Tile] {
-        let newPosition = offset(position: pos, byDirection: direction)
-        return tiles(at: newPosition)
-    }
-
-    public func tile(at pos: Position, layer: TileLayer) -> Tile? {
-        return tile2DFromLayer(layer)[pos.x, pos.y]
-    }
-
-    // MARK: Positions from Tiles
-
-    func position(of inTile: Tile, inLayer: TileLayer) -> Position? {
-        let grid = tile2DFromLayer(inLayer)
-        guard let index = grid.matrix.firstIndex(where: { (tile) -> Bool in
-            guard let tile = tile else { return false }
-            return tile.uuid == inTile.uuid
-        }) else { return nil }
-        return grid.gridPosition(for: index)
-    }
-
-    // MARK: Dynamic Tile updates
-
-    func allUpdateableTiles(forLayer layer: TileLayer) -> [UpdateableTile] {
-        let tiles = tile2DFromLayer(layer)
-        return tiles.matrix.compactMap({$0}).filter { (tile) -> Bool in
-            return tile is UpdateableTile
-        } as! [UpdateableTile]
+    /// Returns a Tile? for a grid position and layer
+    /// `tiles.at(pos: Position(x: 0, y: 0)`
+    public func at(pos: GridPos, layer: TileLayer) -> Tile? {
+        tile2DFromLayer(layer)[pos.x, pos.y]
     }
 
     // MARK: Layer calculations
@@ -112,21 +91,11 @@ class TileManager {
         }
     }
 
-    private func tile2DFromLayer(_ layer: TileLayer) -> Tile2D {
+    private func tile2DFromLayer(_ layer: TileLayer) -> Array2D<Tile> {
         switch layer {
             case .one: return backgroundTiles
             case .two: return interactiveTiles
             case .three: return moveableTiles
-        }
-    }
-
-    // MARK: Moving TileSets
-
-    // Only used when moving the player.
-    // Offset is an absolute value.
-    func offsetTileSets(by offset: CGPoint) {
-        tileSets.forEach { tileSet in
-            tileSet.position = tileSet.position + offset
         }
     }
 
@@ -136,14 +105,16 @@ class TileManager {
 
     //MARK: Tile Operations
 
-    func addTile(at position: Position, type: TileType) {
+    /// Add a new tile of `TileType` to the given position
+    /// `tiles.add(.floor, at: Position(x:0, y:0))`
+    func add(_ type: TileType, at position: GridPos) {
         guard let tileClass = TileManager.mapTileEnumToClassName(tileType: type) else {
             fatalError("Could not create tile from type: \(type.rawValue)")
         }
-        let newTile = tileClass.init(type.rawValue)
+        let newTile = tileClass.init(name: type.rawValue)
 
         // Remove any existing tiles at the same layer
-        removeTile(at: position, layer: newTile.layer())
+        remove(at: position, layer: newTile.layer())
 
         // Get the tile group from the tileset
         guard let tileGroup = spriteKitTileSet.tileGroups.first(where: { $0.name == type.rawValue }) else {
@@ -152,16 +123,18 @@ class TileManager {
 
         // Update tileSet and 2D map
         let tileSet = tileSetFromLayer(newTile.layer())
-        tileSet.setTileGroup(tileGroup, forColumn: position.x, row: position.y)
+        tileSet.setTileGroup(tileGroup, forColumn: Int(position.x), row: Int(position.y))
         tile2DFromLayer(newTile.layer())[position.x, position.y] = newTile
     }
 
-    func removeForegroundTile(at position: Position) {
-        interactiveTileSet.setTileGroup(nil, forColumn: position.x, row: position.y)
+    func removeForegroundTile(at position: GridPos) {
+        interactiveTileSet.setTileGroup(nil, forColumn: Int(position.x), row: Int(position.y))
         interactiveTiles[position.x, position.y] = nil
     }
 
-    func removeTile(at position: Position, layer: TileLayer) {
+    /// Removes a given tile from the tileset for a position and layer
+    /// Usage: `tiles.remove(at: .zero(), layer: .three)`
+    func remove(at position: GridPos, layer: TileLayer) {
         // Tile Set
         setTileGroup((nil, nil), at: position, layer: layer)
 
@@ -170,30 +143,31 @@ class TileManager {
     }
 
     typealias SpriteTile = (group: SKTileGroup?, definition: SKTileDefinition?)
-    private func setTileGroup(_ spriteTile: SpriteTile, at position: Position, layer: TileLayer) {
+    private func setTileGroup(_ spriteTile: SpriteTile, at position: GridPos, layer: TileLayer) {
         let tileSet = tileSetFromLayer(layer)
         guard let group = spriteTile.group, let definition = spriteTile.definition else {
-            tileSet.setTileGroup(nil, forColumn: position.x, row: position.y)
+            tileSet.setTileGroup(nil, forColumn: Int(position.x), row: Int(position.y))
             return
         }
-        tileSet.setTileGroup(group, andTileDefinition: definition, forColumn: position.x, row: position.y)
+        tileSet.setTileGroup(group, andTileDefinition: definition, forColumn: Int(position.x), row: Int(position.y))
     }
 
     /// Moves a tile on a given layer from one position to another.
     /// This affects both the Tile & Sprite based representations
-    func moveTile(at position: Position, layer: TileLayer, newPosition: Position) {
+    func move(at position: GridPos, to newPosition: GridPos, layer: TileLayer) {
+        let x = Int(position.x); let y = Int(position.y)
         let tileSet = tileSetFromLayer(layer)
-        let tileDefinition = tileSet.tileDefinition(atColumn: position.x, row: position.y)
-        let tileGroup = tileSet.tileGroup(atColumn: position.x, row: position.y)
-        let tileObj = tile2DFromLayer(layer)[position.x, position.y]
+        let tileDefinition = tileSet.tileDefinition(atColumn: x, row: y)
+        let tileGroup = tileSet.tileGroup(atColumn: x, row: y)
+        let tileObj = tile2DFromLayer(layer)[x, y]
 
         // remove from current position
-        removeTile(at: position, layer: layer)
+        remove(at: position, layer: layer)
 
         // re-add to new position
         // Note: Need both the tileGroup and the definition here.
         setTileGroup((group: tileGroup, definition: tileDefinition), at: newPosition, layer: layer)
-        tile2DFromLayer(layer)[newPosition.x, newPosition.y] = tileObj
+        tile2DFromLayer(layer)[x, y] = tileObj
     }
 }
 
@@ -203,18 +177,17 @@ private extension TileManager {
     func loadAllTiles() {
 
         // Get default size:
-        let gridSize = backgroundTileSet.numberOfColumns
-        // For now, assume that levels must be same size
-        //let rows = backgroundTileSet.numberOfRows
+        let cols = backgroundTileSet.numberOfColumns
+        let rows = backgroundTileSet.numberOfRows
 
         // Init with default values
-        backgroundTiles = Tile2D(size: gridSize, defaultValue: nil)
-        interactiveTiles = Tile2D(size: gridSize, defaultValue: nil)
-        moveableTiles = Tile2D(size: gridSize, defaultValue: nil)
+        backgroundTiles = Array2D<Tile>(cols: cols, rows: rows, defaultValue: nil)
+        interactiveTiles = Array2D<Tile>(cols: cols, rows: rows, defaultValue: nil)
+        moveableTiles = Array2D<Tile>(cols: cols, rows: rows, defaultValue: nil)
 
         // Load background tiles
-        for x in 0..<gridSize {
-            for y in 0..<gridSize {
+        for x in 0..<cols {
+            for y in 0..<rows {
                 if let backgroundTile = backgroundTileSet.tileDefinition(atColumn: x, row: y),
                     let name = backgroundTile.name {
                     backgroundTiles[x, y] = tileFactory(type: name)
@@ -246,7 +219,8 @@ private extension TileManager {
         guard let tileClass = TileManager.mapTileEnumToClassName(tileType: tileType) else {
             fatalError("Class mapping not found for tile type: \(type)")
         }
-        return tileClass.init(type)
+
+        return tileClass.init(name: type)
     }
 
     /// We need this because our mapping from tile type isn't 1-1 with class names
@@ -277,9 +251,6 @@ private extension TileManager {
         case .dirt:             return DirtTile.self
         case .fire:             return FireTile.self
 
-        // Monsters
-        case .bug:              return BugTile.self
-
         // UI only tiles
         //==========================================
         case .firebootfloor:    return BootTile.self
@@ -290,6 +261,9 @@ private extension TileManager {
         case .bluekeyfloor:     return KeyTile.self
         case .greenkeyfloor:    return KeyTile.self
         case .yellowkeyfloor:   return KeyTile.self
+
+        default:
+            fatalError("Found unexpected case")
         }
     }
 }

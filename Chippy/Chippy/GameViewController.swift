@@ -29,7 +29,6 @@ class GameViewController: UIViewController {
     override var shouldAutorotate: Bool { false }
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask { .all }
     override var prefersStatusBarHidden: Bool { true }
-    deinit { NotificationCenter.default.removeObserver(self) }
 }
 
 //MARK: Movement
@@ -81,8 +80,9 @@ fileprivate extension GameViewController {
                 self.sceneNode = sceneNode
 
                 // Copy gameplay related content over to the scene
-                sceneNode.entities = scene.entities
-                sceneNode.graphs = scene.graphs
+                sceneNode.gameScene = scene
+//                sceneNode.entities = scene.entities
+//                sceneNode.graphs = scene.graphs
 
                 // Set the scale mode to scale to fit the window
                 sceneNode.scaleMode = .aspectFill
@@ -90,9 +90,7 @@ fileprivate extension GameViewController {
                 // Present the scene
                 if let view = self.view as! SKView? {
                     view.presentScene(sceneNode)
-
                     view.ignoresSiblingOrder = true
-
                     view.showsFPS = true
                     view.showsNodeCount = true
                 }

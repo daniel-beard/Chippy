@@ -11,8 +11,7 @@ import GameplayKit
 
 class GameScene: SKScene {
 
-    var entities = [GKEntity]()
-    var graphs = [String: GKGraph]()
+    var gameScene: GKScene!
     var cameraScale: CGFloat = 2.5
 
     // Game UI
@@ -24,7 +23,8 @@ class GameScene: SKScene {
 
     // Helpers
     var gameManager: GameManager! { LevelRepository.shared.gameManager }
-    var tileManager: TileManager! { LevelRepository.shared.gameManager?.tileManager }
+    var entityManager: EntityManager! { LevelRepository.shared.gameManager?.entityManager }
+    var tiles: TileManager! { LevelRepository.shared.gameManager?.tiles }
 
     // Indicates that we are running an animation just before pausing.
     // Means that we should discard keypresses.
@@ -70,6 +70,9 @@ class GameScene: SKScene {
         addSwipeGesture(to: self, direction: .down, selector: #selector(GameScene.moveDown))
         addSwipeGesture(to: self, direction: .left, selector: #selector(GameScene.moveLeft))
         addSwipeGesture(to: self, direction: .right, selector: #selector(GameScene.moveRight))
+
+        // Add all the scene entities to the entitymanager
+        gameScene.entities.forEach({ entityManager.add($0) })
     }
 
     // Called before each frame is rendered
@@ -81,12 +84,9 @@ class GameScene: SKScene {
         
         // Calculate time since last update
         let dt = currentTime - self.lastUpdateTime
-
-        // Update GameManager
-        gameManager.update(delta: dt)
         
         // Update entities
-        entities.forEach { $0.update(deltaTime: dt) }
+        gameManager.entityManager.update(dt)
         self.lastUpdateTime = currentTime
     }
 
@@ -128,17 +128,8 @@ extension GameScene {
             }
         }
 
-        //TODO: Move to using move direction offsets instead.
-        let offset: (dx: Int, dy: Int)
-        switch direction {
-            case .left: offset = (-1, 0)
-            case .right: offset = (1, 0)
-            case .up: offset = (0, 1)
-            case .down: offset = (0, -1)
-        }
-
-        if gameManager.canPlayerMoveByRelativeOffset(dx: offset.dx, dy: offset.dy, moveDirection: direction) {
-            gameManager.movePlayerByRelativeOffset(dx: offset.dx, dy: offset.dy, moveDirection: direction)
+        if gameManager.canPlayerMove(inDirection: direction) {
+            gameManager.movePlayer(inDirection: direction)
         }
     }
 }

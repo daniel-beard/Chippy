@@ -31,9 +31,7 @@ struct PlayerInfo {
         self.previousMoveDirection = .down
     }
 
-    func absolutePoint() -> CGPoint {
-        return sprite.position
-    }
+    func absolutePoint() -> CGPoint { sprite.position }
 
     func updateSpriteForMoveDirection(moveDirection: MoveDirection) {
         self.sprite.removeAllActions()

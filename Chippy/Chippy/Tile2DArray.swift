@@ -8,32 +8,36 @@
 
 import Foundation
 
-class Tile2D {
+class Array2D<T> {
 
-    var gridSize: Int
-    var matrix:[Tile?]
+    var cols:Int, rows:Int
+    var matrix:[T?]
 
-    init(size: Int, defaultValue:Tile?) {
-        self.gridSize = size
-        matrix = Array(repeating: defaultValue, count: size*size)
+    init(cols: Int, rows: Int, defaultValue:T?) {
+        self.cols = cols
+        self.rows = rows
+        matrix = Array(repeating: defaultValue, count: cols*rows)
     }
 
-    subscript(col:Int, row:Int) -> Tile? {
+    subscript(col:Int, row:Int) -> T? {
         get{
-            return matrix[gridSize * row + col]
+            return matrix[cols * row + col]
         }
         set{
-            let value = newValue
-            value?.position = Position(x: col, y: row)
-            matrix[gridSize * row + col] = value
+            matrix[cols * row + col] = newValue
         }
     }
 
-    func gridPosition(for index: Int) -> Position {
-        Position(x: index / gridSize, y: index % gridSize)
+    subscript(col: Int32, row: Int32) -> T? {
+        get{
+            return matrix[cols * Int(row) + Int(col)]
+        }
+        set{
+            matrix[cols * Int(row) + Int(col)] = newValue
+        }
     }
 
-    func colCount() -> Int { gridSize }
-    func rowCount() -> Int { gridSize }
+    func colCount() -> Int { self.cols }
+    func rowCount() -> Int { self.rows }
 }
 

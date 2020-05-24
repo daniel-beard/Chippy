@@ -12,36 +12,35 @@ import GameplayKit
 class GameManager {
 
     var player: PlayerInfo
-    var tileManager: TileManager
+    var tiles: TileManager
     var levelMetadata: LevelMetadata
     var scene: SKScene
 
+    // Entity manager
+    var entityManager: EntityManager!
+
     init(scene: SKScene, levelMetadata: LevelMetadata) {
+
         self.scene = scene
+        self.entityManager = EntityManager(scene: scene)
         self.levelMetadata = levelMetadata
         _ = LevelLoader.verifyLevel(levelNumber: levelMetadata.levelNumber)
         player = PlayerInfo(sprite: LevelLoader.loadPlayerSprite(scene: scene))
-        tileManager = TileManager(
+        tiles = TileManager(
             backgroundTileSet: LevelLoader.loadBackgroundTiles(scene: scene),
             interactiveTileSet: LevelLoader.loadForegroundTiles(scene: scene),
             moveableTileSet: LevelLoader.loadMoveableTiles(scene: scene)
         )
     }
 
-    func update(delta: TimeInterval) {
-        // Get all the dynamic tiles and update them
-        let dynamicTiles = tileManager.allUpdateableTiles(forLayer: .three)
-        dynamicTiles.forEach { $0.update(delta: delta, gameManager: self) }
-    }
-
     // Checks whether a tile is passable
-    func canPlayerMoveByRelativeOffset(dx: Int, dy: Int, moveDirection: MoveDirection) -> Bool {
+    func canPlayerMove(inDirection moveDirection: MoveDirection) -> Bool {
 
         var result = false
 
-        let currentPos = tileManager.absolutePointToPosition(player.absolutePoint())
-        let nextPos = currentPos + Position(x: dx, y: dy)
-        let nextTiles = tileManager.tiles(at: nextPos)
+        let currentPos = tiles.gridPosition(forPoint: player.absolutePoint())
+        let nextPos = currentPos + moveDirection
+        let nextTiles = tiles.at(pos: nextPos)
 
         guard !nextTiles.isEmpty else {
             return false
@@ -67,19 +66,19 @@ class GameManager {
 
     // Runs the side effects of moving a player to a tile position
     // E.g. moving the tilemaps, updating collectibles, changing the game state etc.
-    func movePlayerByRelativeOffset(dx: Int, dy: Int, moveDirection: MoveDirection) {
+    func movePlayer(inDirection moveDirection: MoveDirection) {
 
         // Positions
-        let currentPos = tileManager.absolutePointToPosition(player.absolutePoint())
-        let nextPos = currentPos + Position(x: dx, y: dy)
+        let currentPos = tiles.gridPosition(forPoint: player.absolutePoint())
+        let nextPos = currentPos + moveDirection
 
         // Center of new tile position
-        let newTileCenter = tileManager.centerOfTile(at: nextPos)
+        let newTileCenter = tiles.centerOfTile(at: nextPos)
 
-        // Move player sprite + camera
+        // Move player sprite to offset the tilemap movement
         player.sprite.position = newTileCenter
-        scene.camera?.position = newTileCenter
         player.updateSpriteForMoveDirection(moveDirection: moveDirection)
+        scene.camera?.position = player.sprite.position
 
         // Handle collisions & side effects
         handleCollisions(position: nextPos, direction: moveDirection)
@@ -87,12 +86,9 @@ class GameManager {
 
     // Handles side effects of collisions with tiles
     // row/column must correspond to the tilemap offsets the character is currently on
-    func handleCollisions(position: Position, direction: MoveDirection) {
+    func handleCollisions(position: GridPos, direction: MoveDirection) {
 
-        let tiles = tileManager.tiles(at: position)
-        guard !tiles.isEmpty else { return }
-
-        tiles.forEach { tile in
+        tiles.at(pos: position).forEach { tile in
             switch (tile) {
                 case is Collectable:
                     handleCollectibleCollision(position: position, tile: (tile as! Collectable))
@@ -107,39 +103,39 @@ class GameManager {
         }
     }
 
-    func handleConditionallyMoveableCollision(position: Position,
+    func handleConditionallyMoveableCollision(position: GridPos,
                                               tile: ConditionallyMoveable,
                                               direction: MoveDirection) {
         let currentTilePos = position
-        let nextTilePos = offset(position: position, byDirection: direction)
+        let nextTilePos = position + direction
         let tileLayer = tile.layer()
 
         // Move the tile
-        tileManager.moveTile(at: currentTilePos, layer: tileLayer, newPosition: nextTilePos)
+        tiles.move(at: currentTilePos, to: nextTilePos, layer: tileLayer)
 
         // Run post action on new positioned tile
-        let newTile = (tileManager.tile(at: nextTilePos, layer: tileLayer) as! ConditionallyMoveable)
+        let newTile = (tiles.at(pos: nextTilePos, layer: tileLayer) as! ConditionallyMoveable)
         newTile.didMoveConditionallyMoveableTile(gameManager: self,
                                                  player: &self.player,
                                                  tilePosition: nextTilePos,
                                                  direction: direction)
     }
 
-    func handleCollectibleCollision(position: Position, tile: Collectable) {
+    func handleCollectibleCollision(position: GridPos, tile: Collectable) {
         // Perform tile action
         tile.performCollectableAction(gameManager: self, player: &player)
 
         // Remove sprite from tile map
-        tileManager.removeForegroundTile(at: position)
+        tiles.removeForegroundTile(at: position)
 
         // Notify there has been a UI change
         NotificationCenter.default.post(Notification(name: Notification.Name("UpdatePlayerUI")))
     }
 
-    func handleConditionallyPassableCollisions(position: Position, tile: ConditionallyPassable) {
+    func handleConditionallyPassableCollisions(position: GridPos, tile: ConditionallyPassable) {
         // Remove tile if allowed
         if tile.shouldRemoveConditionallyPassableTileAfterCollision() {
-            tileManager.removeForegroundTile(at: position)
+            tiles.removeForegroundTile(at: position)
         }
 
         // Perform action

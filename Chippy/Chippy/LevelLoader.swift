@@ -66,6 +66,10 @@ class LevelLoader {
         // Get the level metadata
         let levelMetadata = LevelLoader.levelMetadata(forLevelNumber: levelNumber)
 
+        guard let _ = GKScene(fileNamed: levelMetadata.sceneName) else {
+            fatalError("Could not load game scene from file")
+        }
+
         // Load scene from the bundle
         guard let scene = SKScene(fileNamed: levelMetadata.sceneName) else {
             fatalError("Could not load scene from file")

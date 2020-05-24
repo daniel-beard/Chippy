@@ -38,8 +38,12 @@
 		24CBD4681EDCEBEE00154179 /* BootTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CBD4671EDCEBEE00154179 /* BootTile.swift */; };
 		24D487481D3322CD00AC1095 /* Level1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 24D487471D3322CD00AC1095 /* Level1.sks */; };
 		24F9D2692470F80E007E541C /* FireTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D2682470F80E007E541C /* FireTile.swift */; };
-		24F9D26F24710183007E541C /* BugTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D26E24710183007E541C /* BugTile.swift */; };
 		24F9D271247104B4007E541C /* BoostTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D270247104B4007E541C /* BoostTile.swift */; };
+		24F9D2752471CD45007E541C /* SpriteComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D2742471CD45007E541C /* SpriteComponent.swift */; };
+		24F9D2772471CD7F007E541C /* BugEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D2762471CD7F007E541C /* BugEntity.swift */; };
+		24F9D2792471CDB4007E541C /* EntityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D2782471CDB4007E541C /* EntityManager.swift */; };
+		24F9D27B2471D00F007E541C /* BugMoveComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D27A2471D00F007E541C /* BugMoveComponent.swift */; };
+		24F9D27D2479E9FA007E541C /* Level3.sks in Resources */ = {isa = PBXBuildFile; fileRef = 24F9D27C2479E9FA007E541C /* Level3.sks */; };
 		24FA9F2B1EDCC66F0051F3E7 /* Tile2DArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FA9F2A1EDCC66F0051F3E7 /* Tile2DArray.swift */; };
 		24FDE3261FCA7C2C00814A9D /* DirtTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FDE3251FCA7C2C00814A9D /* DirtTile.swift */; };
 		24FDE3281FCA7CB400814A9D /* WaterTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FDE3271FCA7CB300814A9D /* WaterTile.swift */; };
@@ -79,8 +83,12 @@
 		24CBD4671EDCEBEE00154179 /* BootTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BootTile.swift; sourceTree = "<group>"; };
 		24D487471D3322CD00AC1095 /* Level1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level1.sks; sourceTree = "<group>"; };
 		24F9D2682470F80E007E541C /* FireTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireTile.swift; sourceTree = "<group>"; };
-		24F9D26E24710183007E541C /* BugTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugTile.swift; sourceTree = "<group>"; };
 		24F9D270247104B4007E541C /* BoostTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostTile.swift; sourceTree = "<group>"; };
+		24F9D2742471CD45007E541C /* SpriteComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteComponent.swift; sourceTree = "<group>"; };
+		24F9D2762471CD7F007E541C /* BugEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugEntity.swift; sourceTree = "<group>"; };
+		24F9D2782471CDB4007E541C /* EntityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityManager.swift; sourceTree = "<group>"; };
+		24F9D27A2471D00F007E541C /* BugMoveComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugMoveComponent.swift; sourceTree = "<group>"; };
+		24F9D27C2479E9FA007E541C /* Level3.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level3.sks; sourceTree = "<group>"; };
 		24FA9F2A1EDCC66F0051F3E7 /* Tile2DArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tile2DArray.swift; sourceTree = "<group>"; };
 		24FDE3251FCA7C2C00814A9D /* DirtTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirtTile.swift; sourceTree = "<group>"; };
 		24FDE3271FCA7CB300814A9D /* WaterTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterTile.swift; sourceTree = "<group>"; };
@@ -144,6 +152,7 @@
 			children = (
 				24D487471D3322CD00AC1095 /* Level1.sks */,
 				24118CC81E6CB659004A8AED /* Level2.sks */,
+				24F9D27C2479E9FA007E541C /* Level3.sks */,
 			);
 			name = Levels;
 			sourceTree = "<group>";
@@ -167,6 +176,8 @@
 		244337421D31D552000E485B /* Chippy */ = {
 			isa = PBXGroup;
 			children = (
+				24F9D2722471CD27007E541C /* Entities */,
+				24F9D2732471CD2E007E541C /* Components */,
 				24118CBE1E625CAC004A8AED /* Levels */,
 				24118CAA1E5A93CC004A8AED /* Utils.swift */,
 				24118CCE1E6CD1CF004A8AED /* CommonDefinitions.swift */,
@@ -190,7 +201,6 @@
 		24F9D26A2470FFCE007E541C /* Monsters */ = {
 			isa = PBXGroup;
 			children = (
-				24F9D26E24710183007E541C /* BugTile.swift */,
 			);
 			name = Monsters;
 			sourceTree = "<group>";
@@ -227,6 +237,24 @@
 				24118CCC1E6CCFA2004A8AED /* MovableBlock.swift */,
 			);
 			name = Movable;
+			sourceTree = "<group>";
+		};
+		24F9D2722471CD27007E541C /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				24F9D2762471CD7F007E541C /* BugEntity.swift */,
+				24F9D2782471CDB4007E541C /* EntityManager.swift */,
+			);
+			name = Entities;
+			sourceTree = "<group>";
+		};
+		24F9D2732471CD2E007E541C /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				24F9D2742471CD45007E541C /* SpriteComponent.swift */,
+				24F9D27A2471D00F007E541C /* BugMoveComponent.swift */,
+			);
+			name = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -295,6 +323,7 @@
 				2443375C1D31D84F000E485B /* TileSet.sks in Resources */,
 				24118CCB1E6CCB56004A8AED /* MonaShark.otf in Resources */,
 				2443374F1D31D552000E485B /* Main.storyboard in Resources */,
+				24F9D27D2479E9FA007E541C /* Level3.sks in Resources */,
 				244337511D31D552000E485B /* Assets.xcassets in Resources */,
 				244337541D31D552000E485B /* LaunchScreen.storyboard in Resources */,
 				24D487481D3322CD00AC1095 /* Level1.sks in Resources */,
@@ -313,6 +342,7 @@
 				24118CC21E638A1D004A8AED /* BoardTile.swift in Sources */,
 				24118CAF1E5A9C80004A8AED /* HelpTile.swift in Sources */,
 				24118CBB1E5BD829004A8AED /* LockTile.swift in Sources */,
+				24F9D2792471CDB4007E541C /* EntityManager.swift in Sources */,
 				24FDE3261FCA7C2C00814A9D /* DirtTile.swift in Sources */,
 				24FA9F2B1EDCC66F0051F3E7 /* Tile2DArray.swift in Sources */,
 				24118CAD1E5A9B85004A8AED /* BlockTile.swift in Sources */,
@@ -327,12 +357,14 @@
 				2443374C1D31D552000E485B /* GameViewController.swift in Sources */,
 				24118CC71E6CB334004A8AED /* HomeTile.swift in Sources */,
 				24CBD4681EDCEBEE00154179 /* BootTile.swift in Sources */,
+				24F9D2752471CD45007E541C /* SpriteComponent.swift in Sources */,
 				24118CA51E5A8CF0004A8AED /* GameManager.swift in Sources */,
+				24F9D2772471CD7F007E541C /* BugEntity.swift in Sources */,
 				24FDE3281FCA7CB400814A9D /* WaterTile.swift in Sources */,
 				24118CAB1E5A93CC004A8AED /* Utils.swift in Sources */,
 				24118CBD1E6253B4004A8AED /* LevelRepository.swift in Sources */,
 				24F9D2692470F80E007E541C /* FireTile.swift in Sources */,
-				24F9D26F24710183007E541C /* BugTile.swift in Sources */,
+				24F9D27B2471D00F007E541C /* BugMoveComponent.swift in Sources */,
 				24F9D271247104B4007E541C /* BoostTile.swift in Sources */,
 				24118CA71E5A8D12004A8AED /* Player.swift in Sources */,
 				24118CA21E5A8CC8004A8AED /* Tile.swift in Sources */,

@@ -15,10 +15,11 @@ class MovableBlock: BaseTile, Passable, ConditionallyMoveable {
 
     func canPlayerMoveTile(gameManager: GameManager,
                            player: PlayerInfo,
-                           tilePosition: Position,
+                           tilePosition: GridPos,
                            direction: MoveDirection) -> Bool {
 
-        let nextTiles = gameManager.tileManager.tiles(at: tilePosition, offsetBy: direction)
+        let nextTiles = gameManager.tiles.at(pos: tilePosition + direction)
+
         // Here we whitelist the movable conditions
         // Not sure if there will be more required here.
         // Note: If we get many more conditions here, break them out.
@@ -32,16 +33,16 @@ class MovableBlock: BaseTile, Passable, ConditionallyMoveable {
 
     func didMoveConditionallyMoveableTile(gameManager: GameManager,
                                           player: inout PlayerInfo,
-                                          tilePosition: Position,
+                                          tilePosition: GridPos,
                                           direction: MoveDirection) {
 
         // Get the tiles under our block right now
-        let tiles = gameManager.tileManager.tiles(at: tilePosition)
+        let tiles = gameManager.tiles.at(pos: tilePosition)
         if tiles.any({ $0 is WaterTile }) {
             // Add dirt
-            gameManager.tileManager.addTile(at: tilePosition, type: .dirt)
+            gameManager.tiles.add(.dirt, at: tilePosition)
             // Remove self
-            gameManager.tileManager.removeTile(at: tilePosition, layer: self.layer())
+            gameManager.tiles.remove(at: tilePosition, layer: layer())
         }
     }
 }
