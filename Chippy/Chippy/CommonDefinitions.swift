@@ -40,6 +40,7 @@ struct Position: CustomStringConvertible {
     var y: Int
 
     func up() -> Position { Position(x: 0, y: 1) }
+    func zero() -> Position { Position(x: 0, y: 0) }
 
     static func +(lhs: Position, rhs: Position) -> Position {
         return Position(x: lhs.x + rhs.x, y: lhs.y + rhs.y)

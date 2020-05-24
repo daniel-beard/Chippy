@@ -12,7 +12,7 @@ import GameplayKit
 class GameManager {
 
     var player: PlayerInfo
-    var tileManager: TileManager
+    var tiles: TileManager
     var levelMetadata: LevelMetadata
     var scene: SKScene
 
@@ -26,7 +26,7 @@ class GameManager {
         self.levelMetadata = levelMetadata
         _ = LevelLoader.verifyLevel(levelNumber: levelMetadata.levelNumber)
         player = PlayerInfo(sprite: LevelLoader.loadPlayerSprite(scene: scene))
-        tileManager = TileManager(
+        tiles = TileManager(
             backgroundTileSet: LevelLoader.loadBackgroundTiles(scene: scene),
             interactiveTileSet: LevelLoader.loadForegroundTiles(scene: scene),
             moveableTileSet: LevelLoader.loadMoveableTiles(scene: scene)
@@ -38,9 +38,9 @@ class GameManager {
 
         var result = false
 
-        let currentPos = tileManager.absolutePointToPosition(player.absolutePoint())
+        let currentPos = tiles.absolutePointToPosition(player.absolutePoint())
         let nextPos = currentPos + Position(x: dx, y: dy)
-        let nextTiles = tileManager.tiles(at: nextPos)
+        let nextTiles = tiles.at(pos: nextPos)
 
         guard !nextTiles.isEmpty else {
             return false
@@ -69,11 +69,11 @@ class GameManager {
     func movePlayerByRelativeOffset(dx: Int, dy: Int, moveDirection: MoveDirection) {
 
         // Positions
-        let currentPos = tileManager.absolutePointToPosition(player.absolutePoint())
+        let currentPos = tiles.absolutePointToPosition(player.absolutePoint())
         let nextPos = currentPos + Position(x: dx, y: dy)
 
         // Center of new tile position
-        let newTileCenter = tileManager.centerOfTile(at: nextPos)
+        let newTileCenter = tiles.centerOfTile(at: nextPos)
 
         // Move player sprite to offset the tilemap movement
         player.sprite.position = newTileCenter
@@ -88,10 +88,10 @@ class GameManager {
     // row/column must correspond to the tilemap offsets the character is currently on
     func handleCollisions(position: Position, direction: MoveDirection) {
 
-        let tiles = tileManager.tiles(at: position)
-        guard !tiles.isEmpty else { return }
+        let t = tiles.at(pos: position)
+        guard !t.isEmpty else { return }
 
-        tiles.forEach { tile in
+        t.forEach { tile in
             switch (tile) {
                 case is Collectable:
                     handleCollectibleCollision(position: position, tile: (tile as! Collectable))
@@ -114,10 +114,10 @@ class GameManager {
         let tileLayer = tile.layer()
 
         // Move the tile
-        tileManager.moveTile(at: currentTilePos, layer: tileLayer, newPosition: nextTilePos)
+        tiles.move(at: currentTilePos, to: nextTilePos, layer: tileLayer)
 
         // Run post action on new positioned tile
-        let newTile = (tileManager.tile(at: nextTilePos, layer: tileLayer) as! ConditionallyMoveable)
+        let newTile = (tiles.tile(at: nextTilePos, layer: tileLayer) as! ConditionallyMoveable)
         newTile.didMoveConditionallyMoveableTile(gameManager: self,
                                                  player: &self.player,
                                                  tilePosition: nextTilePos,
@@ -129,7 +129,7 @@ class GameManager {
         tile.performCollectableAction(gameManager: self, player: &player)
 
         // Remove sprite from tile map
-        tileManager.removeForegroundTile(at: position)
+        tiles.removeForegroundTile(at: position)
 
         // Notify there has been a UI change
         NotificationCenter.default.post(Notification(name: Notification.Name("UpdatePlayerUI")))
@@ -138,7 +138,7 @@ class GameManager {
     func handleConditionallyPassableCollisions(position: Position, tile: ConditionallyPassable) {
         // Remove tile if allowed
         if tile.shouldRemoveConditionallyPassableTileAfterCollision() {
-            tileManager.removeForegroundTile(at: position)
+            tiles.removeForegroundTile(at: position)
         }
 
         // Perform action

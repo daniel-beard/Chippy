@@ -65,7 +65,9 @@ class TileManager {
 
     //MARK: Tiles from Positions
 
-    func tiles(at pos: Position) -> [Tile] {
+    /// Returns all tiles at a given position
+    /// `tiles.at(pos: Position(x: 0, y: 0)`
+    func at(pos: Position) -> [Tile] {
         var result = [Tile?]()
         result.append( backgroundTiles[pos.x, pos.y] )
         result.append( interactiveTiles[pos.x, pos.y] )
@@ -75,7 +77,7 @@ class TileManager {
 
     public func tiles(at pos: Position, offsetBy direction: MoveDirection) -> [Tile] {
         let newPosition = offset(position: pos, byDirection: direction)
-        return tiles(at: newPosition)
+        return at(pos: newPosition)
     }
 
     public func tile(at pos: Position, layer: TileLayer) -> Tile? {
@@ -108,14 +110,16 @@ class TileManager {
 
     //MARK: Tile Operations
 
-    func addTile(at position: Position, type: TileType) {
+    /// Add a new tile of `TileType` to the given position
+    /// `tiles.add(.floor, at: Position(x:0, y:0))`
+    func add(_ type: TileType, at position: Position) {
         guard let tileClass = TileManager.mapTileEnumToClassName(tileType: type) else {
             fatalError("Could not create tile from type: \(type.rawValue)")
         }
         let newTile = tileClass.init(name: type.rawValue)
 
         // Remove any existing tiles at the same layer
-        removeTile(at: position, layer: newTile.layer())
+        remove(at: position, layer: newTile.layer())
 
         // Get the tile group from the tileset
         guard let tileGroup = spriteKitTileSet.tileGroups.first(where: { $0.name == type.rawValue }) else {
@@ -133,7 +137,9 @@ class TileManager {
         interactiveTiles[position.x, position.y] = nil
     }
 
-    func removeTile(at position: Position, layer: TileLayer) {
+    /// Removes a given tile from the tileset for a position and layer
+    /// Usage: `tiles.remove(at: .zero(), layer: .three)`
+    func remove(at position: Position, layer: TileLayer) {
         // Tile Set
         setTileGroup((nil, nil), at: position, layer: layer)
 
@@ -153,14 +159,14 @@ class TileManager {
 
     /// Moves a tile on a given layer from one position to another.
     /// This affects both the Tile & Sprite based representations
-    func moveTile(at position: Position, layer: TileLayer, newPosition: Position) {
+    func move(at position: Position, to newPosition: Position, layer: TileLayer) {
         let tileSet = tileSetFromLayer(layer)
         let tileDefinition = tileSet.tileDefinition(atColumn: position.x, row: position.y)
         let tileGroup = tileSet.tileGroup(atColumn: position.x, row: position.y)
         let tileObj = tile2DFromLayer(layer)[position.x, position.y]
 
         // remove from current position
-        removeTile(at: position, layer: layer)
+        remove(at: position, layer: layer)
 
         // re-add to new position
         // Note: Need both the tileGroup and the definition here.

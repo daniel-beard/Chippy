@@ -22,3 +22,6 @@ class LevelRepository {
         self.gameManager = gameManager
     }
 }
+
+// Terrible, but so convenient
+func GM() -> GameManager? { LevelRepository.shared.gameManager }

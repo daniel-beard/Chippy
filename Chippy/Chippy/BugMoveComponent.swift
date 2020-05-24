@@ -56,6 +56,7 @@ class BugMoveComponent: GKAgent2D, GKAgentDelegate {
     let moveEvery: TimeInterval = 1.0
 
     guard let entity = entity else { return }
+    guard let tiles = GM()?.tiles else { return }
 //    self.rotation += 0.01
 
     guard let spriteComponent = entity.component(ofType: GKSKNodeComponent.self) else {
@@ -64,9 +65,9 @@ class BugMoveComponent: GKAgent2D, GKAgentDelegate {
 
     // Position in tile grid
     if now > lastMoveTime + moveEvery {
-        var positionInGrid = LevelRepository.shared.gameManager!.tileManager.absolutePointToPosition(spriteComponent.node.position)
+        var positionInGrid = tiles.absolutePointToPosition(spriteComponent.node.position)
         positionInGrid = positionInGrid + MoveDirection.right
-        position = vector_float2(LevelRepository.shared.gameManager!.tileManager.positionToAbsolutePoint(positionInGrid))
+        position = vector_float2(tiles.positionToAbsolutePoint(positionInGrid))
         self.lastMoveTime = Date.timeIntervalSinceReferenceDate as Double
     }
   }

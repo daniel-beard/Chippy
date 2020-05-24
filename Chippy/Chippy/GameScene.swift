@@ -24,7 +24,7 @@ class GameScene: SKScene {
     // Helpers
     var gameManager: GameManager! { LevelRepository.shared.gameManager }
     var entityManager: EntityManager! { LevelRepository.shared.gameManager?.entityManager }
-    var tileManager: TileManager! { LevelRepository.shared.gameManager?.tileManager }
+    var tiles: TileManager! { LevelRepository.shared.gameManager?.tiles }
 
     // Indicates that we are running an animation just before pausing.
     // Means that we should discard keypresses.
