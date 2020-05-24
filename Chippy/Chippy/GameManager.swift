@@ -88,10 +88,7 @@ class GameManager {
     // row/column must correspond to the tilemap offsets the character is currently on
     func handleCollisions(position: GridPos, direction: MoveDirection) {
 
-        let t = tiles.at(pos: position)
-        guard !t.isEmpty else { return }
-
-        t.forEach { tile in
+        tiles.at(pos: position).forEach { tile in
             switch (tile) {
                 case is Collectable:
                     handleCollectibleCollision(position: position, tile: (tile as! Collectable))
