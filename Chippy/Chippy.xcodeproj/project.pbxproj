@@ -35,12 +35,12 @@
 		244337511D31D552000E485B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 244337501D31D552000E485B /* Assets.xcassets */; };
 		244337541D31D552000E485B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 244337521D31D552000E485B /* LaunchScreen.storyboard */; };
 		2443375C1D31D84F000E485B /* TileSet.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2443375B1D31D84F000E485B /* TileSet.sks */; };
+		24898712247C60C400617901 /* OrientationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24898711247C60C400617901 /* OrientationComponent.swift */; };
 		24CBD4681EDCEBEE00154179 /* BootTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CBD4671EDCEBEE00154179 /* BootTile.swift */; };
 		24D487481D3322CD00AC1095 /* Level1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 24D487471D3322CD00AC1095 /* Level1.sks */; };
 		24F9D2692470F80E007E541C /* FireTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D2682470F80E007E541C /* FireTile.swift */; };
 		24F9D271247104B4007E541C /* BoostTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D270247104B4007E541C /* BoostTile.swift */; };
 		24F9D2752471CD45007E541C /* SpriteComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D2742471CD45007E541C /* SpriteComponent.swift */; };
-		24F9D2772471CD7F007E541C /* BugEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D2762471CD7F007E541C /* BugEntity.swift */; };
 		24F9D2792471CDB4007E541C /* EntityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D2782471CDB4007E541C /* EntityManager.swift */; };
 		24F9D27B2471D00F007E541C /* BugMoveComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D27A2471D00F007E541C /* BugMoveComponent.swift */; };
 		24F9D27D2479E9FA007E541C /* Level3.sks in Resources */ = {isa = PBXBuildFile; fileRef = 24F9D27C2479E9FA007E541C /* Level3.sks */; };
@@ -80,12 +80,12 @@
 		244337531D31D552000E485B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		244337551D31D552000E485B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2443375B1D31D84F000E485B /* TileSet.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = TileSet.sks; sourceTree = "<group>"; };
+		24898711247C60C400617901 /* OrientationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationComponent.swift; sourceTree = "<group>"; };
 		24CBD4671EDCEBEE00154179 /* BootTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BootTile.swift; sourceTree = "<group>"; };
 		24D487471D3322CD00AC1095 /* Level1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level1.sks; sourceTree = "<group>"; };
 		24F9D2682470F80E007E541C /* FireTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireTile.swift; sourceTree = "<group>"; };
 		24F9D270247104B4007E541C /* BoostTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostTile.swift; sourceTree = "<group>"; };
 		24F9D2742471CD45007E541C /* SpriteComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteComponent.swift; sourceTree = "<group>"; };
-		24F9D2762471CD7F007E541C /* BugEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugEntity.swift; sourceTree = "<group>"; };
 		24F9D2782471CDB4007E541C /* EntityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityManager.swift; sourceTree = "<group>"; };
 		24F9D27A2471D00F007E541C /* BugMoveComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugMoveComponent.swift; sourceTree = "<group>"; };
 		24F9D27C2479E9FA007E541C /* Level3.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level3.sks; sourceTree = "<group>"; };
@@ -242,7 +242,6 @@
 		24F9D2722471CD27007E541C /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				24F9D2762471CD7F007E541C /* BugEntity.swift */,
 				24F9D2782471CDB4007E541C /* EntityManager.swift */,
 			);
 			name = Entities;
@@ -253,6 +252,7 @@
 			children = (
 				24F9D2742471CD45007E541C /* SpriteComponent.swift */,
 				24F9D27A2471D00F007E541C /* BugMoveComponent.swift */,
+				24898711247C60C400617901 /* OrientationComponent.swift */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -359,7 +359,7 @@
 				24CBD4681EDCEBEE00154179 /* BootTile.swift in Sources */,
 				24F9D2752471CD45007E541C /* SpriteComponent.swift in Sources */,
 				24118CA51E5A8CF0004A8AED /* GameManager.swift in Sources */,
-				24F9D2772471CD7F007E541C /* BugEntity.swift in Sources */,
+				24898712247C60C400617901 /* OrientationComponent.swift in Sources */,
 				24FDE3281FCA7CB400814A9D /* WaterTile.swift in Sources */,
 				24118CAB1E5A93CC004A8AED /* Utils.swift in Sources */,
 				24118CBD1E6253B4004A8AED /* LevelRepository.swift in Sources */,

@@ -167,7 +167,7 @@ class TileManager {
         // re-add to new position
         // Note: Need both the tileGroup and the definition here.
         setTileGroup((group: tileGroup, definition: tileDefinition), at: newPosition, layer: layer)
-        tile2DFromLayer(layer)[x, y] = tileObj
+        tile2DFromLayer(layer)[newPosition.x, newPosition.y] = tileObj
     }
 }
 

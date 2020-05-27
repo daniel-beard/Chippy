@@ -8,6 +8,6 @@
 
 import Foundation
 
-class FloorTile: BaseTile, Passable {
+class FloorTile: BaseTile, Passable, MonsterPassable {
     override func layer() -> TileLayer { .one }
 }

@@ -17,7 +17,9 @@ class EntityManager {
 
   lazy var componentSystems: [GKComponentSystem] = {
     let bugMoveComponent = GKComponentSystem(componentClass: BugMoveComponent.self)
-    return [bugMoveComponent]
+    let spriteComponent = GKComponentSystem(componentClass: SpriteComponent.self)
+    let orientationComponent = GKComponentSystem(componentClass: OrientationComponent.self)
+    return [bugMoveComponent, spriteComponent, orientationComponent]
   }()
 
   var toRemove = Set<GKEntity>()
@@ -29,9 +31,10 @@ class EntityManager {
   func add(_ entity: GKEntity) {
     entities.insert(entity)
 
-    if let spriteNode = entity.component(ofType: SpriteComponent.self)?.node {
-      scene.addChild(spriteNode)
-    }
+    // Not called right now.
+//    if let spriteComponent = entity.component(ofType: SpriteComponent.self) {
+//        spriteComponent.addToSceneIfRequired(scene: scene)
+//    }
 
     for componentSystem in componentSystems {
       componentSystem.addComponent(foundIn: entity)

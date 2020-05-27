@@ -46,8 +46,12 @@ class GameManager {
             return false
         }
 
-        // Handle passable tiles
-        result = result || (nextTiles.all { $0 is Passable })
+        // Handle passable & collectable tiles
+        result = result || (nextTiles.all {
+            $0 is Passable ||
+            $0 is Collectable ||
+            $0 is ConditionallyPassable
+        })
 
         // Handle any conditionally passable tiles
         let conditionallyPassableTiles = nextTiles.filter { $0 is ConditionallyPassable }

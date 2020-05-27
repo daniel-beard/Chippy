@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ChipTile: BaseTile, Collectable, Passable {
+class ChipTile: BaseTile, Collectable {
 
     override func layer() -> TileLayer {
         return .two

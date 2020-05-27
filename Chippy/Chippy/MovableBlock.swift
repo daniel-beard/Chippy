@@ -25,7 +25,7 @@ class MovableBlock: BaseTile, Passable, ConditionallyMoveable {
         // Note: If we get many more conditions here, break them out.
         return nextTiles.all { tile in
             tile is Monster == false &&
-            tile is Passable &&
+            (tile is Passable || tile is Collectable || tile is WaterTile) &&
             tile is MovableBlock == false &&
             tile is DirtTile == false
         }

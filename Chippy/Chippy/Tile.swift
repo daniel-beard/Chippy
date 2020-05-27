@@ -67,7 +67,7 @@ protocol Collectable: Tile {
 protocol Passable: Tile {}
 
 // Tiles that can be passed after a condition is met.
-protocol ConditionallyPassable: Passable {
+protocol ConditionallyPassable {
 
     // Called to check if a player satisfies the conditions to move to this tile.
     // E.g. if this is a "lock", we check that the PlayerInfo's key count for that color is correct.
@@ -99,6 +99,9 @@ protocol ConditionallyMoveable: Tile {
                                           tilePosition: GridPos,
                                           direction: MoveDirection)
 }
+
+// Tiles that monsters can pass
+protocol MonsterPassable {}
 
 // Tiles that can capture, or move the player in some way.
 // They have the capability to capture key inputs

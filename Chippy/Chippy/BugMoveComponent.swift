@@ -24,7 +24,6 @@ class BugMoveComponent: GKAgent2D, GKAgentDelegate {
 
     func setup() {
         delegate = self
-        rotation = -(.pi / 2) // facing right
     }
 
     override func didAddToEntity() {
@@ -42,7 +41,6 @@ class BugMoveComponent: GKAgent2D, GKAgentDelegate {
     // Update default GKSKNodeComponent if we have one
     if let spriteComponent = entity?.component(ofType: GKSKNodeComponent.self) {
         spriteComponent.node.position = CGPoint(position)
-        spriteComponent.node.zRotation = CGFloat(rotation)
     }
   }
 
@@ -57,16 +55,16 @@ class BugMoveComponent: GKAgent2D, GKAgentDelegate {
 
     guard let entity = entity else { return }
     guard let tiles = GM()?.tiles else { return }
-//    self.rotation += 0.01
 
-    guard let spriteComponent = entity.component(ofType: GKSKNodeComponent.self) else {
-      return
-    }
+    guard let spriteNode = entity.component(ofType: SpriteComponent.self)?.node else { return }
 
     // Position in tile grid
     if now > lastMoveTime + moveEvery {
-        var gridPos = tiles.gridPosition(forPoint: spriteComponent.node.position)
+        var gridPos = tiles.gridPosition(forPoint: spriteNode.position)
         gridPos = gridPos + .right()
+
+        guard tiles.at(pos: gridPos).all({ $0 is MonsterPassable }) else { return }
+
         position = vector_float2(tiles.centerOfTile(at: gridPos))
         self.lastMoveTime = Date.timeIntervalSinceReferenceDate as Double
     }
