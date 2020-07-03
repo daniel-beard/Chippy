@@ -36,6 +36,7 @@
 		244337541D31D552000E485B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 244337521D31D552000E485B /* LaunchScreen.storyboard */; };
 		2443375C1D31D84F000E485B /* TileSet.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2443375B1D31D84F000E485B /* TileSet.sks */; };
 		24898712247C60C400617901 /* OrientationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24898711247C60C400617901 /* OrientationComponent.swift */; };
+		2489871A24AAF7C400617901 /* OrientationAndMoveDirectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2489871924AAF7C400617901 /* OrientationAndMoveDirectionTests.swift */; };
 		24CBD4681EDCEBEE00154179 /* BootTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CBD4671EDCEBEE00154179 /* BootTile.swift */; };
 		24D487481D3322CD00AC1095 /* Level1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 24D487471D3322CD00AC1095 /* Level1.sks */; };
 		24F9D2692470F80E007E541C /* FireTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D2682470F80E007E541C /* FireTile.swift */; };
@@ -48,6 +49,16 @@
 		24FDE3261FCA7C2C00814A9D /* DirtTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FDE3251FCA7C2C00814A9D /* DirtTile.swift */; };
 		24FDE3281FCA7CB400814A9D /* WaterTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FDE3271FCA7CB300814A9D /* WaterTile.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2489871C24AAF7C400617901 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 244337381D31D552000E485B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2443373F1D31D552000E485B;
+			remoteInfo = Chippy;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		24118C9C1E5A8C22004A8AED /* TileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileManager.swift; sourceTree = "<group>"; };
@@ -81,6 +92,9 @@
 		244337551D31D552000E485B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2443375B1D31D84F000E485B /* TileSet.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = TileSet.sks; sourceTree = "<group>"; };
 		24898711247C60C400617901 /* OrientationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationComponent.swift; sourceTree = "<group>"; };
+		2489871724AAF7C400617901 /* ChippyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChippyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2489871924AAF7C400617901 /* OrientationAndMoveDirectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationAndMoveDirectionTests.swift; sourceTree = "<group>"; };
+		2489871B24AAF7C400617901 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		24CBD4671EDCEBEE00154179 /* BootTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BootTile.swift; sourceTree = "<group>"; };
 		24D487471D3322CD00AC1095 /* Level1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level1.sks; sourceTree = "<group>"; };
 		24F9D2682470F80E007E541C /* FireTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireTile.swift; sourceTree = "<group>"; };
@@ -96,6 +110,13 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		2443373D1D31D552000E485B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2489871424AAF7C400617901 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -161,6 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				244337421D31D552000E485B /* Chippy */,
+				2489871824AAF7C400617901 /* ChippyTests */,
 				244337411D31D552000E485B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -169,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				244337401D31D552000E485B /* Chippy.app */,
+				2489871724AAF7C400617901 /* ChippyTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -196,6 +219,15 @@
 				244337551D31D552000E485B /* Info.plist */,
 			);
 			path = Chippy;
+			sourceTree = "<group>";
+		};
+		2489871824AAF7C400617901 /* ChippyTests */ = {
+			isa = PBXGroup;
+			children = (
+				2489871924AAF7C400617901 /* OrientationAndMoveDirectionTests.swift */,
+				2489871B24AAF7C400617901 /* Info.plist */,
+			);
+			path = ChippyTests;
 			sourceTree = "<group>";
 		};
 		24F9D26A2470FFCE007E541C /* Monsters */ = {
@@ -277,13 +309,31 @@
 			productReference = 244337401D31D552000E485B /* Chippy.app */;
 			productType = "com.apple.product-type.application";
 		};
+		2489871624AAF7C400617901 /* ChippyTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2489871E24AAF7C500617901 /* Build configuration list for PBXNativeTarget "ChippyTests" */;
+			buildPhases = (
+				2489871324AAF7C400617901 /* Sources */,
+				2489871424AAF7C400617901 /* Frameworks */,
+				2489871524AAF7C400617901 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2489871D24AAF7C400617901 /* PBXTargetDependency */,
+			);
+			name = ChippyTests;
+			productName = ChippyTests;
+			productReference = 2489871724AAF7C400617901 /* ChippyTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		244337381D31D552000E485B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0800;
+				LastSwiftUpdateCheck = 1140;
 				LastUpgradeCheck = 1140;
 				ORGANIZATIONNAME = DanielBeard;
 				TargetAttributes = {
@@ -293,6 +343,11 @@
 						DevelopmentTeamName = "Daniel Beard";
 						LastSwiftMigration = 1030;
 						ProvisioningStyle = Automatic;
+					};
+					2489871624AAF7C400617901 = {
+						CreatedOnToolsVersion = 11.4.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 2443373F1D31D552000E485B;
 					};
 				};
 			};
@@ -311,6 +366,7 @@
 			projectRoot = "";
 			targets = (
 				2443373F1D31D552000E485B /* Chippy */,
+				2489871624AAF7C400617901 /* ChippyTests */,
 			);
 		};
 /* End PBXProject section */
@@ -329,6 +385,13 @@
 				24D487481D3322CD00AC1095 /* Level1.sks in Resources */,
 				24118CC91E6CB659004A8AED /* Level2.sks in Resources */,
 				244337481D31D552000E485B /* Actions.sks in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2489871524AAF7C400617901 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,7 +436,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2489871324AAF7C400617901 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2489871A24AAF7C400617901 /* OrientationAndMoveDirectionTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2489871D24AAF7C400617901 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2443373F1D31D552000E485B /* Chippy */;
+			targetProxy = 2489871C24AAF7C400617901 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		2443374D1D31D552000E485B /* Main.storyboard */ = {
@@ -534,6 +613,52 @@
 			};
 			name = Release;
 		};
+		2489871F24AAF7C500617901 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = ChippyTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = io.dbeard.ChippyTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Chippy.app/Chippy";
+			};
+			name = Debug;
+		};
+		2489872024AAF7C500617901 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = ChippyTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = io.dbeard.ChippyTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Chippy.app/Chippy";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -551,6 +676,15 @@
 			buildConfigurations = (
 				244337591D31D552000E485B /* Debug */,
 				2443375A1D31D552000E485B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2489871E24AAF7C500617901 /* Build configuration list for PBXNativeTarget "ChippyTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2489871F24AAF7C500617901 /* Debug */,
+				2489872024AAF7C500617901 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

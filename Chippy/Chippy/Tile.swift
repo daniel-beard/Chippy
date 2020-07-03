@@ -90,14 +90,14 @@ protocol ConditionallyMoveable: Tile {
     func canPlayerMoveTile(gameManager: GameManager,
                            player: PlayerInfo,
                            tilePosition: GridPos,
-                           direction: MoveDirection) -> Bool
+                           direction: GridDirection) -> Bool
 
     // Called after the player has moved the tile.
     // Handle things like changing the tile type here. E.g. block + water -> dirt
     func didMoveConditionallyMoveableTile(gameManager: GameManager,
                                           player: inout PlayerInfo,
                                           tilePosition: GridPos,
-                                          direction: MoveDirection)
+                                          direction: GridDirection)
 }
 
 // Tiles that monsters can pass

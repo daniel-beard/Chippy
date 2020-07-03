@@ -20,6 +20,7 @@ struct LevelMetadata {
 
 class LevelLoader {
 
+    //TODO: Remove levelnumber and scenenames from these decls.
     private static let levels = [
         LevelMetadata(
             levelNumber: 1,
@@ -34,6 +35,13 @@ class LevelLoader {
             chipsRequired: 4,
             timerSeconds: 100,
             sceneName: "Level2"
+        ),
+        LevelMetadata(
+            levelNumber: 3,
+            helpMessage: "Test",
+            chipsRequired: 0,
+            timerSeconds: 100,
+            sceneName: "Level3"
         )
     ]
 

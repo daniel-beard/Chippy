@@ -24,7 +24,7 @@ struct PlayerInfo {
     var hasIceSkates:       Bool = false
     var hasSuctionBoots:    Bool = false
 
-    var previousMoveDirection: MoveDirection
+    var previousMoveDirection: GridDirection
     
     init(sprite: SKSpriteNode) {
         self.sprite = sprite
@@ -33,7 +33,7 @@ struct PlayerInfo {
 
     func absolutePoint() -> CGPoint { sprite.position }
 
-    func updateSpriteForMoveDirection(moveDirection: MoveDirection) {
+    func updateSpriteForMoveDirection(moveDirection: GridDirection) {
         self.sprite.removeAllActions()
         let waitAction = SKAction.wait(forDuration: 1.0)
         let resetChippySprite = SKAction.setTexture(SKTexture(imageNamed: "chippyfront"))

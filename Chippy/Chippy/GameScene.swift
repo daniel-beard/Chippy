@@ -101,7 +101,7 @@ extension GameScene {
     @objc func moveLeft()     { move(direction: .left) }
     @objc func moveRight()    { move(direction: .right) }
 
-    func move(direction: MoveDirection) {
+    func move(direction: GridDirection) {
 
         guard let gameManager = LevelRepository.shared.gameManager else { return }
         // Drop all events if we are in the process of pausing the game with an animation
@@ -243,14 +243,14 @@ extension GameScene {
             tileMap.setTileGroup(sprite, andTileDefinition: SKTileDefinition(), forColumn: column, row: 0)
         }
 
-        player.hasFlippers      ?   tile(.flipperfloor, bootUI, 0)   : tile(.floor, bootUI, 0)
-        player.hasFireBoots     ?   tile(.firebootfloor, bootUI, 1)  : tile(.floor, bootUI, 1)
-        player.hasIceSkates     ?   tile(.iceskatefloor, bootUI, 2)  : tile(.floor, bootUI, 2)
-        player.hasSuctionBoots  ? tile(.suctionbootfloor, bootUI, 3) : tile(.floor, bootUI, 3)
-        player.redKeyCount    > 0 ? tile(.redkeyfloor, keyUI, 0)     : tile(.floor, keyUI, 0)
-        player.greenKeyCount  > 0 ? tile(.greenkeyfloor, keyUI, 1)   : tile(.floor, keyUI, 1)
-        player.blueKeyCount   > 0 ? tile(.bluekeyfloor, keyUI, 2)    : tile(.floor, keyUI, 2)
-        player.yellowKeyCount > 0 ? tile(.yellowkeyfloor, keyUI, 3)  : tile(.floor, keyUI, 3)
+        player.hasFlippers      ?   tile(.flipperfloor, bootUI, 0)      : tile(.floor, bootUI, 0)
+        player.hasFireBoots     ?   tile(.firebootfloor, bootUI, 1)     : tile(.floor, bootUI, 1)
+        player.hasIceSkates     ?   tile(.iceskatefloor, bootUI, 2)     : tile(.floor, bootUI, 2)
+        player.hasSuctionBoots  ?   tile(.suctionbootfloor, bootUI, 3)  : tile(.floor, bootUI, 3)
+        player.redKeyCount    > 0 ? tile(.redkeyfloor, keyUI, 0)        : tile(.floor, keyUI, 0)
+        player.greenKeyCount  > 0 ? tile(.greenkeyfloor, keyUI, 1)      : tile(.floor, keyUI, 1)
+        player.blueKeyCount   > 0 ? tile(.bluekeyfloor, keyUI, 2)       : tile(.floor, keyUI, 2)
+        player.yellowKeyCount > 0 ? tile(.yellowkeyfloor, keyUI, 3)     : tile(.floor, keyUI, 3)
     }
 
     // Responsible for drawing the overlay for the viewport
@@ -260,6 +260,9 @@ extension GameScene {
         guard let scene = scene, let camera = self.camera else {
             return
         }
+
+        let borderZPos: CGFloat = 10
+        let uiZPos: CGFloat = 11
 
         let background = LevelLoader.loadBackgroundTiles(scene: scene)
         let tileSize = background.tileSize.width // doesn't matter which value, the tiles are square.
@@ -303,6 +306,7 @@ extension GameScene {
         borderShapes.forEach { (shape) in
             shape.fillColor = .darkGray
             shape.strokeColor = .clear
+            shape.zPosition = borderZPos
             camera.addChild(shape)
         }
 
@@ -311,6 +315,7 @@ extension GameScene {
         titleLabel.text = "C H I P P Y"
         titleLabel.fontSize = 48.0
         titleLabel.position = CGPoint(x: 0, y: distanceToBorder + 40)
+        titleLabel.zPosition = uiZPos
         camera.addChild(titleLabel)
 
         // Level Info UI
@@ -320,13 +325,14 @@ extension GameScene {
                                                         width: scaledTileSize * 9,
                                                         height: scaledTileSize * 2), cornerRadius: 3.0)
         levelInfoOutline.position = CGPoint(x: leftBorderX, y: 0 - distanceToBorder - (tileSize * 2))
-
+        levelInfoOutline.zPosition = uiZPos
         levelInfoOutline.fillColor = .lightGray
         camera.addChild(levelInfoOutline)
 
         let titleTimeLabel = SKLabelNode(text: "TIME")
         titleTimeLabel.fontColor = .black
         titleTimeLabel.fontSize = 20
+        titleTimeLabel.zPosition = uiZPos
         //TODO: Calculate this from the sizes..
         titleTimeLabel.position = CGPoint(x: scaledTileSize, y: scaledTileSize)
         levelInfoOutline.addChild(titleTimeLabel)
@@ -344,6 +350,7 @@ extension GameScene {
         bootUI.setScale(1.0 / cameraScale)
         bootUI.position = CGPoint(x: leftBorderX + scaledTileSize + scaledTileSize,
                                   y: 0 - distanceToBorder - (scaledTileSize * 1.25))
+        bootUI.zPosition = uiZPos
         camera.addChild(bootUI)
 
         // Key UI
@@ -352,6 +359,7 @@ extension GameScene {
         keyUI.setScale(1.0 / cameraScale)
         keyUI.position = CGPoint(x: rightBorderX - (scaledTileSize * 2.0),
                                  y: 0 - distanceToBorder - (scaledTileSize * 1.25))
+        keyUI.zPosition = uiZPos
         camera.addChild(keyUI)
     }
 }

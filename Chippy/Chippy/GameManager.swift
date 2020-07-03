@@ -34,7 +34,7 @@ class GameManager {
     }
 
     // Checks whether a tile is passable
-    func canPlayerMove(inDirection moveDirection: MoveDirection) -> Bool {
+    func canPlayerMove(inDirection moveDirection: GridDirection) -> Bool {
 
         var result = false
 
@@ -70,7 +70,7 @@ class GameManager {
 
     // Runs the side effects of moving a player to a tile position
     // E.g. moving the tilemaps, updating collectibles, changing the game state etc.
-    func movePlayer(inDirection moveDirection: MoveDirection) {
+    func movePlayer(inDirection moveDirection: GridDirection) {
 
         // Positions
         let currentPos = tiles.gridPosition(forPoint: player.absolutePoint())
@@ -90,7 +90,7 @@ class GameManager {
 
     // Handles side effects of collisions with tiles
     // row/column must correspond to the tilemap offsets the character is currently on
-    func handleCollisions(position: GridPos, direction: MoveDirection) {
+    func handleCollisions(position: GridPos, direction: GridDirection) {
 
         tiles.at(pos: position).forEach { tile in
             switch (tile) {
@@ -109,7 +109,7 @@ class GameManager {
 
     func handleConditionallyMoveableCollision(position: GridPos,
                                               tile: ConditionallyMoveable,
-                                              direction: MoveDirection) {
+                                              direction: GridDirection) {
         let currentTilePos = position
         let nextTilePos = position + direction
         let tileLayer = tile.layer()

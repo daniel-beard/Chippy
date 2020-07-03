@@ -16,7 +16,7 @@ class MovableBlock: BaseTile, Passable, ConditionallyMoveable {
     func canPlayerMoveTile(gameManager: GameManager,
                            player: PlayerInfo,
                            tilePosition: GridPos,
-                           direction: MoveDirection) -> Bool {
+                           direction: GridDirection) -> Bool {
 
         let nextTiles = gameManager.tiles.at(pos: tilePosition + direction)
 
@@ -34,7 +34,7 @@ class MovableBlock: BaseTile, Passable, ConditionallyMoveable {
     func didMoveConditionallyMoveableTile(gameManager: GameManager,
                                           player: inout PlayerInfo,
                                           tilePosition: GridPos,
-                                          direction: MoveDirection) {
+                                          direction: GridDirection) {
 
         // Get the tiles under our block right now
         let tiles = gameManager.tiles.at(pos: tilePosition)

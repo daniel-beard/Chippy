@@ -11,6 +11,9 @@ import GameplayKit
 
 class BugMoveComponent: GKAgent2D, GKAgentDelegate {
 
+    // Store last position, we'll use this for calculating the orientation.
+    var lastPosition: GridPos?
+
     override init() {
         super.init()
         setup()
@@ -37,36 +40,90 @@ class BugMoveComponent: GKAgent2D, GKAgentDelegate {
         // nothing
     }
 
-  func agentDidUpdate(_ agent: GKAgent) {
-    // Update default GKSKNodeComponent if we have one
-    if let spriteComponent = entity?.component(ofType: GKSKNodeComponent.self) {
-        spriteComponent.node.position = CGPoint(position)
+    func agentDidUpdate(_ agent: GKAgent) {
+        // Update default GKSKNodeComponent if we have one
+        if let spriteComponent = entity?.component(ofType: GKSKNodeComponent.self) {
+            spriteComponent.node.position = CGPoint(position)
+        }
     }
-  }
 
-  //TODO: Remove these, just to test out movement quickly
-  var lastMoveTime: CFTimeInterval? = nil
+    //TODO: Remove these, just to test out movement quickly
+    var lastMoveTime: CFTimeInterval? = nil
 
-  override func update(deltaTime seconds: TimeInterval) {
-    super.update(deltaTime: seconds)
-    guard let lastMoveTime = lastMoveTime else { self.lastMoveTime = Date.timeIntervalSinceReferenceDate as Double; return }
-    let now = Date.timeIntervalSinceReferenceDate as Double
-    let moveEvery: TimeInterval = 1.0
+    func nextPositionAndOrientation(fromCurrentPos currentPos: GridPos) -> GridPos? {
+        guard let tiles = GM()?.tiles else { return nil }
+        guard let compass = entity?.component(ofType: OrientationComponent.self)?.compassDirection else { return nil }
 
-    guard let entity = entity else { return }
-    guard let tiles = GM()?.tiles else { return }
+        // Consider all tiles around us. We want to follow the wall.
+        // lookup left value
+        let relativeLeftTilePos = currentPos + RelativeDirection.left.from(compass).toPos()
+        let relativeForwardTilePos = currentPos + RelativeDirection.forward.from(compass).toPos()
+        let relativeRightTilePos = currentPos + RelativeDirection.right.from(compass).toPos()
+        let leftTileOccupied = tiles.at(pos: relativeLeftTilePos).all { !($0 is MonsterPassable) }
+        let forwardTileOccupied = tiles.at(pos: relativeForwardTilePos).all { !($0 is MonsterPassable) }
+        let rightTileOccupied = tiles.at(pos: relativeRightTilePos).all { !($0 is MonsterPassable) }
 
-    guard let spriteNode = entity.component(ofType: SpriteComponent.self)?.node else { return }
+        //TODO: Figure out the correct rules for this.
 
-    // Position in tile grid
-    if now > lastMoveTime + moveEvery {
-        var gridPos = tiles.gridPosition(forPoint: spriteNode.position)
-        gridPos = gridPos + .right()
-
-        guard tiles.at(pos: gridPos).all({ $0 is MonsterPassable }) else { return }
-
-        position = vector_float2(tiles.centerOfTile(at: gridPos))
-        self.lastMoveTime = Date.timeIntervalSinceReferenceDate as Double
+        // now need to figure out "left" from position + orientation
+        // - if left is occupied, and forward free continue in current direction
+        if leftTileOccupied && !forwardTileOccupied {
+            return relativeForwardTilePos
+        }
+        // - if left is empty, turn and move in that direction
+        else if !leftTileOccupied {
+            return relativeLeftTilePos
+        }
+        else if leftTileOccupied && forwardTileOccupied && !rightTileOccupied {
+            return relativeRightTilePos
+        }
+        return nil
     }
-  }
+
+    // Rotates the sprite to the right compass direction
+    func orient(currentPos: GridPos, nextPos: GridPos) {
+        guard let orientation = entity?.component(ofType: OrientationComponent.self) else { return }
+        let compassDirection: CompassDirection
+        let delta = GridPos(x: nextPos.x - currentPos.x, y: nextPos.y - currentPos.y)
+        switch delta {
+            case .right():  compassDirection = .east
+            case .left():   compassDirection = .west
+            case .up():     compassDirection = .north
+            case .down():   compassDirection = .south
+            default: return
+        }
+        orientation.compassDirection = compassDirection
+    }
+
+    override func update(deltaTime seconds: TimeInterval) {
+        super.update(deltaTime: seconds)
+        guard let lastMoveTime = lastMoveTime else { self.lastMoveTime = Date.timeIntervalSinceReferenceDate as Double; return }
+        let now = Date.timeIntervalSinceReferenceDate as Double
+        let moveEvery: TimeInterval = 0.5
+
+        guard let entity = entity else { return }
+        guard let tiles = GM()?.tiles else { return }
+        guard let spriteNode = entity.component(ofType: SpriteComponent.self)?.node else { return }
+
+        // Position in tile grid
+        if now > lastMoveTime + moveEvery {
+            var moveTime: Double?
+            let currentPosition = tiles.gridPosition(forPoint: spriteNode.position)
+            let nextPos = nextPositionAndOrientation(fromCurrentPos: currentPosition)
+
+            // Position change
+            if let nextPos = nextPos {
+                position = vector_float2(tiles.centerOfTile(at: nextPos))
+                // Orient the sprite based on last position
+                orient(currentPos: currentPosition, nextPos: nextPos)
+                moveTime = Date.timeIntervalSinceReferenceDate as Double
+            }
+
+            // Update last positiona and move time, if we moved or change orientation
+            self.lastPosition = currentPosition
+            if let moveTime = moveTime {
+                self.lastMoveTime = moveTime
+            }
+        }
+      }
 }
