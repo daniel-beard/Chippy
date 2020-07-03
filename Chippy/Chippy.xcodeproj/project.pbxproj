@@ -37,6 +37,7 @@
 		2443375C1D31D84F000E485B /* TileSet.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2443375B1D31D84F000E485B /* TileSet.sks */; };
 		24898712247C60C400617901 /* OrientationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24898711247C60C400617901 /* OrientationComponent.swift */; };
 		2489871A24AAF7C400617901 /* OrientationAndMoveDirectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2489871924AAF7C400617901 /* OrientationAndMoveDirectionTests.swift */; };
+		2489872224AFCDD800617901 /* ContactComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2489872124AFCDD800617901 /* ContactComponent.swift */; };
 		24CBD4681EDCEBEE00154179 /* BootTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CBD4671EDCEBEE00154179 /* BootTile.swift */; };
 		24D487481D3322CD00AC1095 /* Level1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 24D487471D3322CD00AC1095 /* Level1.sks */; };
 		24F9D2692470F80E007E541C /* FireTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D2682470F80E007E541C /* FireTile.swift */; };
@@ -95,6 +96,7 @@
 		2489871724AAF7C400617901 /* ChippyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChippyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2489871924AAF7C400617901 /* OrientationAndMoveDirectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationAndMoveDirectionTests.swift; sourceTree = "<group>"; };
 		2489871B24AAF7C400617901 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2489872124AFCDD800617901 /* ContactComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactComponent.swift; sourceTree = "<group>"; };
 		24CBD4671EDCEBEE00154179 /* BootTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BootTile.swift; sourceTree = "<group>"; };
 		24D487471D3322CD00AC1095 /* Level1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level1.sks; sourceTree = "<group>"; };
 		24F9D2682470F80E007E541C /* FireTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireTile.swift; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 				24F9D2742471CD45007E541C /* SpriteComponent.swift */,
 				24F9D27A2471D00F007E541C /* BugMoveComponent.swift */,
 				24898711247C60C400617901 /* OrientationComponent.swift */,
+				2489872124AFCDD800617901 /* ContactComponent.swift */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -420,6 +423,7 @@
 				2443374C1D31D552000E485B /* GameViewController.swift in Sources */,
 				24118CC71E6CB334004A8AED /* HomeTile.swift in Sources */,
 				24CBD4681EDCEBEE00154179 /* BootTile.swift in Sources */,
+				2489872224AFCDD800617901 /* ContactComponent.swift in Sources */,
 				24F9D2752471CD45007E541C /* SpriteComponent.swift in Sources */,
 				24118CA51E5A8CF0004A8AED /* GameManager.swift in Sources */,
 				24898712247C60C400617901 /* OrientationComponent.swift in Sources */,

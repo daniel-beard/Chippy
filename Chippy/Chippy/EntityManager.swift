@@ -19,7 +19,8 @@ class EntityManager {
     let bugMoveComponent = GKComponentSystem(componentClass: BugMoveComponent.self)
     let spriteComponent = GKComponentSystem(componentClass: SpriteComponent.self)
     let orientationComponent = GKComponentSystem(componentClass: OrientationComponent.self)
-    return [bugMoveComponent, spriteComponent, orientationComponent]
+    let contactComponent = GKComponentSystem(componentClass: ContactComponent.self)
+    return [bugMoveComponent, spriteComponent, orientationComponent, contactComponent]
   }()
 
   var toRemove = Set<GKEntity>()
