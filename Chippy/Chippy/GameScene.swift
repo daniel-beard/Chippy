@@ -86,7 +86,7 @@ class GameScene: SKScene {
         let dt = currentTime - self.lastUpdateTime
         
         // Update entities
-        gameManager.entityManager.update(dt)
+        gameManager.entityManager.update(delta: dt)
         self.lastUpdateTime = currentTime
     }
 

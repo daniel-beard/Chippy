@@ -35,6 +35,7 @@
 		244337511D31D552000E485B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 244337501D31D552000E485B /* Assets.xcassets */; };
 		244337541D31D552000E485B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 244337521D31D552000E485B /* LaunchScreen.storyboard */; };
 		2443375C1D31D84F000E485B /* TileSet.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2443375B1D31D84F000E485B /* TileSet.sks */; };
+		2445EAC024B819B200A1D323 /* BaseTickableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2445EABF24B819B200A1D323 /* BaseTickableComponent.swift */; };
 		24898712247C60C400617901 /* OrientationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24898711247C60C400617901 /* OrientationComponent.swift */; };
 		2489871A24AAF7C400617901 /* OrientationAndMoveDirectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2489871924AAF7C400617901 /* OrientationAndMoveDirectionTests.swift */; };
 		2489872224AFCDD800617901 /* ContactComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2489872124AFCDD800617901 /* ContactComponent.swift */; };
@@ -92,6 +93,7 @@
 		244337531D31D552000E485B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		244337551D31D552000E485B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2443375B1D31D84F000E485B /* TileSet.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = TileSet.sks; sourceTree = "<group>"; };
+		2445EABF24B819B200A1D323 /* BaseTickableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTickableComponent.swift; sourceTree = "<group>"; };
 		24898711247C60C400617901 /* OrientationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationComponent.swift; sourceTree = "<group>"; };
 		2489871724AAF7C400617901 /* ChippyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChippyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2489871924AAF7C400617901 /* OrientationAndMoveDirectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationAndMoveDirectionTests.swift; sourceTree = "<group>"; };
@@ -223,6 +225,14 @@
 			path = Chippy;
 			sourceTree = "<group>";
 		};
+		2445EABE24B8199B00A1D323 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				2445EABF24B819B200A1D323 /* BaseTickableComponent.swift */,
+			);
+			name = Support;
+			sourceTree = "<group>";
+		};
 		2489871824AAF7C400617901 /* ChippyTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -284,6 +294,7 @@
 		24F9D2732471CD2E007E541C /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				2445EABE24B8199B00A1D323 /* Support */,
 				24F9D2742471CD45007E541C /* SpriteComponent.swift */,
 				24F9D27A2471D00F007E541C /* BugMoveComponent.swift */,
 				24898711247C60C400617901 /* OrientationComponent.swift */,
@@ -426,6 +437,7 @@
 				2489872224AFCDD800617901 /* ContactComponent.swift in Sources */,
 				24F9D2752471CD45007E541C /* SpriteComponent.swift in Sources */,
 				24118CA51E5A8CF0004A8AED /* GameManager.swift in Sources */,
+				2445EAC024B819B200A1D323 /* BaseTickableComponent.swift in Sources */,
 				24898712247C60C400617901 /* OrientationComponent.swift in Sources */,
 				24FDE3281FCA7CB400814A9D /* WaterTile.swift in Sources */,
 				24118CAB1E5A93CC004A8AED /* Utils.swift in Sources */,

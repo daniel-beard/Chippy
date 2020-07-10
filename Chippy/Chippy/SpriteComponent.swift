@@ -42,7 +42,7 @@ class SpriteComponent: GKComponent {
 
     override class var supportsSecureCoding: Bool { true }
 
-    override func update(deltaTime seconds: TimeInterval) {
+    func update(delta deltaTime: CFTimeInterval) {
         guard let zRotation = entity?.component(ofType: OrientationComponent.self)?.zRotation else { return }
         node?.zRotation = zRotation
     }

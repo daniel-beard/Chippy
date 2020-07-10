@@ -62,12 +62,11 @@ class ContactComponent: GKComponent {
         super.update(deltaTime: seconds)
         setupIfNeeded()
 
-        guard let contacts = physicsBody?.allContactedBodies(),
-            contacts.count > 0 else {
-            return
-        }
+        guard let contacts = physicsBody?.allContactedBodies() else { return }
+        guard contacts.count > 0 else { return }
 
         // Monster and player collision
+        // Single checks right now, if we want mixed: categoryBitMask & PhysicsCategory > 0 && ...
         if physicsBody?.categoryBitMask == PhysicsCategory.Monster &&
             contacts.any({ $0.categoryBitMask == PhysicsCategory.Chippy }) {
             NotificationCenter.gameNotification(name: Notification.Name("DisplayDied"), userInfo: [

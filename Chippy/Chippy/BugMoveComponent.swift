@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-class BugMoveComponent: GKAgent2D, GKAgentDelegate {
+class BugMoveComponent: BaseAgent2D, GKAgentDelegate {
 
     // Store last position, we'll use this for calculating the orientation.
     var lastPosition: GridPos?
@@ -35,20 +35,6 @@ class BugMoveComponent: GKAgent2D, GKAgentDelegate {
             position = vector_float2(sprite.node.position)
         }
     }
-
-    func agentWillUpdate(_ agent: GKAgent) {
-        // nothing
-    }
-
-    func agentDidUpdate(_ agent: GKAgent) {
-        // Update default GKSKNodeComponent if we have one
-        if let spriteComponent = entity?.component(ofType: GKSKNodeComponent.self) {
-            spriteComponent.node.position = CGPoint(position)
-        }
-    }
-
-    //TODO: Remove these, just to test out movement quickly
-    var lastMoveTime: CFTimeInterval? = nil
 
     func nextPositionAndOrientation(fromCurrentPos currentPos: GridPos) -> GridPos? {
         guard let tiles = GM()?.tiles else { return nil }
@@ -95,35 +81,25 @@ class BugMoveComponent: GKAgent2D, GKAgentDelegate {
         orientation.compassDirection = compassDirection
     }
 
-    override func update(deltaTime seconds: TimeInterval) {
-        super.update(deltaTime: seconds)
-        guard let lastMoveTime = lastMoveTime else { self.lastMoveTime = Date.timeIntervalSinceReferenceDate as Double; return }
-        let now = Date.timeIntervalSinceReferenceDate as Double
-        let moveEvery: TimeInterval = 0.5
-
-        guard let entity = entity else { return }
+    override var tickDuration: TimeInterval? { 0.5 }
+    override func tick() {
+        guard let entity = self.entity else { return }
         guard let tiles = GM()?.tiles else { return }
         guard let spriteNode = entity.component(ofType: SpriteComponent.self)?.node else { return }
 
         // Position in tile grid
-        if now > lastMoveTime + moveEvery {
-            var moveTime: Double?
-            let currentPosition = tiles.gridPosition(forPoint: spriteNode.position)
-            let nextPos = nextPositionAndOrientation(fromCurrentPos: currentPosition)
+        let currentPosition = tiles.gridPosition(forPoint: spriteNode.position)
+        let nextPos = self.nextPositionAndOrientation(fromCurrentPos: currentPosition)
 
-            // Position change
-            if let nextPos = nextPos {
-                position = vector_float2(tiles.centerOfTile(at: nextPos))
-                // Orient the sprite based on last position
-                orient(currentPos: currentPosition, nextPos: nextPos)
-                moveTime = Date.timeIntervalSinceReferenceDate as Double
-            }
+        // Position change
+        if let nextPos = nextPos {
+            position = vector_float2(tiles.centerOfTile(at: nextPos))
+            spriteNode.position = CGPoint(position)
 
-            // Update last positiona and move time, if we moved or change orientation
-            self.lastPosition = currentPosition
-            if let moveTime = moveTime {
-                self.lastMoveTime = moveTime
-            }
+            // Orient the sprite based on last position
+            orient(currentPos: currentPosition, nextPos: nextPos)
         }
-      }
+        // Update last position if we moved or change orientation
+        lastPosition = currentPosition
+    }
 }

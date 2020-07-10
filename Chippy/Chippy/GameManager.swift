@@ -25,7 +25,7 @@ class GameManager {
         self.entityManager = EntityManager(scene: scene)
         self.levelMetadata = levelMetadata
         _ = LevelLoader.verifyLevel(levelNumber: levelMetadata.levelNumber)
-        player = PlayerInfo(sprite: LevelLoader.loadPlayerSprite(scene: scene))
+        player = PlayerInfo(sprite: LevelLoader.loadPlayerSprite(scene: scene), scene: scene)
         tiles = TileManager(
             backgroundTileSet: LevelLoader.loadBackgroundTiles(scene: scene),
             interactiveTileSet: LevelLoader.loadForegroundTiles(scene: scene),
@@ -76,13 +76,8 @@ class GameManager {
         let currentPos = tiles.gridPosition(forPoint: player.absolutePoint())
         let nextPos = currentPos + moveDirection
 
-        // Center of new tile position
-        let newTileCenter = tiles.centerOfTile(at: nextPos)
-
         // Move player sprite to offset the tilemap movement
-        player.sprite.position = newTileCenter
-        player.updateSpriteForMoveDirection(moveDirection: moveDirection)
-        scene.camera?.position = player.sprite.position
+        player.updatePosition(from: currentPos, to: nextPos, direction: moveDirection)
 
         // Handle collisions & side effects
         handleCollisions(position: nextPos, direction: moveDirection)

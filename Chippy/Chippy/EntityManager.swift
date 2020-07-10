@@ -10,58 +10,53 @@ import Foundation
 import SpriteKit
 import GameplayKit
 
+/// Entity + ComponentSystem manager
 class EntityManager {
 
-  var entities = Set<GKEntity>()
-  let scene: SKScene
+    var entities = Set<GKEntity>()
+    let scene: SKScene
 
-  lazy var componentSystems: [GKComponentSystem] = {
-    let bugMoveComponent = GKComponentSystem(componentClass: BugMoveComponent.self)
-    let spriteComponent = GKComponentSystem(componentClass: SpriteComponent.self)
-    let orientationComponent = GKComponentSystem(componentClass: OrientationComponent.self)
-    let contactComponent = GKComponentSystem(componentClass: ContactComponent.self)
-    return [bugMoveComponent, spriteComponent, orientationComponent, contactComponent]
-  }()
+    lazy var componentSystems: [GKComponentSystem] = {
+        let bugMoveComponent = GKComponentSystem(componentClass: BugMoveComponent.self)
+        let spriteComponent = GKComponentSystem(componentClass: SpriteComponent.self)
+        let orientationComponent = GKComponentSystem(componentClass: OrientationComponent.self)
+        let contactComponent = GKComponentSystem(componentClass: ContactComponent.self)
+        return [bugMoveComponent, spriteComponent, orientationComponent, contactComponent]
+    }()
 
-  var toRemove = Set<GKEntity>()
+    var toRemove = Set<GKEntity>()
 
-  init(scene: SKScene) {
-    self.scene = scene
-  }
-
-  func add(_ entity: GKEntity) {
-    entities.insert(entity)
-
-    // Not called right now.
-//    if let spriteComponent = entity.component(ofType: SpriteComponent.self) {
-//        spriteComponent.addToSceneIfRequired(scene: scene)
-//    }
-
-    for componentSystem in componentSystems {
-      componentSystem.addComponent(foundIn: entity)
-    }
-  }
-
-  func remove(_ entity: GKEntity) {
-    if let spriteNode = entity.component(ofType: SpriteComponent.self)?.node {
-      spriteNode.removeFromParent()
+    init(scene: SKScene) {
+        self.scene = scene
     }
 
-    entities.remove(entity)
-    toRemove.insert(entity)
-  }
+    func add(_ entity: GKEntity) {
+        entities.insert(entity)
 
-  func update(_ deltaTime: CFTimeInterval) {
-    for componentSystem in componentSystems {
-      componentSystem.update(deltaTime: deltaTime)
+        for componentSystem in componentSystems {
+            componentSystem.addComponent(foundIn: entity)
+        }
     }
 
-    for currentRemove in toRemove {
-      for componentSystem in componentSystems {
-        componentSystem.removeComponent(foundIn: currentRemove)
-      }
+    func remove(_ entity: GKEntity) {
+        if let spriteNode = entity.component(ofType: SpriteComponent.self)?.node {
+            spriteNode.removeFromParent()
+        }
+        entities.remove(entity)
+        toRemove.insert(entity)
     }
-    toRemove.removeAll()
-  }
+
+    func update(delta deltaTime: CFTimeInterval) {
+        for componentSystem in componentSystems {
+            componentSystem.update(deltaTime: deltaTime)
+        }
+
+        for currentRemove in toRemove {
+            for componentSystem in componentSystems {
+                componentSystem.removeComponent(foundIn: currentRemove)
+            }
+        }
+        toRemove.removeAll()
+    }
 }
 
