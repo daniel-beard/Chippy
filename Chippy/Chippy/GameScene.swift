@@ -85,8 +85,8 @@ class GameScene: SKScene {
         // Calculate time since last update
         let dt = currentTime - self.lastUpdateTime
         
-        // Update entities
-        gameManager.entityManager.update(delta: dt)
+        // Update entities & game manager
+        gameManager.update(currTime: currentTime, delta: dt)
         self.lastUpdateTime = currentTime
     }
 
@@ -103,7 +103,6 @@ extension GameScene {
 
     func move(direction: GridDirection) {
 
-        guard let gameManager = LevelRepository.shared.gameManager else { return }
         // Drop all events if we are in the process of pausing the game with an animation
         guard !isPausing else { return }
 
@@ -117,20 +116,19 @@ extension GameScene {
             if case .completed = gameState {
                 NotificationCenter.default.post(name: Notification.Name("LoadLevel"),
                     object: nil,
-                    userInfo: ["level": gameManager.nextLevelNumber()])
+                    userInfo: ["level": GM()!.nextLevelNumber()])
             }
 
             // Failed / died, restart at same level
             if case .failed = gameState {
                 NotificationCenter.default.post(name: Notification.Name("LoadLevel"),
                                                 object: nil,
-                                                userInfo: ["level": gameManager.levelMetadata.levelNumber])
+                                                userInfo: ["level": GM()!.levelMetadata.levelNumber])
             }
         }
 
-        if gameManager.canPlayerMove(inDirection: direction) {
-            gameManager.movePlayer(inDirection: direction)
-        }
+        // Send input hint to the player
+        GM()?.player.inputHint(direction: direction)
     }
 }
 

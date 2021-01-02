@@ -83,3 +83,7 @@ func addSwipeGesture(to scene: SKScene, direction: UISwipeGestureRecognizer.Dire
     swipeGesture.direction = direction
     scene.view?.addGestureRecognizer(swipeGesture)
 }
+
+func nowTime() -> TimeInterval {
+    return CACurrentMediaTime()
+}

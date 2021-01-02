@@ -33,6 +33,11 @@ class GameManager {
         )
     }
 
+    func update(currTime: TimeInterval, delta deltaTime: CFTimeInterval) {
+        entityManager.update(delta: deltaTime)
+        player.update(currTime: currTime, delta: deltaTime)
+    }
+
     // Checks whether a tile is passable
     func canPlayerMove(inDirection moveDirection: GridDirection) -> Bool {
 
@@ -70,8 +75,9 @@ class GameManager {
 
     // Runs the side effects of moving a player to a tile position
     // E.g. moving the tilemaps, updating collectibles, changing the game state etc.
-    func movePlayer(inDirection moveDirection: GridDirection) {
+    @discardableResult func movePlayer(inDirection moveDirection: GridDirection) -> Bool {
 
+        guard canPlayerMove(inDirection: moveDirection) else { return false }
         // Positions
         let currentPos = tiles.gridPosition(forPoint: player.absolutePoint())
         let nextPos = currentPos + moveDirection
@@ -81,6 +87,14 @@ class GameManager {
 
         // Handle collisions & side effects
         handleCollisions(position: nextPos, direction: moveDirection)
+        return true
+    }
+
+    func playerEffectAtCurrentPos() -> PlayerEffect? {
+        let currentPos = tiles.gridPosition(forPoint: player.absolutePoint())
+        return (tiles.at(pos: currentPos)
+            .filter { $0 is PlayerEffectable }
+            .first as? PlayerEffectable)?.playerEffect
     }
 
     // Handles side effects of collisions with tiles

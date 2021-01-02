@@ -8,7 +8,7 @@
 
 import Foundation
 
-class BoostTile: BaseTile, ConditionallyPassable {
+class BoostTile: BaseTile, ConditionallyPassable, PlayerEffectable {
 
     override func layer() -> TileLayer { .one }
     func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool { true }
@@ -19,4 +19,6 @@ class BoostTile: BaseTile, ConditionallyPassable {
         // Then we can use for Ice without skates, the boost tile, and the bear trap, etc.
         // Have to be able to grab key direction too for boost + keypress.
     }
+
+    var playerEffect: PlayerEffect = .conveyor
 }

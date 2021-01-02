@@ -9,7 +9,7 @@
 import Foundation
 import GameplayKit
 
-struct PlayerInfo {
+class PlayerInfo {
 
     var sprite: SKSpriteNode
     var chipCount: Int = 0
@@ -24,6 +24,11 @@ struct PlayerInfo {
     var hasIceSkates:       Bool = false
     var hasSuctionBoots:    Bool = false
 
+    var inputHint:          (direction: GridDirection, ts: TimeInterval)?
+    var lastMove:           (direction: GridDirection, ts: TimeInterval)?
+    var lastTick:           TimeInterval = nowTime()
+    let tickDuration:       TimeInterval = 0.2
+
     var scene: SKScene
     var previousPosition: GridPos?
     
@@ -34,12 +39,43 @@ struct PlayerInfo {
 
     func absolutePoint() -> CGPoint { sprite.position }
 
+    func update(currTime: TimeInterval, delta deltaTime: CFTimeInterval) {
+
+        guard let gm = GM() else { return }
+        if currTime - tickDuration <= lastTick { return }
+
+        // Player Effects
+        if let effect = gm.playerEffectAtCurrentPos() {
+            switch effect {
+            case .conveyor:
+                //TODO: Just pretend like this is ice for now.
+                // Repeat last direction
+                gm.movePlayer(inDirection: lastMove!.direction)
+            default: fatalError("Not implemented")
+            }
+            inputHint = nil
+            lastTick = nowTime()
+        }
+
+        // Regular movement
+        if let input = inputHint {
+            gm.movePlayer(inDirection: input.direction)
+            lastMove = inputHint
+            inputHint = nil
+            lastTick = nowTime()
+        }
+    }
+
+    // Sets input hints, these are handled in the update function above.
+    func inputHint(direction moveDirection: GridDirection) {
+        inputHint = (moveDirection, nowTime())
+    }
 
     //TODO: I guess here I want an input/update loop.
     // I think it might have to be chippy calling the shots, based on if we are on ice etc.
     // Within this method, I can make the decision to take a hint of input, or ice movement, etc.
     // should also take into account boot effects in this method
-    mutating func updatePosition(from currPos: GridPos, to nextPos: GridPos, direction: GridDirection) {
+    func updatePosition(from currPos: GridPos, to nextPos: GridPos, direction: GridDirection) {
         self.previousPosition = currPos
 
         // Center of new tile position
@@ -60,6 +96,6 @@ struct PlayerInfo {
             case .left:     sprite.texture = SKTexture(imageNamed: "chippyleft")
             case .right:    sprite.texture = SKTexture(imageNamed: "chippyright")
         }
-        self.sprite.run(group)
+        sprite.run(group)
     }
 }

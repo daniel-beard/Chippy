@@ -23,7 +23,7 @@ class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadLevel(levelNumber: 2)
+        loadLevel(levelNumber: 3)
     }
 
     override var shouldAutorotate: Bool { false }
