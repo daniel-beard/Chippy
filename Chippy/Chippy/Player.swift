@@ -51,7 +51,7 @@ class PlayerInfo {
             switch effect {
             case .conveyor:
                 // No effect if the player has boots
-                guard !hasSuctionBoots else { return }
+                guard !hasSuctionBoots else { break }
                 // Need the tile, so we can get the direction from it
                 if let boostTile = gm.tiles.at(pos: currentPos).filter({ $0 is BoostTile }).first as? BoostTile {
                     let direction = boostTile.forceDirection
@@ -67,7 +67,12 @@ class PlayerInfo {
 
         // Regular movement
         if let input = inputHint {
+            // This call may or may not succeed, but we always want to update
+            // chippy's direction state. So we always call updateSpritePosition afterwards.
             gm.movePlayer(inDirection: input.direction)
+            updateSpriteForMoveDirection(moveDirection: input.direction)
+
+            // Cleanup and timestamps
             lastMove = inputHint
             inputHint = nil
             lastTick = nowTime()
@@ -82,19 +87,16 @@ class PlayerInfo {
     // Only called from GameManager, do not call this manually
     func updateSpritePosition(from currPos: GridPos, to nextPos: GridPos, direction: GridDirection) {
         self.previousPosition = currPos
-
-        // Center of new tile position
-        guard let newTileCenter = GM()?.tiles.centerOfTile(at: nextPos) else { return }
-        sprite.position = newTileCenter
+        guard let nextTileCenter = GM()?.tiles.centerOfTile(at: nextPos) else { return }
+        sprite.position = nextTileCenter
         scene.camera?.position = sprite.position
-        updateSpriteForMoveDirection(moveDirection: direction)
     }
 
     // This function makes chippy change sprites on movement.
     // After a timeout, it will reset him to the deafult state.
     func updateSpriteForMoveDirection(moveDirection: GridDirection) {
         sprite.removeAllActions()
-        let waitAction = SKAction.wait(forDuration: 1.0)
+        let waitAction = SKAction.wait(forDuration: 0.3)
         let resetChippySprite = SKAction.setTexture(SKTexture(imageNamed: "chippyfront"))
         let group = SKAction.sequence([waitAction, resetChippySprite])
         switch moveDirection {
