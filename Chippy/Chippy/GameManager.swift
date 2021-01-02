@@ -83,7 +83,7 @@ class GameManager {
         let nextPos = currentPos + moveDirection
 
         // Move player sprite to offset the tilemap movement
-        player.updatePosition(from: currentPos, to: nextPos, direction: moveDirection)
+        player.updateSpritePosition(from: currentPos, to: nextPos, direction: moveDirection)
 
         // Handle collisions & side effects
         handleCollisions(position: nextPos, direction: moveDirection)
@@ -94,7 +94,7 @@ class GameManager {
         let currentPos = tiles.gridPosition(forPoint: player.absolutePoint())
         return (tiles.at(pos: currentPos)
             .filter { $0 is PlayerEffectable }
-            .first as? PlayerEffectable)?.playerEffect
+            .first as? PlayerEffectable)?.playerEffectType
     }
 
     // Handles side effects of collisions with tiles

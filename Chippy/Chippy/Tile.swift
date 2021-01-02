@@ -33,7 +33,10 @@ public enum TileType: String {
     case suctionboot    = "bootsuction"
     case dirt           = "dirt"
     case fire           = "firefloor"
-    case boost          = "boost"
+    case boostup        = "boostup"
+    case boostright     = "boostright"
+    case boostdown      = "boostdown"
+    case boostleft      = "boostleft"
 
     // Monsters
     case bug            = "bug"
@@ -107,7 +110,12 @@ protocol MonsterPassable {}
 // Tiles that can capture, or move the player in some way.
 // They have the capability to capture key inputs
 protocol PlayerEffectable: ConditionallyPassable {
-    var playerEffect: PlayerEffect { get }
+    var playerEffectType: PlayerEffect { get }
+}
+
+// All boosts conform to this protocol
+protocol Boost: Tile, PlayerEffectable {
+    var forceDirection: GridDirection { get }
 }
 
 // All keys conform to this protocol

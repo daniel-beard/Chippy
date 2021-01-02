@@ -250,7 +250,10 @@ private extension TileManager {
         case .suctionboot:      return BootTile.self
         case .dirt:             return DirtTile.self
         case .fire:             return FireTile.self
-        case .boost:            return BoostTile.self
+        case .boostup:          return BoostTile.self
+        case .boostright:       return BoostTile.self
+        case .boostdown:        return BoostTile.self
+        case .boostleft:        return BoostTile.self
 
         // UI only tiles
         //==========================================

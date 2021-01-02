@@ -8,17 +8,24 @@
 
 import Foundation
 
-class BoostTile: BaseTile, ConditionallyPassable, PlayerEffectable {
-
+// Boost Tiles
+class BoostTile: BaseTile, ConditionallyPassable, PlayerEffectable, Boost {
     override func layer() -> TileLayer { .one }
     func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool { true }
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool { false }
 
     func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: GridPos) {
-        //TODO: Implement. Consider a PlayerEffectable protocol for grabbing the player movement
-        // Then we can use for Ice without skates, the boost tile, and the bear trap, etc.
-        // Have to be able to grab key direction too for boost + keypress.
+        // Nothing, handled in player class.
     }
 
-    var playerEffect: PlayerEffect = .conveyor
+    var playerEffectType: PlayerEffect = .conveyor
+    var forceDirection: GridDirection {
+        switch name {
+            case "boostup": return .up
+            case "boostright": return .right
+            case "boostdown": return .down
+            case "boostleft": return .left
+            default: fatalError("Unknown boost type!")
+        }
+    }
 }

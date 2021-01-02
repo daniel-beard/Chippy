@@ -44,16 +44,24 @@ class PlayerInfo {
         guard let gm = GM() else { return }
         if currTime - tickDuration <= lastTick { return }
 
+        let currentPos = gm.tiles.gridPosition(forPoint: self.absolutePoint())
+
         // Player Effects
         if let effect = gm.playerEffectAtCurrentPos() {
             switch effect {
             case .conveyor:
-                //TODO: Just pretend like this is ice for now.
-                // Repeat last direction
-                gm.movePlayer(inDirection: lastMove!.direction)
+                // No effect if the player has boots
+                guard !hasSuctionBoots else { return }
+                // Need the tile, so we can get the direction from it
+                if let boostTile = gm.tiles.at(pos: currentPos).filter({ $0 is BoostTile }).first as? BoostTile {
+                    let direction = boostTile.forceDirection
+                    gm.movePlayer(inDirection: direction)
+                }
+                // Does not clear inputHints, as a player can 'break-out' of a conveyor loop
             default: fatalError("Not implemented")
             }
-            inputHint = nil
+            //TODO: Only clear this for certain things like ice
+//            inputHint = nil
             lastTick = nowTime()
         }
 
@@ -71,11 +79,8 @@ class PlayerInfo {
         inputHint = (moveDirection, nowTime())
     }
 
-    //TODO: I guess here I want an input/update loop.
-    // I think it might have to be chippy calling the shots, based on if we are on ice etc.
-    // Within this method, I can make the decision to take a hint of input, or ice movement, etc.
-    // should also take into account boot effects in this method
-    func updatePosition(from currPos: GridPos, to nextPos: GridPos, direction: GridDirection) {
+    // Only called from GameManager, do not call this manually
+    func updateSpritePosition(from currPos: GridPos, to nextPos: GridPos, direction: GridDirection) {
         self.previousPosition = currPos
 
         // Center of new tile position
@@ -85,6 +90,8 @@ class PlayerInfo {
         updateSpriteForMoveDirection(moveDirection: direction)
     }
 
+    // This function makes chippy change sprites on movement.
+    // After a timeout, it will reset him to the deafult state.
     func updateSpriteForMoveDirection(moveDirection: GridDirection) {
         sprite.removeAllActions()
         let waitAction = SKAction.wait(forDuration: 1.0)
