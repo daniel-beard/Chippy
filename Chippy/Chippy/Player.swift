@@ -44,7 +44,8 @@ class PlayerInfo {
         guard let gm = GM() else { return }
         if currTime - tickDuration <= lastTick { return }
 
-        let currentPos = gm.tiles.gridPosition(forPoint: self.absolutePoint())
+        let currPos = gm.tiles.gridPosition(forPoint: self.absolutePoint())
+        let currTiles = gm.tiles.at(pos: currPos)
 
         // Player Effects
         if let effect = gm.playerEffectAtCurrentPos() {
@@ -53,15 +54,34 @@ class PlayerInfo {
                 // No effect if the player has boots
                 guard !hasSuctionBoots else { break }
                 // Need the tile, so we can get the direction from it
-                if let boostTile = gm.tiles.at(pos: currentPos).filter({ $0 is BoostTile }).first as? BoostTile {
+                if let boostTile = currTiles.filter({ $0 is BoostTile }).first as? BoostTile {
                     let direction = boostTile.forceDirection
                     gm.movePlayer(inDirection: direction)
                 }
                 // Does not clear inputHints, as a player can 'break-out' of a conveyor loop
+            case .ice:
+                // No effect if the player has boots, or if we start on an ice block
+                guard !hasIceSkates else { break }
+                guard let lastMove = lastMove else { break }
+                // If next tile is passable or conditionally passable,
+                // continue the way we have been going.
+                // If the next tile is NOT passable, we need to flip the direction we are traveling.
+
+                //TODO: Handle corners, maybe as their own effect?
+                let nextTileFree = gm.canPlayerMove(inDirection: lastMove.direction)
+                if nextTileFree {
+                    gm.movePlayer(inDirection: lastMove.direction)
+                } else {
+                    let newDirection = lastMove.direction.reverse()
+                    gm.movePlayer(inDirection: newDirection)
+                    // Need to set last move so that we'll continue in the same direction
+                    self.lastMove = (direction: newDirection, ts: nowTime())
+                }
+                // Clears inputHints, as players can't move off ice without skates
+                inputHint = nil
+
             default: fatalError("Not implemented")
             }
-            //TODO: Only clear this for certain things like ice
-//            inputHint = nil
             lastTick = nowTime()
         }
 

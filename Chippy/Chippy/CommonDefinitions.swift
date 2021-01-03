@@ -77,6 +77,15 @@ enum GridDirection: Int, CaseIterable {
             case .down:      return .down()
         }
     }
+
+    func reverse() -> GridDirection {
+        switch self {
+            case .up:       return .down
+            case .left:     return .right
+            case .down:     return .up
+            case .right:    return .left
+        }
+    }
 }
 
 enum GameState {

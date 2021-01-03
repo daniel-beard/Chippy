@@ -11,45 +11,50 @@ import CoreGraphics
 
 /// Enum that maps from tile type to tileset name
 public enum TileType: String {
-    case water          = "water"
-    case floor          = "Floor"
-    case block          = "Block"
-    case movableblock   = "MovableBlock"
-    case help           = "Help"
-    case home           = "Home"
-    case chip           = "Chip"
-    case board          = "Board"
-    case bluekey        = "keyblue"
-    case redkey         = "keyred"
-    case greenkey       = "keygreen"
-    case yellowkey      = "keyyellow"
-    case redlock        = "lockred"
-    case bluelock       = "lockblue"
-    case greenlock      = "lockgreen"
-    case yellowlock     = "lockyellow"
-    case fireboot       = "bootfire"
-    case iceskate       = "bootice"
-    case flipper        = "bootwater"
-    case suctionboot    = "bootsuction"
-    case dirt           = "dirt"
-    case fire           = "firefloor"
-    case boostup        = "boostup"
-    case boostright     = "boostright"
-    case boostdown      = "boostdown"
-    case boostleft      = "boostleft"
+    case water                  = "water"
+    case floor                  = "Floor"
+    case block                  = "Block"
+    case movableblock           = "MovableBlock"
+    case help                   = "Help"
+    case home                   = "Home"
+    case chip                   = "Chip"
+    case board                  = "Board"
+    case bluekey                = "keyblue"
+    case redkey                 = "keyred"
+    case greenkey               = "keygreen"
+    case yellowkey              = "keyyellow"
+    case redlock                = "lockred"
+    case bluelock               = "lockblue"
+    case greenlock              = "lockgreen"
+    case yellowlock             = "lockyellow"
+    case fireboot               = "bootfire"
+    case iceskate               = "bootice"
+    case flipper                = "bootwater"
+    case suctionboot            = "bootsuction"
+    case dirt                   = "dirt"
+    case fire                   = "firefloor"
+    case boostup                = "boostup"
+    case boostright             = "boostright"
+    case boostdown              = "boostdown"
+    case boostleft              = "boostleft"
+    case ice                    = "ice"
+    case icecornertopleft       = "icecornertopleft"
+    case icecornertopright      = "icecornertopright"
+    case icecornerbottomleft    = "icecornerbottomleft"
+    case icecornerbottomright   = "icecornerbottomright"
 
     // Monsters
-    case bug            = "bug"
+    case bug                    = "bug"
 
     // UI only tiles
     case firebootfloor      = "firebootfloor"
     case iceskatefloor      = "iceskatefloor"
     case flipperfloor       = "flipperfloor"
     case suctionbootfloor   = "suctionbootfloor"
-    case redkeyfloor    = "redkeyfloor"
-    case bluekeyfloor   = "bluekeyfloor"
-    case yellowkeyfloor = "yellowkeyfloor"
-    case greenkeyfloor  = "greenkeyfloor"
+    case redkeyfloor        = "redkeyfloor"
+    case bluekeyfloor       = "bluekeyfloor"
+    case yellowkeyfloor     = "yellowkeyfloor"
+    case greenkeyfloor      = "greenkeyfloor"
 }
 
 protocol Tile {
@@ -61,7 +66,6 @@ protocol Tile {
 // Collectable tiles are removed from the tileset after a player visits that tile
 // E.g. Chips, Keys, etc.
 protocol Collectable: Tile {
-
     // A method called on a Tile that allows the tile to update game state
     // An example would be adding to the Player's key count when colliding with a key.
     func performCollectableAction(gameManager: GameManager, player: inout PlayerInfo)

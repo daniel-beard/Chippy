@@ -10,13 +10,9 @@ import Foundation
 
 // base class for all tiles, implements the Tile protocol only
 class BaseTile: Tile {
-
     // This value is set to the name of the TileSet tile. E.g. redkey, Floor, etc.
     var name: String = ""
-
-    func layer() -> TileLayer {
-        fatalError("Subclasses MUST override")
-    }
+    func layer() -> TileLayer { fatalError("Subclasses MUST override") }
 
     required init(name: String) {
         self.name = name

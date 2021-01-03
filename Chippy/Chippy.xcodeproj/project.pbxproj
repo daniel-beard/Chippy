@@ -40,6 +40,7 @@
 		2489871A24AAF7C400617901 /* OrientationAndMoveDirectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2489871924AAF7C400617901 /* OrientationAndMoveDirectionTests.swift */; };
 		2489872224AFCDD800617901 /* ContactComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2489872124AFCDD800617901 /* ContactComponent.swift */; };
 		24A7586E25A03C87008678EE /* PlayerEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A7586D25A03C87008678EE /* PlayerEffects.swift */; };
+		24A7587025A1554E008678EE /* IceTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A7586F25A1554E008678EE /* IceTile.swift */; };
 		24CBD4681EDCEBEE00154179 /* BootTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CBD4671EDCEBEE00154179 /* BootTile.swift */; };
 		24D487481D3322CD00AC1095 /* Level1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 24D487471D3322CD00AC1095 /* Level1.sks */; };
 		24F9D2692470F80E007E541C /* FireTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D2682470F80E007E541C /* FireTile.swift */; };
@@ -101,6 +102,7 @@
 		2489871B24AAF7C400617901 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2489872124AFCDD800617901 /* ContactComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactComponent.swift; sourceTree = "<group>"; };
 		24A7586D25A03C87008678EE /* PlayerEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerEffects.swift; sourceTree = "<group>"; };
+		24A7586F25A1554E008678EE /* IceTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IceTile.swift; sourceTree = "<group>"; };
 		24CBD4671EDCEBEE00154179 /* BootTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BootTile.swift; sourceTree = "<group>"; };
 		24D487471D3322CD00AC1095 /* Level1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level1.sks; sourceTree = "<group>"; };
 		24F9D2682470F80E007E541C /* FireTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireTile.swift; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 				24FDE3251FCA7C2C00814A9D /* DirtTile.swift */,
 				24F9D2682470F80E007E541C /* FireTile.swift */,
 				24F9D270247104B4007E541C /* BoostTile.swift */,
+				24A7586F25A1554E008678EE /* IceTile.swift */,
 			);
 			name = Elemental;
 			sourceTree = "<group>";
@@ -441,6 +444,7 @@
 				24F9D2692470F80E007E541C /* FireTile.swift in Sources */,
 				24F9D27B2471D00F007E541C /* BugMoveComponent.swift in Sources */,
 				24F9D271247104B4007E541C /* BoostTile.swift in Sources */,
+				24A7587025A1554E008678EE /* IceTile.swift in Sources */,
 				24118CA71E5A8D12004A8AED /* Player.swift in Sources */,
 				24118CA21E5A8CC8004A8AED /* Tile.swift in Sources */,
 				244337441D31D552000E485B /* AppDelegate.swift in Sources */,
