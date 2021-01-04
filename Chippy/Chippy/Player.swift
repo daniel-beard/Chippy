@@ -55,8 +55,7 @@ class PlayerInfo {
                 guard !hasSuctionBoots else { break }
                 // Need the tile, so we can get the direction from it
                 if let boostTile = currTiles.filter({ $0 is BoostTile }).first as? BoostTile {
-                    let direction = boostTile.forceDirection
-                    gm.movePlayer(inDirection: direction)
+                    _updatePlayerStoreMove(forDirection: boostTile.forceDirection, time: currTime)
                 }
                 // Does not clear inputHints, as a player can 'break-out' of a conveyor loop
             case .ice:
@@ -71,19 +70,14 @@ class PlayerInfo {
                 if let iceTile = (currTiles.filter({ $0 is IceTile }).first as? IceTile),
                     iceTile.iceType() != .normal {
                     let nextDir = iceTile.nextDirection(fromLastDirection: lastMove.direction)
-                    gm.movePlayer(inDirection: nextDir)
-                    self.lastMove = (direction: nextDir, ts: nowTime())
+                    _updatePlayerStoreMove(forDirection: nextDir, time: currTime)
                 } else if nextTileFree {
-                    gm.movePlayer(inDirection: lastMove.direction)
+                    _updatePlayerStoreMove(forDirection: lastMove.direction, time: currTime)
                 } else {
-                    let newDirection = lastMove.direction.reverse()
-                    gm.movePlayer(inDirection: newDirection)
-                    // Need to set last move so that we'll continue in the same direction
-                    self.lastMove = (direction: newDirection, ts: nowTime())
+                    _updatePlayerStoreMove(forDirection: lastMove.direction.reverse(), time: currTime)
                 }
                 // Clears inputHints, as players can't move off ice without skates
                 inputHint = nil
-
             default: fatalError("Not implemented")
             }
             lastTick = nowTime()
@@ -101,6 +95,12 @@ class PlayerInfo {
             inputHint = nil
             lastTick = nowTime()
         }
+    }
+
+    fileprivate func _updatePlayerStoreMove(forDirection direction: GridDirection, time currTime: TimeInterval) {
+        GM()?.movePlayer(inDirection: direction)
+        updateSpriteForMoveDirection(moveDirection: direction)
+        self.lastMove = (direction: direction, ts: currTime)
     }
 
     // Sets input hints, these are handled in the update function above.

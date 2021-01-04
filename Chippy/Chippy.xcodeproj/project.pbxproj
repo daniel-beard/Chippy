@@ -365,10 +365,9 @@
 			};
 			buildConfigurationList = 2443373B1D31D552000E485B /* Build configuration list for PBXProject "Chippy" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
