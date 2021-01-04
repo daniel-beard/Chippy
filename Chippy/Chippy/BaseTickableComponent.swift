@@ -15,14 +15,12 @@ class BaseAgent2D: GKAgent2D {
     var tickDuration: TimeInterval? { 0.5 }
     var lastMoveTime: TimeInterval?
 
-    func tick() {
-        // nothing, override in subclass
-    }
+    func tick() {} // nothing, override in subclass
 
     override func update(deltaTime seconds: TimeInterval) {
         guard let tickDuration = tickDuration else { super.update(deltaTime: seconds); return }
-        guard let lastMoveTime = lastMoveTime else { self.lastMoveTime = Date.timeIntervalSinceReferenceDate as Double; return }
-        let now = Date.timeIntervalSinceReferenceDate as Double
+        guard let lastMoveTime = lastMoveTime else { self.lastMoveTime = nowTime(); return }
+        let now = nowTime()
         if now > lastMoveTime + tickDuration {
             tick()
             self.lastMoveTime = now
@@ -36,18 +34,14 @@ class BaseComponent: GKComponent {
     var tickDuration: TimeInterval?
     var lastMoveTime: TimeInterval?
 
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
+    required init?(coder: NSCoder) { super.init(coder: coder) }
 
-    func tick() {
-        // nothing, override in subclass
-    }
+    func tick() {} // nothing, override in subclass
 
     override func update(deltaTime seconds: TimeInterval) {
         guard let tickDuration = tickDuration else { super.update(deltaTime: seconds); return }
-        guard let lastMoveTime = lastMoveTime else { self.lastMoveTime = Date.timeIntervalSinceReferenceDate as Double; return }
-        let now = Date.timeIntervalSinceReferenceDate as Double
+        guard let lastMoveTime = lastMoveTime else { self.lastMoveTime = nowTime(); return }
+        let now = nowTime()
         if now > lastMoveTime + tickDuration {
             tick()
             self.lastMoveTime = now

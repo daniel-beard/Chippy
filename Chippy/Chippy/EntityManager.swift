@@ -14,6 +14,7 @@ import GameplayKit
 class EntityManager {
 
     var entities = Set<GKEntity>()
+    var toRemove = Set<GKEntity>()
     let scene: SKScene
 
     lazy var componentSystems: [GKComponentSystem] = {
@@ -23,8 +24,6 @@ class EntityManager {
         let contactComponent = GKComponentSystem(componentClass: ContactComponent.self)
         return [bugMoveComponent, spriteComponent, orientationComponent, contactComponent]
     }()
-
-    var toRemove = Set<GKEntity>()
 
     init(scene: SKScene) {
         self.scene = scene

@@ -34,11 +34,11 @@ extension Collection {
 // This extension attempts to prevent simulataneous access to game objects
 // This is a bit of a kludge, but by having this separate, I can at least switch out this implementation
 // with a better approach in future.
-extension NotificationCenter {
-    class func gameNotification(name: Notification.Name, userInfo: [AnyHashable : Any]? = nil) {
-        afterDelay(0.01) {
-            NotificationCenter.default.post(name: name, object: nil, userInfo: userInfo)
-        }
+func gameNotif(name: String, userInfo: [AnyHashable : Any]? = nil) {
+    afterDelay(0.01) {
+        NotificationCenter.default.post(name: Notification.Name(name),
+                                        object: nil,
+                                        userInfo: userInfo)
     }
 }
 

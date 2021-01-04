@@ -119,10 +119,7 @@ enum RelativeDirection: Int, CaseIterable {
     case back
     case left
 
-
     // Let's us use cool stuff like .forward.from(.east, gridPos).toPos()
-    // there's a way to calculate these with rawValues, but I think this is actually a faster lookup.
-    // TODO: Measure
     func from(_ compass: CompassDirection) -> GridDirection {
         switch (self, compass) {
         case (.forward, .north): return .up

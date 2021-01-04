@@ -43,7 +43,6 @@ class PlayerInfo {
 
         guard let gm = GM() else { return }
         if currTime - tickDuration <= lastTick { return }
-
         let currPos = gm.tiles.gridPosition(forPoint: self.absolutePoint())
         let currTiles = gm.tiles.at(pos: currPos)
 
@@ -54,10 +53,10 @@ class PlayerInfo {
                 // No effect if the player has boots
                 guard !hasSuctionBoots else { break }
                 // Need the tile, so we can get the direction from it
-                if let boostTile = currTiles.filter({ $0 is BoostTile }).first as? BoostTile {
-                    _updatePlayerStoreMove(forDirection: boostTile.forceDirection, time: currTime)
-                }
+                guard let boostTile = currTiles.compactMap({ $0 as? BoostTile }).first else { break }
+                _updatePlayerStoreMove(forDirection: boostTile.forceDirection, time: currTime)
                 // Does not clear inputHints, as a player can 'break-out' of a conveyor loop
+                // will still be handled in the regular movement section below
             case .ice:
                 // No effect if the player has boots, or if we start on an ice block
                 guard !hasIceSkates else { break }
@@ -67,7 +66,7 @@ class PlayerInfo {
                 // If we are currently on an ice corner, apply the new direction, based on lastMove.
                 // If the next tile is NOT passable, we need to flip the direction we are traveling.
                 let nextTileFree = gm.canPlayerMove(inDirection: lastMove.direction)
-                if let iceTile = (currTiles.filter({ $0 is IceTile }).first as? IceTile),
+                if let iceTile = currTiles.compactMap({ $0 as? IceTile }).first,
                     iceTile.iceType() != .normal {
                     let nextDir = iceTile.nextDirection(fromLastDirection: lastMove.direction)
                     _updatePlayerStoreMove(forDirection: nextDir, time: currTime)
@@ -80,21 +79,15 @@ class PlayerInfo {
                 inputHint = nil
             default: fatalError("Not implemented")
             }
-            lastTick = nowTime()
         }
 
         // Regular movement
         if let input = inputHint {
-            // This call may or may not succeed, but we always want to update
-            // chippy's direction state. So we always call updateSpritePosition afterwards.
-            gm.movePlayer(inDirection: input.direction)
-            updateSpriteForMoveDirection(moveDirection: input.direction)
-
-            // Cleanup and timestamps
-            lastMove = inputHint
+            _updatePlayerStoreMove(forDirection: input.direction, time: currTime)
+            // Clear inputHint, we are done with it
             inputHint = nil
-            lastTick = nowTime()
         }
+        lastTick = nowTime()
     }
 
     fileprivate func _updatePlayerStoreMove(forDirection direction: GridDirection, time currTime: TimeInterval) {

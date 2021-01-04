@@ -41,7 +41,6 @@ class BugMoveComponent: BaseAgent2D, GKAgentDelegate {
         guard let compass = entity?.component(ofType: OrientationComponent.self)?.compassDirection else { return nil }
 
         // Consider all tiles around us. We want to follow the wall.
-        // lookup left value
         let relativeLeftTilePos = currentPos + RelativeDirection.left.from(compass).toPos()
         let relativeForwardTilePos = currentPos + RelativeDirection.forward.from(compass).toPos()
         let relativeRightTilePos = currentPos + RelativeDirection.right.from(compass).toPos()

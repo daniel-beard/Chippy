@@ -13,13 +13,11 @@ class SpriteComponent: GKComponent {
 
     var node: SKSpriteNode?
     private var initializedFromGKSKNodeComponent = false
+    override class var supportsSecureCoding: Bool { true }
+    required init?(coder: NSCoder) { super.init() }
 
     init(texture: SKTexture) {
         node = SKSpriteNode(texture: texture, color: .white, size: texture.size())
-        super.init()
-    }
-
-    required init?(coder: NSCoder) {
         super.init()
     }
 
@@ -39,8 +37,6 @@ class SpriteComponent: GKComponent {
         guard let node = node, initializedFromGKSKNodeComponent == true else { return }
         scene.addChild(node)
     }
-
-    override class var supportsSecureCoding: Bool { true }
 
     func update(delta deltaTime: CFTimeInterval) {
         guard let zRotation = entity?.component(ofType: OrientationComponent.self)?.zRotation else { return }

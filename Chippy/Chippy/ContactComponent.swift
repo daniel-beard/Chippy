@@ -14,7 +14,7 @@ import GameplayKit
 // Configure which categories it belongs to (category bitmasks)
 // and which categories of bodies it should interact with (collision bitmasks)
 // We don't really want "collisions"
-// we want "constacts"
+// we want "contacts"
 // https://developer.apple.com/documentation/spritekit/skphysicsbody/1519781-contacttestbitmask
 // Tests category mask against contact mask
 
@@ -69,7 +69,7 @@ class ContactComponent: GKComponent {
         // Single checks right now, if we want mixed: categoryBitMask & PhysicsCategory > 0 && ...
         if physicsBody?.categoryBitMask == PhysicsCategory.Monster &&
             contacts.any({ $0.categoryBitMask == PhysicsCategory.Chippy }) {
-            NotificationCenter.gameNotification(name: Notification.Name("DisplayDied"), userInfo: [
+            gameNotif(name: "DisplayDied", userInfo: [
                 "message": "Oops! Bugs kill Chippy!"
             ])
         }

@@ -112,8 +112,6 @@ class LevelLoader {
         if backgroundTiles.mapSize != interactiveTiles.mapSize || backgroundTiles.mapSize != moveableTiles.mapSize {
             fatalError("Maps must all be the same size!")
         }
-
-
         return true
     }
 }

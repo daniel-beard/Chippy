@@ -70,15 +70,16 @@ class GameManager {
         })
 
         // Handle any conditionally passable tiles
-        let conditionallyPassableTiles = nextTiles.filter { $0 is ConditionallyPassable }
-        result = result && (conditionallyPassableTiles as! [ConditionallyPassable]).all { conditionalTile in
+        result = result && (nextTiles.compactMap({ $0 as? ConditionallyPassable })).all { conditionalTile in
             conditionalTile.canPlayerConditionallyPassTile(gameManager: self, player: player, tilePos: nextPos)
         }
 
         // Handle moveable tiles
-        let moveableTiles = nextTiles.filter { $0 is ConditionallyMoveable }
-        result = result && (moveableTiles as! [ConditionallyMoveable]).all { moveableTile in
-            moveableTile.canPlayerMoveTile(gameManager: self, player: player, tilePosition: nextPos, direction: moveDirection)
+        result = result && (nextTiles.compactMap({ $0 as? ConditionallyMoveable })).all { moveableTile in
+            moveableTile.canPlayerMoveTile(gameManager: self,
+                                           player: player,
+                                           tilePosition: nextPos,
+                                           direction: moveDirection)
         }
 
         return result
@@ -87,7 +88,6 @@ class GameManager {
     // Runs the side effects of moving a player to a tile position
     // E.g. moving the tilemaps, updating collectibles, changing the game state etc.
     @discardableResult func movePlayer(inDirection moveDirection: GridDirection) -> Bool {
-
         guard canPlayerMove(inDirection: moveDirection) else { return false }
         // Positions
         let currentPos = tiles.gridPosition(forPoint: player.absolutePoint())
@@ -104,14 +104,13 @@ class GameManager {
     func playerEffectAtCurrentPos() -> PlayerEffect? {
         let currentPos = tiles.gridPosition(forPoint: player.absolutePoint())
         return (tiles.at(pos: currentPos)
-            .filter { $0 is PlayerEffectable }
-            .first as? PlayerEffectable)?.playerEffectType
+            .compactMap { $0 as? PlayerEffectable }
+            .first)?.playerEffectType
     }
 
     // Handles side effects of collisions with tiles
     // row/column must correspond to the tilemap offsets the character is currently on
     func handleCollisions(position: GridPos, direction: GridDirection) {
-
         tiles.at(pos: position).forEach { tile in
             switch (tile) {
                 case is Collectable:
@@ -137,12 +136,12 @@ class GameManager {
         // Move the tile
         tiles.move(at: currentTilePos, to: nextTilePos, layer: tileLayer)
 
-        // Run post action on new positioned tile
-        let newTile = (tiles.at(pos: nextTilePos, layer: tileLayer) as! ConditionallyMoveable)
-        newTile.didMoveConditionallyMoveableTile(gameManager: self,
-                                                 player: &self.player,
-                                                 tilePosition: nextTilePos,
-                                                 direction: direction)
+        // Run post action on newly positioned tile
+        let newTile = (tiles.at(pos: nextTilePos, layer: tileLayer) as? ConditionallyMoveable)
+        newTile?.didMoveConditionallyMoveableTile(gameManager: self,
+                                                  player: &self.player,
+                                                  tilePosition: nextTilePos,
+                                                  direction: direction)
     }
 
     func handleCollectibleCollision(position: GridPos, tile: Collectable) {
@@ -153,7 +152,7 @@ class GameManager {
         tiles.removeForegroundTile(at: position)
 
         // Notify there has been a UI change
-        NotificationCenter.default.post(Notification(name: Notification.Name("UpdatePlayerUI")))
+        gameNotif(name: "UpdatePlayerUI")
     }
 
     func handleConditionallyPassableCollisions(position: GridPos, tile: ConditionallyPassable) {
@@ -166,7 +165,7 @@ class GameManager {
         tile.playerDidPassConditionalTile(gameManager: self, player: &self.player, position: position)
 
         // Notify there has been a UI change
-        NotificationCenter.default.post(Notification(name: Notification.Name("UpdatePlayerUI")))
+        gameNotif(name: "UpdatePlayerUI")
     }
 }
 
