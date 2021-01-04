@@ -65,11 +65,15 @@ class PlayerInfo {
                 guard let lastMove = lastMove else { break }
                 // If next tile is passable or conditionally passable,
                 // continue the way we have been going.
+                // If we are currently on an ice corner, apply the new direction, based on lastMove.
                 // If the next tile is NOT passable, we need to flip the direction we are traveling.
-
-                //TODO: Handle corners, maybe as their own effect?
                 let nextTileFree = gm.canPlayerMove(inDirection: lastMove.direction)
-                if nextTileFree {
+                if let iceTile = (currTiles.filter({ $0 is IceTile }).first as? IceTile),
+                    iceTile.iceType() != .normal {
+                    let nextDir = iceTile.nextDirection(fromLastDirection: lastMove.direction)
+                    gm.movePlayer(inDirection: nextDir)
+                    self.lastMove = (direction: nextDir, ts: nowTime())
+                } else if nextTileFree {
                     gm.movePlayer(inDirection: lastMove.direction)
                 } else {
                     let newDirection = lastMove.direction.reverse()

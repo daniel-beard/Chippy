@@ -11,7 +11,9 @@ import Foundation
 class WaterTile: BaseTile, ConditionallyPassable {
 
     override func layer() -> TileLayer { .one }
-    func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool { true }
+    func canPlayerConditionallyPassTile(gameManager: GameManager,
+                                        player: PlayerInfo,
+                                        tilePos: GridPos) -> Bool { true }
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool { false }
 
     func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: GridPos) {

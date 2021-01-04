@@ -13,7 +13,9 @@ class LockTile: BaseTile, ConditionallyPassable, Lock {
     override func layer() -> TileLayer { .two }
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool { true }
 
-    func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool {
+    func canPlayerConditionallyPassTile(gameManager: GameManager,
+                                        player: PlayerInfo,
+                                        tilePos: GridPos) -> Bool {
         switch name {
             case "lockgreen":   return player.greenKeyCount > 0
             case "lockblue":    return player.blueKeyCount > 0

@@ -65,7 +65,7 @@ class TileManager {
     //MARK: Tiles from Positions
 
     /// Returns all tiles at a given position
-    /// `tiles.at(pos: Position(x: 0, y: 0)`
+    /// `tiles.at(pos: GridPos(x: 0, y: 0)`
     func at(pos: GridPos) -> [Tile] {
         var result = [Tile?]()
         let x = pos.x; let y = pos.y
@@ -76,10 +76,17 @@ class TileManager {
     }
 
     /// Returns a Tile? for a grid position and layer
-    /// `tiles.at(pos: Position(x: 0, y: 0)`
+    /// `tiles.at(pos: GridPos(x: 0, y: 0)`
     public func at(pos: GridPos, layer: TileLayer) -> Tile? {
         tile2DFromLayer(layer)[pos.x, pos.y]
     }
+
+    /// Returns a Tile? for a grid position and protocol conformance or class
+    /// `tiles.at(pos: GridPos(x: 0, y:  0) of: IceTile.self)`
+    //TODO: How to do this generically?
+//    public func at(pos: GridPos, of t: BaseTile.Type) -> Tile? {
+//        return at(pos: pos).filter({ type(of: $0) == of }).first as? t
+//    }
 
     // MARK: Layer calculations
 

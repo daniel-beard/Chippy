@@ -12,8 +12,9 @@ class FireTile: BaseTile, ConditionallyPassable {
 
     override func layer() -> TileLayer { .one }
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool { false }
-    func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool { true }
-
+    func canPlayerConditionallyPassTile(gameManager: GameManager,
+                                        player: PlayerInfo,
+                                        tilePos: GridPos) -> Bool { true }
     func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: GridPos) {
         if !player.hasFireBoots {
             NotificationCenter.gameNotification(name: Notification.Name("DisplayDied"), userInfo: [

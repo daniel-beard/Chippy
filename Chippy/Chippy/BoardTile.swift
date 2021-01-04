@@ -14,7 +14,7 @@ class BoardTile: BaseTile, ConditionallyPassable {
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool { true }
     func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: GridPos) { }
 
-    func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool {
+    func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo, tilePos: GridPos) -> Bool {
         player.chipCount >= gameManager.levelMetadata.chipsRequired
     }
 }

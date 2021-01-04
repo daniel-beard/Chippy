@@ -80,7 +80,7 @@ protocol ConditionallyPassable {
     // Called to check if a player satisfies the conditions to move to this tile.
     // E.g. if this is a "lock", we check that the PlayerInfo's key count for that color is correct.
     // This method should not modify state, only check the pre-conditions
-    func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo) -> Bool
+    func canPlayerConditionallyPassTile(gameManager: GameManager, player: PlayerInfo, tilePos: GridPos) -> Bool
 
     // Called after a player moves to a conditionally passable tile
     // This method is encouraged to change state. E.g. updating key counts after passing through a lock.
@@ -88,6 +88,14 @@ protocol ConditionallyPassable {
 
     // Indicates whether the Game Manager should remove this tile after the player moves through it
     func shouldRemoveConditionallyPassableTileAfterCollision() -> Bool
+}
+
+// Tiles that have conditions on whether they can be left
+protocol ConditionallyLeavable {
+    func canPlayerConditionallyLeaveTile(gameManager: GameManager,
+                                         player: PlayerInfo,
+                                         tilePos: GridPos,
+                                         inDirection: GridDirection) -> Bool
 }
 
 // Tiles that can move like blocks

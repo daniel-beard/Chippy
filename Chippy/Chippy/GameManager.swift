@@ -47,6 +47,17 @@ class GameManager {
         let nextPos = currentPos + moveDirection
         let nextTiles = tiles.at(pos: nextPos)
 
+        // Can we leave the tile we are currently on?
+        if let conditionallyLeavableTile = tiles.at(pos: currentPos)
+            .filter({ $0 is ConditionallyLeavable }).first as? ConditionallyLeavable {
+            if !conditionallyLeavableTile.canPlayerConditionallyLeaveTile(gameManager: self,
+                                                                         player: player,
+                                                                         tilePos: currentPos,
+                                                                         inDirection: moveDirection) {
+                return false
+            }
+        }
+
         guard !nextTiles.isEmpty else {
             return false
         }
@@ -61,7 +72,7 @@ class GameManager {
         // Handle any conditionally passable tiles
         let conditionallyPassableTiles = nextTiles.filter { $0 is ConditionallyPassable }
         result = result && (conditionallyPassableTiles as! [ConditionallyPassable]).all { conditionalTile in
-            conditionalTile.canPlayerConditionallyPassTile(gameManager: self, player: player)
+            conditionalTile.canPlayerConditionallyPassTile(gameManager: self, player: player, tilePos: nextPos)
         }
 
         // Handle moveable tiles
