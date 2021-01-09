@@ -76,7 +76,6 @@ class PlayerInfo {
                 }
                 // Clears inputHints, as players can't move off ice without skates
                 inputHint = nil
-            default: fatalError("Not implemented")
             }
         }
 

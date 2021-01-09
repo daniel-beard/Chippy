@@ -63,11 +63,11 @@ fileprivate extension GameViewController {
 
     func loadLevel(levelNumber: Int) {
         _ = LevelLoader.verifyLevel(levelNumber: levelNumber)
-        let levelMetadata = LevelLoader.levelMetadata(forLevelNumber: levelNumber)
+        let level = LevelLoader.levelMetadata(forLevelNumber: levelNumber)
 
         // Load 'GameScene.sks' as a GKScene. This provides gameplay related content
         // including entities and graphs.
-        if let scene = GKScene(fileNamed: "Level\(levelMetadata.levelNumber)") {
+        if let scene = GKScene(fileNamed: "Level\(level.number)") {
 
             gameScene = scene
 
@@ -75,7 +75,7 @@ fileprivate extension GameViewController {
             if let sceneNode = scene.rootNode as! GameScene? {
 
                 // Create the game manager
-                LevelRepository.shared.setGameManager(GameManager(scene: sceneNode, levelMetadata: levelMetadata))
+                LevelRepository.shared.setGameManager(GameManager(scene: sceneNode, level: level))
 
                 self.sceneNode = sceneNode
 

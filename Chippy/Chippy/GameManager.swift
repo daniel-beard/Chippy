@@ -13,18 +13,18 @@ class GameManager {
 
     var player: PlayerInfo
     var tiles: TileManager
-    var levelMetadata: LevelMetadata
+    var level: LevelMetadata
     var scene: SKScene
 
     // Entity manager
     var entityManager: EntityManager!
 
-    init(scene: SKScene, levelMetadata: LevelMetadata) {
+    init(scene: SKScene, level: LevelMetadata) {
 
         self.scene = scene
         self.entityManager = EntityManager(scene: scene)
-        self.levelMetadata = levelMetadata
-        _ = LevelLoader.verifyLevel(levelNumber: levelMetadata.levelNumber)
+        self.level = level
+        _ = LevelLoader.verifyLevel(levelNumber: level.number)
         player = PlayerInfo(sprite: LevelLoader.loadPlayerSprite(scene: scene), scene: scene)
         tiles = TileManager(
             backgroundTileSet: LevelLoader.loadBackgroundTiles(scene: scene),
@@ -171,5 +171,5 @@ class GameManager {
 
 // Level Information
 extension GameManager {
-    func nextLevelNumber() -> Int { self.levelMetadata.levelNumber + 1 }
+    func nextLevelNumber() -> Int { self.level.number + 1 }
 }

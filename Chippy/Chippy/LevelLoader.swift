@@ -11,53 +11,35 @@ import GameplayKit
 
 // Level metadata, this is passed to GameManager
 struct LevelMetadata {
-    let levelNumber: Int
-    let helpMessage: String
+    /// Level number
+    let number: Int
+    /// Help message
+    let help: String
+    /// Required number of chips
     let chipsRequired: Int
-    let timerSeconds: Int
+    /// Timer length in seconds
+    let timer: Int
 }
 
 class LevelLoader {
 
     private static let levels = [
-        LevelMetadata(
-            levelNumber: 1,
-            helpMessage: "This is a test help message",
-            chipsRequired: 11,
-            timerSeconds: 100
-        ),
-        LevelMetadata(
-            levelNumber: 2,
-            helpMessage: "Another test help message",
-            chipsRequired: 4,
-            timerSeconds: 100
-        ),
-        LevelMetadata(
-            levelNumber: 3,
-            helpMessage: "Test",
-            chipsRequired: 4,
-            timerSeconds: 100
-        ),
-        LevelMetadata(
-            levelNumber: 4,
-            helpMessage: "Test",
-            chipsRequired: 9,
-            timerSeconds: 150
-        ),
-        LevelMetadata(
-            levelNumber: 5,
-            helpMessage: "Test",
-            chipsRequired: 0,
-            timerSeconds: 100
-        )
+        LevelMetadata(number: 1, help: "Test", chipsRequired: 11, timer: 100),
+        LevelMetadata(number: 2, help: "Test", chipsRequired: 4, timer: 100),
+        LevelMetadata(number: 3, help: "Test", chipsRequired: 4, timer: 100),
+        LevelMetadata(number: 4, help: "Test", chipsRequired: 9, timer: 150),
+        LevelMetadata(number: 5, help: "Test", chipsRequired: 0, timer: 100),
+        LevelMetadata(number: 6, help: "Test", chipsRequired: 4, timer: 100),
+        LevelMetadata(number: 7, help: "Test", chipsRequired: 3, timer: 150)
+
     ]
 
     static func levelMetadata(forLevelNumber levelNumber: Int) -> LevelMetadata {
         return levels[levelNumber-1]
     }
 
-    static func scene(metadata: LevelMetadata) -> SKScene {
-        return SKScene(fileNamed: "Level\(metadata.levelNumber)")!
+    static func scene(level: LevelMetadata) -> SKScene {
+        return SKScene(fileNamed: "Level\(level.number)")!
     }
 
     static func loadBackgroundTiles(scene: SKScene) -> SKTileMapNode {
@@ -79,8 +61,8 @@ class LevelLoader {
     static func verifyLevel(levelNumber: Int) -> Bool {
 
         // Get the level metadata
-        let levelMetadata = LevelLoader.levelMetadata(forLevelNumber: levelNumber)
-        let fileName = "Level\(levelMetadata.levelNumber)"
+        let level = LevelLoader.levelMetadata(forLevelNumber: levelNumber)
+        let fileName = "Level\(level.number)"
 
         guard let _ = GKScene(fileNamed: fileName) else {
             fatalError("Could not load game scene from file")

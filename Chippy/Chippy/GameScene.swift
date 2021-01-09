@@ -123,7 +123,7 @@ extension GameScene {
             if case .failed = gameState {
                 NotificationCenter.default.post(name: Notification.Name("LoadLevel"),
                                                 object: nil,
-                                                userInfo: ["level": GM()!.levelMetadata.levelNumber])
+                                                userInfo: ["level": GM()!.level.number])
             }
         }
 
