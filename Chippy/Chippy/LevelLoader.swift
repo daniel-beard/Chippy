@@ -39,9 +39,16 @@ class LevelLoader {
         LevelMetadata(
             levelNumber: 3,
             helpMessage: "Test",
-            chipsRequired: 0,
+            chipsRequired: 4,
             timerSeconds: 100,
             sceneName: "Level3"
+        ),
+        LevelMetadata(
+            levelNumber: 4,
+            helpMessage: "Test",
+            chipsRequired: 9,
+            timerSeconds: 150,
+            sceneName: "Level4"
         )
     ]
 

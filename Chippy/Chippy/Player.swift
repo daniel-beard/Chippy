@@ -53,7 +53,7 @@ class PlayerInfo {
                 // No effect if the player has boots
                 guard !hasSuctionBoots else { break }
                 // Need the tile, so we can get the direction from it
-                guard let boostTile = currTiles.compactMap({ $0 as? BoostTile }).first else { break }
+                guard let boostTile = currTiles.grab(of: BoostTile.self) else { break }
                 _updatePlayerStoreMove(forDirection: boostTile.forceDirection, time: currTime)
                 // Does not clear inputHints, as a player can 'break-out' of a conveyor loop
                 // will still be handled in the regular movement section below
@@ -66,8 +66,7 @@ class PlayerInfo {
                 // If we are currently on an ice corner, apply the new direction, based on lastMove.
                 // If the next tile is NOT passable, we need to flip the direction we are traveling.
                 let nextTileFree = gm.canPlayerMove(inDirection: lastMove.direction)
-                if let iceTile = currTiles.compactMap({ $0 as? IceTile }).first,
-                    iceTile.iceType() != .normal {
+                if let iceTile = currTiles.grab(of: IceTile.self), iceTile.iceType() != .normal {
                     let nextDir = iceTile.nextDirection(fromLastDirection: lastMove.direction)
                     _updatePlayerStoreMove(forDirection: nextDir, time: currTime)
                 } else if nextTileFree {

@@ -12,5 +12,4 @@ import Foundation
 enum PlayerEffect {
     case conveyor
     case ice
-    case bearTrap
 }

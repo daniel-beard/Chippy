@@ -81,13 +81,6 @@ class TileManager {
         tile2DFromLayer(layer)[pos.x, pos.y]
     }
 
-    /// Returns a Tile? for a grid position and protocol conformance or class
-    /// `tiles.at(pos: GridPos(x: 0, y:  0) of: IceTile.self)`
-    //TODO: How to do this generically?
-//    public func at(pos: GridPos, of t: BaseTile.Type) -> Tile? {
-//        return at(pos: pos).filter({ type(of: $0) == of }).first as? t
-//    }
-
     // MARK: Layer calculations
 
     private func tileSetFromLayer(_ layer: TileLayer) -> SKTileMapNode {

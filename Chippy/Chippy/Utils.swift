@@ -28,6 +28,12 @@ extension Collection {
         }
         return false
     }
+
+    /// Returns first match where element can be cast to V.Type
+    /// E.g. tiles.at(pos: currPos).grab(of: FloorTile.self)
+    func grab<V>(of: V.Type) -> V? {
+        return self.compactMap({ $0 as? V }).first
+    }
 }
 
 // Because we communicate from GameManager -> GameScene with notifications,

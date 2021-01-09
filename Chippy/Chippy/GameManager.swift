@@ -48,8 +48,8 @@ class GameManager {
         let nextTiles = tiles.at(pos: nextPos)
 
         // Can we leave the tile we are currently on?
-        if let conditionallyLeavableTile = tiles.at(pos: currentPos)
-            .filter({ $0 is ConditionallyLeavable }).first as? ConditionallyLeavable {
+        // Note: Only checks first cond leavable tile.
+        if let conditionallyLeavableTile = tiles.at(pos: currentPos).grab(of: ConditionallyLeavable.self) {
             if !conditionallyLeavableTile.canPlayerConditionallyLeaveTile(gameManager: self,
                                                                          player: player,
                                                                          tilePos: currentPos,
