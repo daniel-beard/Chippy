@@ -67,7 +67,7 @@ fileprivate extension GameViewController {
 
         // Load 'GameScene.sks' as a GKScene. This provides gameplay related content
         // including entities and graphs.
-        if let scene = GKScene(fileNamed: levelMetadata.sceneName) {
+        if let scene = GKScene(fileNamed: "Level\(levelMetadata.levelNumber)") {
 
             gameScene = scene
 

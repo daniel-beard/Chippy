@@ -37,6 +37,7 @@
 		2443375C1D31D84F000E485B /* TileSet.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2443375B1D31D84F000E485B /* TileSet.sks */; };
 		2445EAC024B819B200A1D323 /* BaseTickableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2445EABF24B819B200A1D323 /* BaseTickableComponent.swift */; };
 		244B2E3E25AA60FE00DE1904 /* Level4.sks in Resources */ = {isa = PBXBuildFile; fileRef = 244B2E3D25AA60FD00DE1904 /* Level4.sks */; };
+		244B2E4025AA651D00DE1904 /* Level5.sks in Resources */ = {isa = PBXBuildFile; fileRef = 244B2E3F25AA651D00DE1904 /* Level5.sks */; };
 		24898712247C60C400617901 /* OrientationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24898711247C60C400617901 /* OrientationComponent.swift */; };
 		2489871A24AAF7C400617901 /* OrientationAndMoveDirectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2489871924AAF7C400617901 /* OrientationAndMoveDirectionTests.swift */; };
 		2489872224AFCDD800617901 /* ContactComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2489872124AFCDD800617901 /* ContactComponent.swift */; };
@@ -98,6 +99,7 @@
 		2443375B1D31D84F000E485B /* TileSet.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = TileSet.sks; sourceTree = "<group>"; };
 		2445EABF24B819B200A1D323 /* BaseTickableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTickableComponent.swift; sourceTree = "<group>"; };
 		244B2E3D25AA60FD00DE1904 /* Level4.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level4.sks; sourceTree = "<group>"; };
+		244B2E3F25AA651D00DE1904 /* Level5.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level5.sks; sourceTree = "<group>"; };
 		24898711247C60C400617901 /* OrientationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationComponent.swift; sourceTree = "<group>"; };
 		2489871724AAF7C400617901 /* ChippyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChippyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2489871924AAF7C400617901 /* OrientationAndMoveDirectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationAndMoveDirectionTests.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				24118CC81E6CB659004A8AED /* Level2.sks */,
 				24F9D27C2479E9FA007E541C /* Level3.sks */,
 				244B2E3D25AA60FD00DE1904 /* Level4.sks */,
+				244B2E3F25AA651D00DE1904 /* Level5.sks */,
 			);
 			name = Levels;
 			sourceTree = "<group>";
@@ -390,6 +393,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				244B2E4025AA651D00DE1904 /* Level5.sks in Resources */,
 				2443375C1D31D84F000E485B /* TileSet.sks in Resources */,
 				24118CCB1E6CCB56004A8AED /* MonaShark.otf in Resources */,
 				2443374F1D31D552000E485B /* Main.storyboard in Resources */,

@@ -15,40 +15,40 @@ struct LevelMetadata {
     let helpMessage: String
     let chipsRequired: Int
     let timerSeconds: Int
-    let sceneName: String
 }
 
 class LevelLoader {
 
-    //TODO: Remove levelnumber and scenenames from these decls.
     private static let levels = [
         LevelMetadata(
             levelNumber: 1,
             helpMessage: "This is a test help message",
             chipsRequired: 11,
-            timerSeconds: 100,
-            sceneName: "Level1"
+            timerSeconds: 100
         ),
         LevelMetadata(
             levelNumber: 2,
             helpMessage: "Another test help message",
             chipsRequired: 4,
-            timerSeconds: 100,
-            sceneName: "Level2"
+            timerSeconds: 100
         ),
         LevelMetadata(
             levelNumber: 3,
             helpMessage: "Test",
             chipsRequired: 4,
-            timerSeconds: 100,
-            sceneName: "Level3"
+            timerSeconds: 100
         ),
         LevelMetadata(
             levelNumber: 4,
             helpMessage: "Test",
             chipsRequired: 9,
-            timerSeconds: 150,
-            sceneName: "Level4"
+            timerSeconds: 150
+        ),
+        LevelMetadata(
+            levelNumber: 5,
+            helpMessage: "Test",
+            chipsRequired: 0,
+            timerSeconds: 100
         )
     ]
 
@@ -57,7 +57,7 @@ class LevelLoader {
     }
 
     static func scene(metadata: LevelMetadata) -> SKScene {
-        return SKScene(fileNamed: metadata.sceneName)!
+        return SKScene(fileNamed: "Level\(metadata.levelNumber)")!
     }
 
     static func loadBackgroundTiles(scene: SKScene) -> SKTileMapNode {
@@ -80,13 +80,14 @@ class LevelLoader {
 
         // Get the level metadata
         let levelMetadata = LevelLoader.levelMetadata(forLevelNumber: levelNumber)
+        let fileName = "Level\(levelMetadata.levelNumber)"
 
-        guard let _ = GKScene(fileNamed: levelMetadata.sceneName) else {
+        guard let _ = GKScene(fileNamed: fileName) else {
             fatalError("Could not load game scene from file")
         }
 
         // Load scene from the bundle
-        guard let scene = SKScene(fileNamed: levelMetadata.sceneName) else {
+        guard let scene = SKScene(fileNamed: fileName) else {
             fatalError("Could not load scene from file")
         }
 
