@@ -38,6 +38,10 @@
 		2445EAC024B819B200A1D323 /* BaseTickableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2445EABF24B819B200A1D323 /* BaseTickableComponent.swift */; };
 		244B2E3E25AA60FE00DE1904 /* Level4.sks in Resources */ = {isa = PBXBuildFile; fileRef = 244B2E3D25AA60FD00DE1904 /* Level4.sks */; };
 		244B2E4025AA651D00DE1904 /* Level5.sks in Resources */ = {isa = PBXBuildFile; fileRef = 244B2E3F25AA651D00DE1904 /* Level5.sks */; };
+		2487508827D590060047FB91 /* BlueButtonTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2487508727D590060047FB91 /* BlueButtonTile.swift */; };
+		2487508A27D5902F0047FB91 /* GreenButtonTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2487508927D5902F0047FB91 /* GreenButtonTile.swift */; };
+		2487508C27D5904E0047FB91 /* GreenOpenGateTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2487508B27D5904E0047FB91 /* GreenOpenGateTile.swift */; };
+		2487508E27D590700047FB91 /* GreenClosedGateTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2487508D27D590700047FB91 /* GreenClosedGateTile.swift */; };
 		24898712247C60C400617901 /* OrientationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24898711247C60C400617901 /* OrientationComponent.swift */; };
 		2489871A24AAF7C400617901 /* OrientationAndMoveDirectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2489871924AAF7C400617901 /* OrientationAndMoveDirectionTests.swift */; };
 		2489872224AFCDD800617901 /* ContactComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2489872124AFCDD800617901 /* ContactComponent.swift */; };
@@ -100,6 +104,10 @@
 		2445EABF24B819B200A1D323 /* BaseTickableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTickableComponent.swift; sourceTree = "<group>"; };
 		244B2E3D25AA60FD00DE1904 /* Level4.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level4.sks; sourceTree = "<group>"; };
 		244B2E3F25AA651D00DE1904 /* Level5.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Level5.sks; sourceTree = "<group>"; };
+		2487508727D590060047FB91 /* BlueButtonTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueButtonTile.swift; sourceTree = "<group>"; };
+		2487508927D5902F0047FB91 /* GreenButtonTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenButtonTile.swift; sourceTree = "<group>"; };
+		2487508B27D5904E0047FB91 /* GreenOpenGateTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenOpenGateTile.swift; sourceTree = "<group>"; };
+		2487508D27D590700047FB91 /* GreenClosedGateTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenClosedGateTile.swift; sourceTree = "<group>"; };
 		24898711247C60C400617901 /* OrientationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationComponent.swift; sourceTree = "<group>"; };
 		2489871724AAF7C400617901 /* ChippyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChippyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2489871924AAF7C400617901 /* OrientationAndMoveDirectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationAndMoveDirectionTests.swift; sourceTree = "<group>"; };
@@ -154,6 +162,7 @@
 			children = (
 				24118CB81E5BD080004A8AED /* BaseTile.swift */,
 				24118CAE1E5A9C80004A8AED /* HelpTile.swift */,
+				2487508627D58F400047FB91 /* Interactible buttons and gates */,
 				24F9D26B2470FFE2007E541C /* Elemental */,
 				24F9D26C24710007007E541C /* Collectables */,
 				24F9D26D2471011D007E541C /* Movable */,
@@ -241,6 +250,17 @@
 				2445EABF24B819B200A1D323 /* BaseTickableComponent.swift */,
 			);
 			name = Support;
+			sourceTree = "<group>";
+		};
+		2487508627D58F400047FB91 /* Interactible buttons and gates */ = {
+			isa = PBXGroup;
+			children = (
+				2487508727D590060047FB91 /* BlueButtonTile.swift */,
+				2487508927D5902F0047FB91 /* GreenButtonTile.swift */,
+				2487508B27D5904E0047FB91 /* GreenOpenGateTile.swift */,
+				2487508D27D590700047FB91 /* GreenClosedGateTile.swift */,
+			);
+			name = "Interactible buttons and gates";
 			sourceTree = "<group>";
 		};
 		2489871824AAF7C400617901 /* ChippyTests */ = {
@@ -427,6 +447,7 @@
 				24F9D2792471CDB4007E541C /* EntityManager.swift in Sources */,
 				24FDE3261FCA7C2C00814A9D /* DirtTile.swift in Sources */,
 				24FA9F2B1EDCC66F0051F3E7 /* Tile2DArray.swift in Sources */,
+				2487508C27D5904E0047FB91 /* GreenOpenGateTile.swift in Sources */,
 				24118CAD1E5A9B85004A8AED /* BlockTile.swift in Sources */,
 				2443374A1D31D552000E485B /* GameScene.swift in Sources */,
 				24118CA91E5A8EB3004A8AED /* FloorTile.swift in Sources */,
@@ -434,6 +455,7 @@
 				24118CCF1E6CD1CF004A8AED /* CommonDefinitions.swift in Sources */,
 				24118CC01E625CB7004A8AED /* LevelLoader.swift in Sources */,
 				24118CB11E5BC9ED004A8AED /* KeyTile.swift in Sources */,
+				2487508827D590060047FB91 /* BlueButtonTile.swift in Sources */,
 				24118CB91E5BD080004A8AED /* BaseTile.swift in Sources */,
 				24118CCD1E6CCFA2004A8AED /* MovableBlock.swift in Sources */,
 				2443374C1D31D552000E485B /* GameViewController.swift in Sources */,
@@ -453,8 +475,10 @@
 				24F9D271247104B4007E541C /* BoostTile.swift in Sources */,
 				24A7587025A1554E008678EE /* IceTile.swift in Sources */,
 				24118CA71E5A8D12004A8AED /* Player.swift in Sources */,
+				2487508E27D590700047FB91 /* GreenClosedGateTile.swift in Sources */,
 				24118CA21E5A8CC8004A8AED /* Tile.swift in Sources */,
 				244337441D31D552000E485B /* AppDelegate.swift in Sources */,
+				2487508A27D5902F0047FB91 /* GreenButtonTile.swift in Sources */,
 				24118CA01E5A8CBC004A8AED /* ChipTile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
