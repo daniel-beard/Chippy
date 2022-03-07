@@ -259,6 +259,10 @@ private extension TileManager {
         case .icecornertopright:        return IceTile.self
         case .icecornerbottomleft:      return IceTile.self
         case .icecornerbottomright:     return IceTile.self
+        case .bluebutton:               return BlueButtonTile.self
+        case .greenbutton:              return GreenButtonTile.self
+        case .greenopengate:            return GreenOpenGateTile.self
+        case .greenclosedgate:          return GreenClosedGateTile.self
 
         // UI only tiles
         //==========================================

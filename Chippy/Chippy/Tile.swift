@@ -43,6 +43,12 @@ public enum TileType: String {
     case icecornerbottomleft    = "icecornerbottomleft"
     case icecornerbottomright   = "icecornerbottomright"
 
+    // Buttons and gates
+    case bluebutton             = "bluebutton"
+    case greenbutton            = "greenbutton"
+    case greenopengate          = "greenopengate"
+    case greenclosedgate        = "greenclosedgate"
+
     // Monsters
     case bug                    = "bug"
 
