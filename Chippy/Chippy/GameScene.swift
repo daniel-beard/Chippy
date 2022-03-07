@@ -65,11 +65,13 @@ class GameScene: SKScene {
     }
 
     override func didMove(to view: SKView) {
-        // Setup gesture recognizers for swiping on a device.
-        addSwipeGesture(to: self, direction: .up, selector: #selector(GameScene.moveUp))
-        addSwipeGesture(to: self, direction: .down, selector: #selector(GameScene.moveDown))
-        addSwipeGesture(to: self, direction: .left, selector: #selector(GameScene.moveLeft))
-        addSwipeGesture(to: self, direction: .right, selector: #selector(GameScene.moveRight))
+        #if os(iOS)
+            // Setup gesture recognizers for swiping on a device.
+            addSwipeGesture(to: self, direction: .up, selector: #selector(GameScene.moveUp))
+            addSwipeGesture(to: self, direction: .down, selector: #selector(GameScene.moveDown))
+            addSwipeGesture(to: self, direction: .left, selector: #selector(GameScene.moveLeft))
+            addSwipeGesture(to: self, direction: .right, selector: #selector(GameScene.moveRight))
+        #endif
 
         // Add all the scene entities to the entitymanager
         gameScene.entities.forEach({ entityManager.add($0) })
@@ -309,8 +311,13 @@ extension GameScene {
         }
 
         // Draw title
-        let titleLabel = SKLabelNode(fontNamed: "MonaShark")
-        titleLabel.text = "C H I P P Y"
+        #if os(iOS)
+            let titleLabel = SKLabelNode(fontNamed: "MonaShark")
+            titleLabel.text = "C H I P P Y"
+        #elseif os(macOS)
+            let titleLabel = SKLabelNode(fontNamed: "Baskerville")
+            titleLabel.text = "Chippy."
+        #endif
         titleLabel.fontSize = 48.0
         titleLabel.position = CGPoint(x: 0, y: distanceToBorder + 40)
         titleLabel.zPosition = uiZPos

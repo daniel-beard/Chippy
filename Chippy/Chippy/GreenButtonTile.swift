@@ -8,6 +8,7 @@
 
 import Foundation
 
-class GreenButtonTile: BaseTile {
+class GreenButtonTile: BaseTile, Passable, GreenChannelTriggering {
     override func layer() -> TileLayer { .two }
+    lazy var channel = userData?["channel"] as? Int ?? 1
 }

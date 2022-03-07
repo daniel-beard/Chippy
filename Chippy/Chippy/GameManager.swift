@@ -74,6 +74,19 @@ class GameManager {
             conditionalTile.canPlayerConditionallyPassTile(gameManager: self, player: player, tilePos: nextPos)
         }
 
+        // Notify passable tiles
+        nextTiles.compactMap({ $0 as? Passable }).forEach { passableTile in
+            passableTile.playerDidPassTile(gameManager: self, player: player, position: nextPos)
+        }
+
+        // Handle green channel triggering events
+        nextTiles.compactMap({ $0 as? GreenChannelTriggering }).forEach { button in
+            // Lookup ALL greenchannel reactive nodes, and notify them
+            //TODO: This might be slow
+            tiles.allPositionsAndTilesMatching({ $0 is GreenChannelReactive })
+                .forEach { ($0.1 as! GreenChannelReactive).channelToggleFired(channel: button.channel, gameManager: self, tilePos: $0.0)}
+        }
+
         // Handle moveable tiles
         result = result && (nextTiles.compactMap({ $0 as? ConditionallyMoveable })).all { moveableTile in
             moveableTile.canPlayerMoveTile(gameManager: self,

@@ -62,6 +62,23 @@ class TileManager {
         backgroundTileSet.centerOfTile(atColumn: Int(position.x), row: Int(position.y))
     }
 
+    //MARK: Finding tiles
+
+    func allPositionsAndTilesMatching(_ predicate: ((Tile) -> Bool)) -> [(GridPos, Tile)] {
+        let cols = backgroundTileSet.numberOfColumns
+        let rows = backgroundTileSet.numberOfRows
+        var allMatches = [(GridPos, Tile)]()
+        for x in 0..<cols {
+            for y in 0..<rows {
+                let pos = GridPos(x: x, y: y)
+                at(pos: pos)
+                    .filter({ predicate($0) })
+                    .forEach({ allMatches.append((pos, $0)) })
+            }
+        }
+        return allMatches
+    }
+
     //MARK: Tiles from Positions
 
     /// Returns all tiles at a given position
@@ -107,11 +124,11 @@ class TileManager {
 
     /// Add a new tile of `TileType` to the given position
     /// `tiles.add(.floor, at: Position(x:0, y:0))`
-    func add(_ type: TileType, at position: GridPos) {
+    func add(_ type: TileType, at position: GridPos, userData: NSMutableDictionary? = nil) {
         guard let tileClass = TileManager.mapTileEnumToClassName(tileType: type) else {
             fatalError("Could not create tile from type: \(type.rawValue)")
         }
-        let newTile = tileClass.init(name: type.rawValue)
+        let newTile = tileClass.init(name: type.rawValue, userData: userData)
 
         // Remove any existing tiles at the same layer
         remove(at: position, layer: newTile.layer())
@@ -190,17 +207,18 @@ private extension TileManager {
             for y in 0..<rows {
                 if let backgroundTile = backgroundTileSet.tileDefinition(atColumn: x, row: y),
                     let name = backgroundTile.name {
-                    backgroundTiles[x, y] = tileFactory(type: name)
+                    backgroundTiles[x, y] = tileFactory(type: name, userData: backgroundTile.userData)
                 }
 
                 if let interactiveTile = interactiveTileSet.tileDefinition(atColumn: x, row: y),
                     let name = interactiveTile.name {
-                    interactiveTiles[x, y] = tileFactory(type: name)
+                    print("UserData: \(interactiveTile.userData)")
+                    interactiveTiles[x, y] = tileFactory(type: name, userData: interactiveTile.userData)
                 }
 
                 if let moveableTile = moveableTileSet.tileDefinition(atColumn: x, row: y),
                     let name = moveableTile.name {
-                    moveableTiles[x, y] = tileFactory(type: name)
+                    moveableTiles[x, y] = tileFactory(type: name, userData: moveableTile.userData)
                 }
             }
         }
@@ -209,7 +227,7 @@ private extension TileManager {
 
     // Factory method to create concrete tiles from their tileset names.
     // Used when populating our 2D maps from the existing level tilemaps.
-    func tileFactory(type: String) -> Tile? {
+    func tileFactory(type: String, userData: NSMutableDictionary?) -> Tile? {
 
         guard let tileType = TileType(rawValue: type) else {
             print("Could not find tile implementation for tile type: \(type)")
@@ -220,7 +238,7 @@ private extension TileManager {
             fatalError("Class mapping not found for tile type: \(type)")
         }
 
-        return tileClass.init(name: type)
+        return tileClass.init(name: type, userData: userData)
     }
 
     /// We need this because our mapping from tile type isn't 1-1 with class names
@@ -260,9 +278,17 @@ private extension TileManager {
         case .icecornerbottomleft:      return IceTile.self
         case .icecornerbottomright:     return IceTile.self
         case .bluebutton:               return BlueButtonTile.self
-        case .greenbutton:              return GreenButtonTile.self
-        case .greenopengate:            return GreenOpenGateTile.self
-        case .greenclosedgate:          return GreenClosedGateTile.self
+
+        // Green buttons and gates
+        case .greenbuttonch1:           return GreenButtonTile.self
+        case .greenbuttonch2:           return GreenButtonTile.self
+        case .greenbuttonch3:           return GreenButtonTile.self
+        case .greenopengatech1:         return GreenOpenGateTile.self
+        case .greenopengatech2:         return GreenOpenGateTile.self
+        case .greenopengatech3:         return GreenOpenGateTile.self
+        case .greenclosedgatech1:       return GreenClosedGateTile.self
+        case .greenclosedgatech2:       return GreenClosedGateTile.self
+        case .greenclosedgatech3:       return GreenClosedGateTile.self
 
         // UI only tiles
         //==========================================
