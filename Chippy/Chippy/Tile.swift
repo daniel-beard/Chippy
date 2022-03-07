@@ -45,9 +45,15 @@ public enum TileType: String {
 
     // Buttons and gates
     case bluebutton             = "bluebutton"
-    case greenbutton            = "greenbutton"
-    case greenopengate          = "greenopengate"
-    case greenclosedgate        = "greenclosedgate"
+    case greenbuttonch1         = "greenbuttonch1"
+    case greenbuttonch2         = "greenbuttonch2"
+    case greenbuttonch3         = "greenbuttonch3"
+    case greenopengatech1       = "greenopengatech1"
+    case greenopengatech2       = "greenopengatech2"
+    case greenopengatech3       = "greenopengatech3"
+    case greenclosedgatech1     = "greenclosedgatech1"
+    case greenclosedgatech2     = "greenclosedgatech2"
+    case greenclosedgatech3     = "greenclosedgatech3"
 
     // Monsters
     case bug                    = "bug"
@@ -65,8 +71,9 @@ public enum TileType: String {
 
 protocol Tile {
     var name: String { get set }
+    var userData: NSMutableDictionary? { get set }
     func layer() -> TileLayer
-    init(name: String)
+    init(name: String, userData: NSMutableDictionary?)
 }
 
 // Collectable tiles are removed from the tileset after a player visits that tile
@@ -78,7 +85,15 @@ protocol Collectable: Tile {
 }
 
 // Passable tiles control where the player can move.
-protocol Passable: Tile {}
+protocol Passable: Tile {
+    // Called after a player moves to a passable tile
+    func playerDidPassTile(gameManager: GameManager, player: PlayerInfo, position: GridPos)
+}
+
+// Default implementation
+extension Passable {
+    func playerDidPassTile(gameManager: GameManager, player: PlayerInfo, position: GridPos) {}
+}
 
 // Tiles that can be passed after a condition is met.
 protocol ConditionallyPassable {
@@ -120,6 +135,16 @@ protocol ConditionallyMoveable: Tile {
                                           player: inout PlayerInfo,
                                           tilePosition: GridPos,
                                           direction: GridDirection)
+}
+
+// Green buttons and gates
+protocol GreenChannelTriggering {
+    var channel: Int { get set }
+}
+
+protocol GreenChannelReactive {
+    var channel: Int { get set }
+    func channelToggleFired(channel: Int, gameManager: GameManager, tilePos: GridPos)
 }
 
 // Tiles that monsters can pass
