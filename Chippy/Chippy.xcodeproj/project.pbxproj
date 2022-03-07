@@ -28,8 +28,6 @@
 		24118CCD1E6CCFA2004A8AED /* MovableBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CCC1E6CCFA2004A8AED /* MovableBlock.swift */; };
 		24118CCF1E6CD1CF004A8AED /* CommonDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CCE1E6CD1CF004A8AED /* CommonDefinitions.swift */; };
 		24405ED027D5942C001340DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24405ECF27D5942C001340DA /* AppDelegate.swift */; };
-		24405ED227D5942C001340DA /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 24405ED127D5942C001340DA /* GameScene.sks */; };
-		24405ED427D5942C001340DA /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 24405ED327D5942C001340DA /* Actions.sks */; };
 		24405ED827D5942C001340DA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24405ED727D5942C001340DA /* ViewController.swift */; };
 		24405EDA27D5942D001340DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 24405ED927D5942D001340DA /* Assets.xcassets */; };
 		24405EDD27D5942D001340DA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24405EDB27D5942D001340DA /* Main.storyboard */; };
@@ -77,6 +75,8 @@
 		24405F0C27D5981A001340DA /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118CA11E5A8CC8004A8AED /* Tile.swift */; };
 		24405F0D27D5981A001340DA /* TileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24118C9C1E5A8C22004A8AED /* TileManager.swift */; };
 		24405F0E27D5981F001340DA /* EntityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F9D2782471CDB4007E541C /* EntityManager.swift */; };
+		24405F0F27D5B763001340DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 244337501D31D552000E485B /* Assets.xcassets */; };
+		24405F1327D5B823001340DA /* MonaShark.otf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 24118CCA1E6CCB56004A8AED /* MonaShark.otf */; };
 		244337441D31D552000E485B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244337431D31D552000E485B /* AppDelegate.swift */; };
 		244337481D31D552000E485B /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 244337471D31D552000E485B /* Actions.sks */; };
 		2443374A1D31D552000E485B /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244337491D31D552000E485B /* GameScene.swift */; };
@@ -120,6 +120,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		24405F1227D5B819001340DA /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				24405F1327D5B823001340DA /* MonaShark.otf in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		24118C9C1E5A8C22004A8AED /* TileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileManager.swift; sourceTree = "<group>"; };
 		24118C9F1E5A8CBC004A8AED /* ChipTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChipTile.swift; sourceTree = "<group>"; };
@@ -143,12 +156,11 @@
 		24118CCE1E6CD1CF004A8AED /* CommonDefinitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonDefinitions.swift; sourceTree = "<group>"; };
 		24405ECD27D5942C001340DA /* ChippyMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChippyMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24405ECF27D5942C001340DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		24405ED127D5942C001340DA /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		24405ED327D5942C001340DA /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		24405ED727D5942C001340DA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		24405ED927D5942D001340DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		24405EDC27D5942D001340DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		24405EDE27D5942D001340DA /* ChippyMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ChippyMac.entitlements; sourceTree = "<group>"; };
+		24405F1127D5B7BB001340DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		244337401D31D552000E485B /* Chippy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chippy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		244337431D31D552000E485B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		244337471D31D552000E485B /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
@@ -269,9 +281,8 @@
 		24405ECE27D5942C001340DA /* ChippyMac */ = {
 			isa = PBXGroup;
 			children = (
+				24405F1127D5B7BB001340DA /* Info.plist */,
 				24405ECF27D5942C001340DA /* AppDelegate.swift */,
-				24405ED127D5942C001340DA /* GameScene.sks */,
-				24405ED327D5942C001340DA /* Actions.sks */,
 				24405ED727D5942C001340DA /* ViewController.swift */,
 				24405ED927D5942D001340DA /* Assets.xcassets */,
 				24405EDB27D5942D001340DA /* Main.storyboard */,
@@ -426,6 +437,7 @@
 				24405EC927D5942C001340DA /* Sources */,
 				24405ECA27D5942C001340DA /* Frameworks */,
 				24405ECB27D5942C001340DA /* Resources */,
+				24405F1227D5B819001340DA /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -526,11 +538,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				24405EE527D5979C001340DA /* TileSet.sks in Resources */,
-				24405ED227D5942C001340DA /* GameScene.sks in Resources */,
 				24405EED27D597B8001340DA /* Level5.sks in Resources */,
 				24405EEF27D597BE001340DA /* Level3.sks in Resources */,
 				24405EDA27D5942D001340DA /* Assets.xcassets in Resources */,
-				24405ED427D5942C001340DA /* Actions.sks in Resources */,
+				24405F0F27D5B763001340DA /* Assets.xcassets in Resources */,
 				24405EEE27D597BC001340DA /* Level4.sks in Resources */,
 				24405EDD27D5942D001340DA /* Main.storyboard in Resources */,
 				24405EE427D59798001340DA /* Actions.sks in Resources */,
@@ -723,6 +734,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChippyMac/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 DanielBeard. All rights reserved.";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -756,6 +768,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChippyMac/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 DanielBeard. All rights reserved.";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;

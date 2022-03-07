@@ -84,11 +84,13 @@ func informativeTextLabel(origin: CGPoint, message: String) -> SKNode {
     return helpOverlay
 }
 
+#if os(iOS)
 func addSwipeGesture(to scene: SKScene, direction: UISwipeGestureRecognizer.Direction, selector: Selector) {
     let swipeGesture = UISwipeGestureRecognizer(target: scene, action: selector)
     swipeGesture.direction = direction
     scene.view?.addGestureRecognizer(swipeGesture)
 }
+#endif
 
 func nowTime() -> TimeInterval {
     return CACurrentMediaTime()
