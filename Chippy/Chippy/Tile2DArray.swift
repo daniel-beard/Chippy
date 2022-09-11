@@ -13,31 +13,23 @@ class Array2D<T> {
     var cols:Int, rows:Int
     var matrix:[T?]
 
-    init(cols: Int, rows: Int, defaultValue:T?) {
+    init(cols: Int, rows: Int, defaultValue: T?) {
         self.cols = cols
         self.rows = rows
         matrix = Array(repeating: defaultValue, count: cols*rows)
     }
 
-    subscript(col:Int, row:Int) -> T? {
-        get{
-            return matrix[cols * row + col]
-        }
-        set{
-            matrix[cols * row + col] = newValue
-        }
+    subscript(col: Int, row: Int) -> T? {
+        get { return matrix[cols * row + col] }
+        set { matrix[cols * row + col] = newValue }
     }
 
     subscript(col: Int32, row: Int32) -> T? {
-        get{
-            return matrix[cols * Int(row) + Int(col)]
-        }
-        set{
-            matrix[cols * Int(row) + Int(col)] = newValue
-        }
+        get { return matrix[cols * Int(row) + Int(col)] }
+        set { matrix[cols * Int(row) + Int(col)] = newValue }
     }
 
-    func colCount() -> Int { self.cols }
-    func rowCount() -> Int { self.rows }
+    func colCount() -> Int { cols }
+    func rowCount() -> Int { rows }
 }
 

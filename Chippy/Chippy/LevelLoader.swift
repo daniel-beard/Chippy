@@ -31,35 +31,33 @@ class LevelLoader {
         LevelMetadata(number: 5, help: "Test", chipsRequired: 0, timer: 100),
         LevelMetadata(number: 6, help: "Test", chipsRequired: 4, timer: 100),
         LevelMetadata(number: 7, help: "Test", chipsRequired: 3, timer: 150)
-
     ]
 
     static func levelMetadata(forLevelNumber levelNumber: Int) -> LevelMetadata {
-        return levels[levelNumber-1]
+        levels[levelNumber-1]
     }
 
     static func scene(level: LevelMetadata) -> SKScene {
-        return SKScene(fileNamed: "Level\(level.number)")!
+        SKScene(fileNamed: "Level\(level.number)")!
     }
 
     static func loadBackgroundTiles(scene: SKScene) -> SKTileMapNode {
-        return scene.childNode(withName: "Background") as! SKTileMapNode
+        scene.childNode(withName: "Background") as! SKTileMapNode
     }
 
     static func loadForegroundTiles(scene: SKScene) -> SKTileMapNode {
-        return scene.childNode(withName: "Interactive") as! SKTileMapNode
+        scene.childNode(withName: "Interactive") as! SKTileMapNode
     }
 
     static func loadMoveableTiles(scene: SKScene) -> SKTileMapNode {
-        return scene.childNode(withName: "Top") as! SKTileMapNode
+        scene.childNode(withName: "Top") as! SKTileMapNode
     }
 
     static func loadPlayerSprite(scene: SKScene) -> SKSpriteNode {
-        return loadBackgroundTiles(scene: scene).childNode(withName: "Chippy") as! SKSpriteNode
+        loadBackgroundTiles(scene: scene).childNode(withName: "Chippy") as! SKSpriteNode
     }
 
     static func verifyLevel(levelNumber: Int) -> Bool {
-
         // Get the level metadata
         let level = LevelLoader.levelMetadata(forLevelNumber: levelNumber)
         let fileName = "Level\(level.number)"

@@ -98,7 +98,7 @@ protocol ConditionallyLeavable {
                                          inDirection: GridDirection) -> Bool
 }
 
-// Tiles that can move like blocks
+// Tiles that can move, like blocks
 protocol ConditionallyMoveable: Tile {
 
     // Called to check if a player moving in a certain direction can move this tile.

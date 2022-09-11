@@ -10,7 +10,7 @@ import UIKit
 import SpriteKit
 import GameplayKit
 
-//MARK: View Controller Lifecycle
+// MARK: View Controller Lifecycle
 class GameViewController: UIViewController {
 
     var gameScene: GKScene!
@@ -31,7 +31,7 @@ class GameViewController: UIViewController {
     override var prefersStatusBarHidden: Bool { true }
 }
 
-//MARK: Movement
+// MARK: Movement
 internal extension GameViewController {
     @objc func swipeUp() { sceneNode.move(direction: .up) }
     @objc func swipeDown() { sceneNode.move(direction: .down) }
@@ -46,19 +46,25 @@ internal extension GameViewController {
             UIKeyCommand(input: UIKeyCommand.inputLeftArrow,    modifierFlags: [], action: #selector(swipeLeft)),
             UIKeyCommand(input: UIKeyCommand.inputRightArrow,   modifierFlags: [], action: #selector(swipeRight)),
             // Reload
-            UIKeyCommand(input: "r", modifierFlags: [], action: #selector(viewDidLoad))
+            UIKeyCommand(input: "r", modifierFlags: [], action: #selector(viewDidLoad)),
+            // Pause
+            UIKeyCommand(input: "p", modifierFlags: [], action: #selector(togglePauseGame))
         ]
     }
 }
 
-//MARK: Level Loading and Notifications
-fileprivate extension GameViewController {
+// MARK: Level Loading and Notifications
+private extension GameViewController {
 
     @objc func loadLevelFromNotification(notification: Notification) {
         guard let levelNumber = notification.userInfo?["level"] as? Int else {
             return
         }
         loadLevel(levelNumber: levelNumber)
+    }
+
+    @objc func togglePauseGame() {
+        sceneNode.togglePauseGame()
     }
 
     func loadLevel(levelNumber: Int) {
@@ -99,10 +105,9 @@ fileprivate extension GameViewController {
     }
 
     func setupNotifications() {
-        let notificationName = Notification.Name("LoadLevel")
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(GameViewController.loadLevelFromNotification),
-                                               name: notificationName,
+                                               name: .loadLevel,
                                                object: nil)
 
     }

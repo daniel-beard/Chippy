@@ -14,16 +14,17 @@ class GameManager {
     var player: PlayerInfo
     var tiles: TileManager
     var level: LevelMetadata
+    var levelTimer: LevelTimer
     var scene: SKScene
 
     // Entity manager
     var entityManager: EntityManager!
 
     init(scene: SKScene, level: LevelMetadata) {
-
         self.scene = scene
         self.entityManager = EntityManager(scene: scene)
         self.level = level
+        self.levelTimer = LevelTimer(duration: level.timer)
         _ = LevelLoader.verifyLevel(levelNumber: level.number)
         player = PlayerInfo(sprite: LevelLoader.loadPlayerSprite(scene: scene), scene: scene)
         tiles = TileManager(
@@ -36,6 +37,7 @@ class GameManager {
     func update(currTime: TimeInterval, delta deltaTime: CFTimeInterval) {
         entityManager.update(delta: deltaTime)
         player.update(currTime: currTime, delta: deltaTime)
+        levelTimer.update(currTime: currTime, delta: deltaTime)
     }
 
     // Checks whether a tile is passable
@@ -152,7 +154,7 @@ class GameManager {
         tiles.removeForegroundTile(at: position)
 
         // Notify there has been a UI change
-        gameNotif(name: "UpdatePlayerUI")
+        gameNotif(name: .updatePlayerUI)
     }
 
     func handleConditionallyPassableCollisions(position: GridPos, tile: ConditionallyPassable) {
@@ -165,7 +167,7 @@ class GameManager {
         tile.playerDidPassConditionalTile(gameManager: self, player: &self.player, position: position)
 
         // Notify there has been a UI change
-        gameNotif(name: "UpdatePlayerUI")
+        gameNotif(name: .updatePlayerUI)
     }
 }
 

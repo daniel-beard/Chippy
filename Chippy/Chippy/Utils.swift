@@ -32,7 +32,7 @@ extension Collection {
     /// Returns first match where element can be cast to V.Type
     /// E.g. tiles.at(pos: currPos).grab(of: FloorTile.self)
     func grab<V>(of: V.Type) -> V? {
-        return self.compactMap({ $0 as? V }).first
+        self.compactMap({ $0 as? V }).first
     }
 }
 
@@ -40,7 +40,7 @@ extension Collection {
 // This extension attempts to prevent simulataneous access to game objects
 // This is a bit of a kludge, but by having this separate, I can at least switch out this implementation
 // with a better approach in future.
-func gameNotif(name: String, userInfo: [AnyHashable : Any]? = nil) {
+func gameNotif(name: String, userInfo: [AnyHashable: Any]? = nil) {
     afterDelay(0.01) {
         NotificationCenter.default.post(name: Notification.Name(name),
                                         object: nil,
@@ -48,7 +48,15 @@ func gameNotif(name: String, userInfo: [AnyHashable : Any]? = nil) {
     }
 }
 
-func afterDelay(_ delay: TimeInterval, performBlock block:@escaping () -> Void) {
+func gameNotif(name: Notification.Name, userInfo: [AnyHashable: Any]? = nil) {
+    afterDelay(0.01) {
+        NotificationCenter.default.post(name: name,
+                                        object: nil,
+                                        userInfo: userInfo)
+    }
+}
+
+func afterDelay(_ delay: TimeInterval, performBlock block: @escaping () -> Void) {
     let dispatchTime = DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
     DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: block)
 }
@@ -66,7 +74,7 @@ func adjustLabelFontSizeToFitRect(labelNode: SKLabelNode, rect: CGRect, insetPad
 }
 
 func informativeTextLabel(origin: CGPoint, message: String) -> SKNode {
-    let width:CGFloat = 500
+    let width: CGFloat = 500
     let helpOverlay = SKShapeNode(rect: CGRect(x: 0, y: 0, width: width, height: 100))
     helpOverlay.position = CGPoint(x: origin.x - (width / 2.0), y: origin.y)
     helpOverlay.fillColor = .white
