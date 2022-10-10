@@ -10,7 +10,6 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
-
     var gameScene: GKScene!
     var cameraScale: CGFloat = 2.5
 
@@ -29,6 +28,7 @@ class GameScene: SKScene {
     // Indicates that we are running an animation just before pausing.
     // Means that we should discard keypresses.
     var isPausing = false
+    var isFirstPostPauseFrame: Bool = false
 
     // Game State: Used to determine actions after pausing or showing messages
     var gameState: GameState = .inProgress
@@ -43,22 +43,25 @@ class GameScene: SKScene {
 
         let chippy = LevelLoader.loadPlayerSprite(scene: scene!)
 
-        if let scene = scene {
+        if let scene {
             let cameraNode = SKCameraNode()
             cameraNode.position = chippy.position
             scene.addChild(cameraNode)
             scene.camera = cameraNode
-
-            let zoomInAction = SKAction.scale(to: cameraScale, duration: 0.0)
-            cameraNode.run(zoomInAction)
+            cameraNode.setScale(cameraScale)
 
             // debugging
-            view?.showsNodeCount = true
             view?.showsFPS = true
             view?.showsNodeCount = true
         }
 
         drawGameUI()
+
+        // Make sure the scene doesn't start running before any input
+        afterDelay(0.0) {
+            self.scene?.isPaused = true
+            self.view?.isPaused = true
+        }
 
         self.lastUpdateTime = 0
         self.gameState = .inProgress
@@ -78,24 +81,42 @@ class GameScene: SKScene {
     }
 
     // Called before each frame is rendered
+    // We store paused time so we can have delta values that aren't affected by long pauses.
     override func update(_ currentTime: TimeInterval) {
         // Initialize _lastUpdateTime if it has not already been
-        if (self.lastUpdateTime == 0) {
-            self.lastUpdateTime = currentTime
+        if lastUpdateTime == 0 {
+            lastUpdateTime = currentTime
+        }
+
+        // Ignore first frame after a pause, so we don't get a huge delta time
+        if isFirstPostPauseFrame {
+            isFirstPostPauseFrame = false
+            lastUpdateTime = currentTime
+            return
         }
         
         // Calculate time since last update
-        let dt = currentTime - self.lastUpdateTime
+        let dt = currentTime - lastUpdateTime
         
         // Update entities & game manager
         gameManager.update(currTime: currentTime, delta: dt)
-        self.lastUpdateTime = currentTime
+        lastUpdateTime = currentTime
+
+        // Time label
+        timeLabel.text = "\(GM()?.levelTimer.timeRemainingForDisplay() ?? 0)"
     }
 
-    deinit { tearDownNotifications() }
+    func togglePauseGame() {
+        view?.isPaused.toggle()
+        if view?.isPaused == true {
+            lastUpdateTime = 0
+        } else {
+            isFirstPostPauseFrame = true
+        }
+    }
 }
 
-//MARK: Movement extension
+// MARK: Movement extension
 extension GameScene {
 
     @objc func moveUp()       { move(direction: .up) }
@@ -104,7 +125,6 @@ extension GameScene {
     @objc func moveRight()    { move(direction: .right) }
 
     func move(direction: GridDirection) {
-
         // Drop all events if we are in the process of pausing the game with an animation
         guard !isPausing else { return }
 
@@ -112,20 +132,17 @@ extension GameScene {
         if let paused = scene?.view?.isPaused, paused == true {
             removeOverlays()
             scene?.view?.isPaused = false
+            isFirstPostPauseFrame = true
 
             // Check game state
             // Load new level.
             if case .completed = gameState {
-                NotificationCenter.default.post(name: Notification.Name("LoadLevel"),
-                    object: nil,
-                    userInfo: ["level": GM()!.nextLevelNumber()])
+                gameNotif(name: .loadLevel, userInfo: ["level": GM()!.nextLevelNumber()])
             }
 
             // Failed / died, restart at same level
             if case .failed = gameState {
-                NotificationCenter.default.post(name: Notification.Name("LoadLevel"),
-                                                object: nil,
-                                                userInfo: ["level": GM()!.level.number])
+                gameNotif(name: .loadLevel, userInfo: ["level": GM()!.level.number])
             }
         }
 
@@ -134,7 +151,7 @@ extension GameScene {
     }
 }
 
-//MARK: Notifications
+// MARK: Notifications
 extension GameScene {
 
     func tearDownNotifications() {
@@ -142,19 +159,19 @@ extension GameScene {
     }
 
     func setupNotifications() {
-        NotificationCenter.default.addObserver(self,
-            selector: #selector(GameScene.displayHelp),
-            name: Notification.Name("DisplayHelp"), object: nil)
-
-        NotificationCenter.default.addObserver(self,
-            selector: #selector(GameScene.displayEndGameLabel),
-            name: Notification.Name("DisplayEndGameLabel"), object: nil)
-
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(GameScene.displayDied),
-                                               name: Notification.Name("DisplayDied"), object: nil)
-
-        NotificationCenter.default.addObserver(self, selector: #selector(GameScene.updateInventoryUI), name: Notification.Name("UpdatePlayerUI"), object: nil)
+        let notifTuples: [(Notification.Name, Selector)] = [
+            (.displayHelp,          #selector(displayHelp)),
+            (.displayEndGameLabel,  #selector(displayFinishedLevelSuccessLabel)),
+            (.displayDied,          #selector(displayDied)),
+            (.displayTimeUp,        #selector(displayDied)),
+            (.updatePlayerUI,       #selector(updateInventoryUI))
+        ]
+        notifTuples.forEach { name, sel in
+            NotificationCenter.default.addObserver(self,
+                                                   selector: sel,
+                                                   name: name,
+                                                   object: nil)
+        }
     }
 
     func removeOverlays() {
@@ -163,13 +180,17 @@ extension GameScene {
         scene.childNode(withName: "died_overlay")?.removeFromParent()
     }
 
-    @objc func displayEndGameLabel(notification: Notification) {
+    @objc func displayFinishedLevelSuccessLabel(notification: Notification) {
         guard let scene = scene else { return }
         self.gameState = .completed
         self.isPausing = true
-        guard let gameManager = LevelRepository.shared.gameManager else { return }
+        guard let gameManager = GM() else { return }
         let chippy = gameManager.player.sprite
         let background = LevelLoader.loadBackgroundTiles(scene: scene)
+
+        // TODODB: Check for record. Level duration - timeRemaining
+        let finalTime = gameManager.levelTimer.timeRemainingForDisplay()
+
         //TODO: Add proper records..
         let message = "Congratulations, a new record!\nPress any key to continue."
         let endGameOverlay = informativeTextLabel(origin: chippy.position,
@@ -189,7 +210,7 @@ extension GameScene {
 
     @objc func displayDied(notification: Notification) {
         guard let scene = scene, let message = notification.userInfo?["message"] as? String else { return }
-        guard let gameManager = LevelRepository.shared.gameManager else { return }
+        guard let gameManager = GM() else { return }
 
         gameState = .failed
         isPausing = true
@@ -210,11 +231,10 @@ extension GameScene {
     }
 
     @objc func displayHelp(notification: Notification) {
-        guard let gameManager = LevelRepository.shared.gameManager else { return }
+        guard let gameManager = GM() else { return }
         guard let scene = scene, let message = notification.userInfo?["message"] as? String else {
             return
         }
-
 
         self.isPausing = true
         let chippy = gameManager.player.sprite
@@ -234,9 +254,7 @@ extension GameScene {
     }
 
     @objc func updateInventoryUI(notification: Notification) {
-        guard let gameManager = LevelRepository.shared.gameManager else {
-            return
-        }
+        guard let gameManager = GM() else { return }
         let player = gameManager.player
         let tile = { (type: TileType, tileMap: SKTileMapNode, column: Int) in
             let sprite = TileManager.loadUISprite(byType: type)
@@ -257,9 +275,7 @@ extension GameScene {
     // Other dynamic UI elements are drawn elsewhere.
     func drawGameUI() {
 
-        guard let scene = scene, let camera = self.camera else {
-            return
-        }
+        guard let scene, let camera else { return }
 
         let borderZPos: CGFloat = 10
         let uiZPos: CGFloat = 11
@@ -340,10 +356,15 @@ extension GameScene {
         titleTimeLabel.zPosition = uiZPos
         //TODO: Calculate this from the sizes..
         titleTimeLabel.position = CGPoint(x: scaledTileSize, y: scaledTileSize)
+
+        timeLabel = SKLabelNode(text: "TIME")
+        timeLabel.fontColor = .black
+        timeLabel.fontSize = 20
+        timeLabel.zPosition = uiZPos
+        timeLabel.position = CGPoint(x: titleTimeLabel.position.x, y: titleTimeLabel.position.y - titleTimeLabel.frame.height)
+
         levelInfoOutline.addChild(titleTimeLabel)
-
-
-
+        levelInfoOutline.addChild(timeLabel)
 
         //TODO: Labels and text
 

@@ -17,7 +17,7 @@ class FireTile: BaseTile, ConditionallyPassable {
                                         tilePos: GridPos) -> Bool { true }
     func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: GridPos) {
         if !player.hasFireBoots {
-            gameNotif(name: "DisplayDied", userInfo: [
+            gameNotif(name: .displayDied, userInfo: [
                 "message": "Oops! Chippy can't walk on fire without fire boots!"
             ])
         }
