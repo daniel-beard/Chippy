@@ -17,6 +17,6 @@ class HomeTile: BaseTile, ConditionallyPassable {
                                         tilePos: GridPos) -> Bool { true }
     func playerDidPassConditionalTile(gameManager: GameManager, player: inout PlayerInfo, position: GridPos) {
         // Display end game message
-        gameNotif(name: "DisplayEndGameLabel")
+        gameNotif(name: .displayEndGameLabel)
     }
 }

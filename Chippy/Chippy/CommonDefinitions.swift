@@ -122,22 +122,22 @@ enum RelativeDirection: Int, CaseIterable {
     // Let's us use cool stuff like .forward.from(.east, gridPos).toPos()
     func from(_ compass: CompassDirection) -> GridDirection {
         switch (self, compass) {
-        case (.forward, .north): return .up
-        case (.forward, .east): return .right
-        case (.forward, .south): return .down
-        case (.forward, .west): return .left
-        case (.back, .north): return .down
-        case (.back, .east): return .left
-        case (.back, .south): return .up
-        case (.back, .west): return .right
-        case (.right, .north): return .right
-        case (.right, .east): return .down
-        case (.right, .south): return .left
-        case (.right, .west): return .up
-        case (.left, .north): return .left
-        case (.left, .east): return .up
-        case (.left, .south): return .right
-        case (.left, .west): return .down
+        case (.forward, .north):    return .up
+        case (.forward, .east):     return .right
+        case (.forward, .south):    return .down
+        case (.forward, .west):     return .left
+        case (.back,    .north):    return .down
+        case (.back,    .east):     return .left
+        case (.back,    .south):    return .up
+        case (.back,    .west):     return .right
+        case (.right,   .north):    return .right
+        case (.right,   .east):     return .down
+        case (.right,   .south):    return .left
+        case (.right,   .west):     return .up
+        case (.left,    .north):    return .left
+        case (.left,    .east):     return .up
+        case (.left,    .south):    return .right
+        case (.left,    .west):     return .down
         }
     }
 }
@@ -167,4 +167,15 @@ extension vector_int2 {
 
     var description: String { "(x: \(x) y: \(y))" }
     var debugDescription: String { description }
+}
+
+// MARK: Notifications
+
+extension Notification.Name {
+    static let loadLevel            = Notification.Name("LoadLevel")
+    static let displayHelp          = Notification.Name("DisplayHelp")
+    static let displayEndGameLabel  = Notification.Name("DisplayEndGameLabel")
+    static let displayDied          = Notification.Name("DisplayDied")
+    static let displayTimeUp        = Notification.Name("DisplayTimeUp")
+    static let updatePlayerUI       = Notification.Name("UpdatePlayerUI")
 }

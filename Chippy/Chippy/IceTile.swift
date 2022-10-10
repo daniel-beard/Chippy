@@ -46,13 +46,13 @@ class IceTile: BaseTile, ConditionallyPassable, ConditionallyLeavable, PlayerEff
         switch iceType() {
             case .normal: return true
             case .topLeft:
-                return direction == .right || direction == .down
+                return [.right, .down].contains(direction)
             case .topRight:
-                return direction == .left || direction == .down
+                return [.left, .down].contains(direction)
             case .btmLeft:
-                return direction == .up || direction == .right
+                return [.up, .right].contains(direction)
             case .btmRight:
-                return direction == .up || direction == .left
+                return [.up, .left].contains(direction)
         }
     }
 
@@ -67,17 +67,13 @@ class IceTile: BaseTile, ConditionallyPassable, ConditionallyLeavable, PlayerEff
         let nextDir: GridDirection
         switch iceType() {
             case .topLeft:
-                if lastDir == .up           { nextDir = .right }
-                else                        { nextDir = .down }
+                nextDir = lastDir == .up    ? .right : .down
             case .topRight:
-                if lastDir == .right        { nextDir = .down }
-                else                        { nextDir = .left }
+                nextDir = lastDir == .right ? .down : .left
             case .btmLeft:
-                if lastDir == .down         { nextDir = .right }
-                else                        { nextDir = .up }
+                nextDir = lastDir == .down  ? .right : .up
             case .btmRight:
-                if lastDir == .down         { nextDir = .left }
-                else                        { nextDir = .up }
+                nextDir = lastDir == .down  ? .left : .up
             default: nextDir = lastDir
         }
         return nextDir

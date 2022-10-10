@@ -23,10 +23,10 @@ class BoostTile: BaseTile, ConditionallyPassable, PlayerEffectable, Boost {
     var playerEffectType: PlayerEffect = .conveyor
     var forceDirection: GridDirection {
         switch name {
-            case "boostup": return .up
-            case "boostright": return .right
-            case "boostdown": return .down
-            case "boostleft": return .left
+            case "boostup":     return .up
+            case "boostright":  return .right
+            case "boostdown":   return .down
+            case "boostleft":   return .left
             default: fatalError("Unknown boost type!")
         }
     }

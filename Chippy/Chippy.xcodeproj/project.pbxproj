@@ -108,6 +108,8 @@
 		24FA9F2B1EDCC66F0051F3E7 /* Tile2DArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FA9F2A1EDCC66F0051F3E7 /* Tile2DArray.swift */; };
 		24FDE3261FCA7C2C00814A9D /* DirtTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FDE3251FCA7C2C00814A9D /* DirtTile.swift */; };
 		24FDE3281FCA7CB400814A9D /* WaterTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FDE3271FCA7CB300814A9D /* WaterTile.swift */; };
+		2BF5BAC4289E4DF40064C9C8 /* LevelTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF5BAC3289E4DF40064C9C8 /* LevelTimer.swift */; };
+		2BF5BAC6289F4DBB0064C9C8 /* LevelRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF5BAC5289F4DBB0064C9C8 /* LevelRecord.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -196,6 +198,8 @@
 		24FA9F2A1EDCC66F0051F3E7 /* Tile2DArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tile2DArray.swift; sourceTree = "<group>"; };
 		24FDE3251FCA7C2C00814A9D /* DirtTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirtTile.swift; sourceTree = "<group>"; };
 		24FDE3271FCA7CB300814A9D /* WaterTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterTile.swift; sourceTree = "<group>"; };
+		2BF5BAC3289E4DF40064C9C8 /* LevelTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelTimer.swift; sourceTree = "<group>"; };
+		2BF5BAC5289F4DBB0064C9C8 /* LevelRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelRecord.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -253,6 +257,7 @@
 				24118CA41E5A8CF0004A8AED /* GameManager.swift */,
 				24118CA61E5A8D12004A8AED /* Player.swift */,
 				24A7586D25A03C87008678EE /* PlayerEffects.swift */,
+				2BF5BAC5289F4DBB0064C9C8 /* LevelRecord.swift */,
 			);
 			name = GameManager;
 			sourceTree = "<group>";
@@ -262,6 +267,7 @@
 			children = (
 				24118CBC1E6253B4004A8AED /* LevelRepository.swift */,
 				24118CBF1E625CB7004A8AED /* LevelLoader.swift */,
+				2BF5BAC3289E4DF40064C9C8 /* LevelTimer.swift */,
 			);
 			name = Levels;
 			sourceTree = "<group>";
@@ -652,8 +658,10 @@
 				2489872224AFCDD800617901 /* ContactComponent.swift in Sources */,
 				24F9D2752471CD45007E541C /* SpriteComponent.swift in Sources */,
 				24118CA51E5A8CF0004A8AED /* GameManager.swift in Sources */,
+				2BF5BAC6289F4DBB0064C9C8 /* LevelRecord.swift in Sources */,
 				2445EAC024B819B200A1D323 /* BaseTickableComponent.swift in Sources */,
 				24898712247C60C400617901 /* OrientationComponent.swift in Sources */,
+				2BF5BAC4289E4DF40064C9C8 /* LevelTimer.swift in Sources */,
 				24FDE3281FCA7CB400814A9D /* WaterTile.swift in Sources */,
 				24118CAB1E5A93CC004A8AED /* Utils.swift in Sources */,
 				24118CBD1E6253B4004A8AED /* LevelRepository.swift in Sources */,

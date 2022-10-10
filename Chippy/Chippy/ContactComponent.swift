@@ -69,7 +69,7 @@ class ContactComponent: GKComponent {
         // Single checks right now, if we want mixed: categoryBitMask & PhysicsCategory > 0 && ...
         if physicsBody?.categoryBitMask == PhysicsCategory.Monster &&
             contacts.any({ $0.categoryBitMask == PhysicsCategory.Chippy }) {
-            gameNotif(name: "DisplayDied", userInfo: [
+            gameNotif(name: .displayDied, userInfo: [
                 "message": "Oops! Bugs kill Chippy!"
             ])
         }
